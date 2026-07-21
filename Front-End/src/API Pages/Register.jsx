@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-// --- PROTOTYPE CREDENTIALS ---
-// Replace these with your actual NIDAS eVerify credentials for the prototype
 const NIDAS_BASE_URL = "https://hackathon-everify-api.e.gov.ph";
 const NIDAS_CLIENT_ID = "a24bef86-8826-48f7-aac5-978ca5805c29";
 const NIDAS_CLIENT_SECRET = "1EQT3mEC8GqEYCcUufaylPewnWi052VcJdnAOmIPHFy5zbUv0JcqVEwf7DSeb1OB";
@@ -16,8 +14,7 @@ const Register = ({ setActiveView }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setVerificationError(null);
-    
-    // Gather form data
+
     const formData = new FormData(e.target);
     const registrationData = Object.fromEntries(formData.entries());
 
@@ -34,9 +31,6 @@ const Register = ({ setActiveView }) => {
     setIsVerifying(true);
 
     try {
-      // ==========================================
-      // STEP 1: AUTHENTICATE & GET ACCESS TOKEN
-      // ==========================================
       setVerificationStep("Authenticating with NIDAS...");
       
       const authResponse = await fetch(`${NIDAS_BASE_URL}/api/auth`, {
@@ -55,7 +49,6 @@ const Register = ({ setActiveView }) => {
       const authData = await authResponse.json();
       console.log("Auth Response Data:", authData);
       
-      // Safely extract the token in case the API structure differs slightly
       const accessToken = (authData?.data?.access_token || authData?.access_token || "").trim();
       
       if (!accessToken) {
@@ -63,9 +56,7 @@ const Register = ({ setActiveView }) => {
       }
       console.log("Access Token Successfully Extracted!");
 
-      // ==========================================
-      // STEP 2: FACE LIVENESS CHECK (CAMERA)
-      // ==========================================
+
       setVerificationStep("Awaiting Face Liveness Check...");
       
       const livenessResponse = await window.eKYC().start({
@@ -80,15 +71,12 @@ const Register = ({ setActiveView }) => {
         throw new Error("Facial recognition failed or was closed before finishing. The camera did not return a session ID.");
       }
 
-      // ==========================================
-      // STEP 3: SUBMIT BIOMETRICS TO VERIFY ENDPOINT
-      // ==========================================
       setVerificationStep("Verifying Identity...");
 
       const verifyPayload = {
         first_name: registrationData.first_name.trim(),
         last_name: registrationData.last_name.trim(),
-        birth_date: registrationData.birth_date, // YYYY-MM-DD
+        birth_date: registrationData.birth_date,
         face_liveness_session_id: sessionId
       };
 
@@ -102,7 +90,6 @@ const Register = ({ setActiveView }) => {
 
       console.log("Submitting to Verification Endpoint:", verifyPayload);
 
-      // Note: Replace '/api/verify' with the actual verification path from the docs if different
       const verifyResponse = await fetch(`${NIDAS_BASE_URL.replace(/\/$/, '')}/api/query`, {
         method: 'POST',
         headers: {
@@ -118,27 +105,22 @@ const Register = ({ setActiveView }) => {
         throw new Error(`Verification endpoint failed with status ${verifyResponse.status}: ${errorText || 'The biometrics did not match the provided demographics.'}`);
       }
 
-      // Check the JSON response for business-logic errors even if status is 200
       const verifyData = await verifyResponse.json();
       console.log("Verify Response Data:", verifyData);
 
-      // The PhilSys API documentation states AAA000 is success, but the Hackathon environment uses XTA113.
-      // We will also check if result_grade === 1 to be absolutely sure.
       const successCodes = ['AAA000', 'XTA113'];
       const isSuccessCode = verifyData?.data?.code && successCodes.includes(verifyData.data.code);
       const isGradeOne = verifyData?.meta?.result_grade === 1;
 
       if (!verifyData || !verifyData.data || (!isSuccessCode && !isGradeOne)) {
          console.error("Mismatch. API returned:", verifyData);
-         throw new Error(`PhilSys API Error: ${JSON.stringify(verifyData)}`);
+         throw new Error("Identity verification failed.");
       }
 
-      // Verification Success! Show success indication and delay redirect
       console.log("Verification Success!");
       setIsVerifying(false);
       setVerificationSuccess(true);
-      
-      // Wait 2.5 seconds so the user can see the success message before redirecting
+
       setTimeout(() => {
         setActiveView('login');
       }, 2500);

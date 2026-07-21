@@ -1,7 +1,7 @@
 import React from 'react';
-import { Bookmark, GraduationCap, Users, Calendar } from 'lucide-react';
+import { Bookmark, GraduationCap, Users, Calendar, FileCheck } from 'lucide-react';
 
-const BrowseScholarshipCard = ({ tags, title, provider, description, tuition, slots, deadline, isBookmarked }) => {
+const BrowseScholarshipCard = ({ tags, title, provider, description, tuition, slots, deadline, reqGrade, isBookmarked }) => {
   return (
     <div className="browse-card hover-lift">
       <div className="browse-card-header">
@@ -26,6 +26,12 @@ const BrowseScholarshipCard = ({ tags, title, provider, description, tuition, sl
           <GraduationCap size={16} />
           <span>{tuition}</span>
         </div>
+        {reqGrade && (
+          <div className="meta-item" style={{ color: '#16a34a', fontWeight: '500' }}>
+            <FileCheck size={16} />
+            <span>Req. GWA: {reqGrade.toFixed(2)}</span>
+          </div>
+        )}
         <div className="meta-item">
           <Users size={16} />
           <span>{slots} slots available</span>

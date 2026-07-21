@@ -1,10 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Search, FileText, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Search, FileText, Settings, LogOut, ClipboardCheck } from 'lucide-react';
 
 const Sidebar = ({ activeView, setActiveView }) => {
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo" style={{ color: 'black' }}>eServices</div>
+      <div className="sidebar-logo" style={{ color: 'black' }}>eScholar</div>
       <nav className="nav-menu">
         <button 
           className={`nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
@@ -28,6 +28,13 @@ const Sidebar = ({ activeView, setActiveView }) => {
           <FileText size={20} />
           Applications
         </button>
+        <button 
+          className={`nav-item ${activeView === 'compliance' ? 'active' : ''}`}
+          onClick={() => setActiveView('compliance')}
+        >
+          <ClipboardCheck size={20} />
+          Compliance
+        </button>
         <button className="nav-item">
           <Settings size={20} />
           Settings
@@ -35,8 +42,8 @@ const Sidebar = ({ activeView, setActiveView }) => {
         <button 
           className="nav-item"
           onClick={() => {
-             localStorage.removeItem('eservices_2fa_session');
-             localStorage.removeItem('eservices_user_role');
+             localStorage.removeItem('escholar_2fa_session');
+             localStorage.removeItem('escholar_user_role');
              setActiveView('login');
           }}
           style={{ marginTop: 'auto', color: '#ef4444' }}

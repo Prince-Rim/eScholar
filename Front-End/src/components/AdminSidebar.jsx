@@ -1,10 +1,10 @@
 import React from 'react';
-import { LayoutDashboard, Users, FileText, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Settings, LogOut, ClipboardCheck, PlusCircle, BarChart3 } from 'lucide-react';
 
 const AdminSidebar = ({ activeView, setActiveView }) => {
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo" style={{ color: 'black' }}>eServices</div>
+    <aside className="sidebar admin-sidebar">
+      <div className="sidebar-logo" style={{ color: 'black' }}>eScholar</div>
       <nav className="nav-menu">
         <button 
           className={`nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
@@ -29,6 +29,27 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
           Applications
         </button>
         <button 
+          className={`nav-item ${activeView === 'compliance' ? 'active' : ''}`}
+          onClick={() => setActiveView('compliance')}
+        >
+          <ClipboardCheck size={20} />
+          Compliance
+        </button>
+        <button 
+          className={`nav-item ${activeView === 'create-program' ? 'active' : ''}`}
+          onClick={() => setActiveView('create-program')}
+        >
+          <PlusCircle size={20} />
+          Create Program
+        </button>
+        <button 
+          className={`nav-item ${activeView === 'reports' ? 'active' : ''}`}
+          onClick={() => setActiveView('reports')}
+        >
+          <BarChart3 size={20} />
+          Reports
+        </button>
+        <button 
           className={`nav-item ${activeView === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveView('settings')}
         >
@@ -39,8 +60,8 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
         <button 
           className="nav-item"
           onClick={() => {
-             localStorage.removeItem('eservices_2fa_session');
-             localStorage.removeItem('eservices_user_role');
+             localStorage.removeItem('escholar_2fa_session');
+             localStorage.removeItem('escholar_user_role');
              setActiveView('login');
           }}
           style={{ marginTop: 'auto', color: '#ef4444' }}

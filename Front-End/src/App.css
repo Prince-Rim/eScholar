@@ -1797,3 +1797,47 @@
 .pie-chart-container:hover .pie-data-labels {
   opacity: 1;
 }
+
+/* Upload Match Button */
+.upload-match-container {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  margin-left: 1rem;
+}
+
+.btn-upload-match {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-upload-match:hover {
+  background-color: #dcfce7;
+}
+
+.btn-upload-match.extracting {
+  background-color: #f1f5f9;
+  color: #475569;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
