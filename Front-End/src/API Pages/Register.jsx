@@ -196,10 +196,16 @@ const Register = ({ setActiveView }) => {
             </div>
           </div>
 
-          {/* Row 3: Birthday */}
-          <div className="form-group">
-            <label>Birthday *</label>
-            <input type="date" name="birth_date" required disabled={isVerifying} />
+          {/* Row 3: Birthday & Phone Number */}
+          <div className="form-row form-row-2">
+            <div className="form-group">
+              <label>Birthday *</label>
+              <input type="date" name="birth_date" required disabled={isVerifying} />
+            </div>
+            <div className="form-group">
+              <label>Phone Number *</label>
+              <input type="text" name="phone_number" placeholder="+639..." required disabled={isVerifying} />
+            </div>
           </div>
 
           {/* Row 4: Address & School */}

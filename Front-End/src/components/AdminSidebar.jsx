@@ -1,7 +1,7 @@
 import React from 'react';
-import { LayoutDashboard, Search, FileText, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Settings, LogOut } from 'lucide-react';
 
-const Sidebar = ({ activeView, setActiveView }) => {
+const AdminSidebar = ({ activeView, setActiveView }) => {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo" style={{ color: 'black' }}>eServices</div>
@@ -14,11 +14,11 @@ const Sidebar = ({ activeView, setActiveView }) => {
           Dashboard
         </button>
         <button 
-          className={`nav-item ${activeView === 'browse' ? 'active' : ''}`}
-          onClick={() => setActiveView('browse')}
+          className={`nav-item ${activeView === 'applicants' ? 'active' : ''}`}
+          onClick={() => setActiveView('applicants')}
         >
-          <Search size={20} />
-          Browse Application
+          <Users size={20} />
+          Applicants
         </button>
 
         <button 
@@ -28,10 +28,14 @@ const Sidebar = ({ activeView, setActiveView }) => {
           <FileText size={20} />
           Applications
         </button>
-        <button className="nav-item">
+        <button 
+          className={`nav-item ${activeView === 'settings' ? 'active' : ''}`}
+          onClick={() => setActiveView('settings')}
+        >
           <Settings size={20} />
           Settings
         </button>
+        
         <button 
           className="nav-item"
           onClick={() => {
@@ -49,4 +53,4 @@ const Sidebar = ({ activeView, setActiveView }) => {
   );
 };
 
-export default Sidebar;
+export default AdminSidebar;

@@ -1,5 +1,6 @@
 import React from 'react';
 import RecommendationCard from './RecommendationCard';
+import ApplicationCard from './ApplicationCard';
 
 const Dashboard = () => {
   return (
@@ -43,46 +44,45 @@ const Dashboard = () => {
         <div className="main-col-full">
           <h2 className="section-title">Top Recommendations</h2>
           <div className="recommendations-list">
+             <RecommendationCard 
+              tag="DOST"
+              title="DOST Merit Program"
+              description="Lorem Ipsum blah blah"
+              details="40,000/yr tuition - 3,000 stipend  40 slots  30days"
+              match="95"
+            />
             <RecommendationCard 
               tag="DOST"
               title="DOST Merit Program"
               description="Lorem Ipsum blah blah"
-              details="40,000/yr tuition - 3,000 stipend • 40 slots • 30days"
+              details="40,000/yr tuition - 3,000 stipend  40 slots  30days"
               match="95"
             />
-            <RecommendationCard 
-              tag="PRIVATE"
-              title="BASTA KAHIT ANO"
+          </div>
+        </div>
+
+        {/* My Applications */}
+        <div className="main-col-full" style={{ marginTop: '1rem' }}>
+          <h2 className="section-title">My Application</h2>
+          <div className="recommendations-list">
+            <ApplicationCard 
+              title="DOST Merit Program"
               description="Lorem Ipsum blah blah"
-              details="40,000/yr tuition - 3,000 stipend"
-              match="95"
+              date="Applied: july 10, 2025"
+              status="Under Review"
+            />
+            <ApplicationCard 
+              title="DOST Merit Program"
+              description="Lorem Ipsum blah blah"
+              date="Applied: july 10, 2025"
+              status="Under Review"
             />
           </div>
         </div>
 
       </div>
 
-      {/* Events and News Section */}
-      <section className="events-news">
-        <h2 className="section-title">Events and News</h2>
-        <div className="events-grid">
-          <div className="event-card hover-lift">
-            <span className="event-date">AUG 20</span>
-            <h4>College Admissions Seminar</h4>
-            <p>Join us for tips on securing your dream college.</p>
-          </div>
-          <div className="event-card hover-lift">
-            <span className="event-date">SEP 05</span>
-            <h4>New STEM Scholarships Available</h4>
-            <p>15 new programs added for tech students.</p>
-          </div>
-          <div className="event-card hover-lift">
-            <span className="event-date">OCT 12</span>
-            <h4>Essay Writing Workshop</h4>
-            <p>Learn how to craft a winning scholarship essay.</p>
-          </div>
-        </div>
-      </section>
+
 
     </main>
   );
