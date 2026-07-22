@@ -5,7 +5,6 @@ const Topbar = () => {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        {/* Placeholder for potential search or breadcrumbs */}
       </div>
       <div className="topbar-right">
         <button className="notification-btn">

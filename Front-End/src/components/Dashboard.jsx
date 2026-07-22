@@ -5,8 +5,7 @@ import ApplicationCard from './ApplicationCard';
 const Dashboard = () => {
   return (
     <main className="dashboard-content">
-      
-      {/* Profile Completion Banner */}
+
       <section className="profile-banner">
         <div className="profile-info">
           <h2>Complete your information</h2>
@@ -18,7 +17,6 @@ const Dashboard = () => {
         <button className="btn-complete hover-lift">Complete Profile</button>
       </section>
 
-      {/* Stats Cards */}
       <section className="stats-grid">
         <div className="stat-card">
           <h3>10</h3>
@@ -37,10 +35,8 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* Main Two-Column Content */}
       <div className="main-layout">
-        
-        {/* Recommendations */}
+
         <div className="main-col-full">
           <h2 className="section-title">Top Recommendations</h2>
           <div className="recommendations-list">
@@ -61,7 +57,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* My Applications */}
         <div className="main-col-full" style={{ marginTop: '1rem' }}>
           <h2 className="section-title">My Application</h2>
           <div className="recommendations-list">

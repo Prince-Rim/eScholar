@@ -13,7 +13,6 @@ const AdminApplicants = () => {
 
   return (
     <div className="admin-applicants-container">
-      {/* Top Search Bar Row */}
       <div className="applicants-top-bar">
         <div className="search-input-wrapper">
           <Search size={18} className="search-icon" />
@@ -22,14 +21,12 @@ const AdminApplicants = () => {
         <button className="btn-category-outline">Category</button>
       </div>
 
-      {/* Tabs */}
       <div className="applicants-tabs">
         <button className="applicants-tab active">All Applicants</button>
         <button className="applicants-tab">Active</button>
         <button className="applicants-tab">Inactive</button>
       </div>
 
-      {/* Main Table Card */}
       <div className="applicants-table-card">
         <table className="applicants-table">
           <thead>
@@ -59,8 +56,7 @@ const AdminApplicants = () => {
             ))}
           </tbody>
         </table>
-        
-        {/* Pagination Footer */}
+
         <div className="table-pagination">
           <span className="pagination-info">Showing 1 to 6 of 42 entries</span>
           <div className="pagination-controls">

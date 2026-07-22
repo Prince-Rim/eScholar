@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-const NIDAS_BASE_URL = "https://hackathon-everify-api.e.gov.ph";
-const NIDAS_CLIENT_ID = "a24bef86-8826-48f7-aac5-978ca5805c29";
-const NIDAS_CLIENT_SECRET = "1EQT3mEC8GqEYCcUufaylPewnWi052VcJdnAOmIPHFy5zbUv0JcqVEwf7DSeb1OB";
-const NIDAS_PUB_KEY = "eyJpdiI6InAzOGc3d1BZcVVZck1IY3plS0xscVE9PSIsInZhbHVlIjoiSlRESmdFYkZ4ZnV3M1ZkUjFiTHpDUT09IiwibWFjIjoiZTEzZjI5ZGRkZTVhNWNkNGU3ZmQ0NDY4MTAyZDY2Yjc1NjJiYmMxNTMwN2E2NzVlZmM5ZjhjZmEyZWM1ZmMwMCIsInRhZyI6IiJ9";
+const NIDAS_BASE_URL = import.meta.env.VITE_NIDAS_BASE_URL;
+const NIDAS_CLIENT_ID = import.meta.env.VITE_NIDAS_CLIENT_ID;
+const NIDAS_CLIENT_SECRET = import.meta.env.VITE_NIDAS_CLIENT_SECRET;
+const NIDAS_PUB_KEY = import.meta.env.VITE_NIDAS_PUB_KEY;
 
 const Register = ({ setActiveView }) => {
   const [isVerifying, setIsVerifying] = useState(false);
@@ -156,7 +156,6 @@ const Register = ({ setActiveView }) => {
         )}
 
         <form onSubmit={handleRegister} className="auth-form" style={{ display: verificationSuccess ? 'none' : 'block' }}>
-          {/* Row 1 & 2: Names */}
           <div className="form-row form-row-2">
             <div className="form-group">
               <label>First Name *</label>
@@ -178,7 +177,6 @@ const Register = ({ setActiveView }) => {
             </div>
           </div>
 
-          {/* Row 3: Birthday & Phone Number */}
           <div className="form-row form-row-2">
             <div className="form-group">
               <label>Birthday *</label>
@@ -190,7 +188,6 @@ const Register = ({ setActiveView }) => {
             </div>
           </div>
 
-          {/* Row 4: Address & School */}
           <div className="form-row form-row-2">
             <div className="form-group">
               <label>Full Address *</label>
@@ -208,7 +205,6 @@ const Register = ({ setActiveView }) => {
             </div>
           </div>
 
-          {/* Row 5: Password */}
           <div className="form-row form-row-2">
             <div className="form-group">
               <label>Password *</label>
@@ -245,7 +241,6 @@ const Register = ({ setActiveView }) => {
         </div>
       </div>
       
-      {/* Quick inline style for spinner animation */}
       <style>{`
         @keyframes rotation {
           0% { transform: rotate(0deg); }

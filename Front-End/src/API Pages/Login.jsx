@@ -56,7 +56,7 @@ const Login = ({ setActiveView, setUserRole }) => {
       const response = await fetch('https://ws-message.e.gov.ph/messaging/v1/sms/push', {
         method: 'POST',
         headers: {
-          'X-EMESSAGE-Auth': '40419e47290ae8488a0a796b7c4c66aa',
+          'X-EMESSAGE-Auth': import.meta.env.VITE_EMESSAGE_AUTH,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -105,9 +105,7 @@ const Login = ({ setActiveView, setUserRole }) => {
           </p>
         </div>
 
-       
 
-        {/* STEP 1: LOGIN */}
         {step === 1 && (
           <form onSubmit={handleLoginSubmit} className="auth-form">
             <div className="form-group">
@@ -136,7 +134,6 @@ const Login = ({ setActiveView, setUserRole }) => {
           </form>
         )}
 
-        {/* STEP 2: PHONE NUMBER */}
         {step === 2 && (
           <form onSubmit={handleSendSMS} className="auth-form">
             <div className="form-group">
@@ -159,7 +156,6 @@ const Login = ({ setActiveView, setUserRole }) => {
           </form>
         )}
 
-        {/* STEP 3: OTP VERIFICATION */}
         {step === 3 && (
           <form onSubmit={handleVerifyOTP} className="auth-form">
             <div className="form-group">
