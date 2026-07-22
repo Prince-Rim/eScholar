@@ -33,7 +33,6 @@ const Compliance = () => {
           
           <div className="compliance-list" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             
-            {/* Requirement 1 */}
             <div className="compliance-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div style={{ backgroundColor: '#f1f5f9', padding: '10px', borderRadius: '8px', color: '#475569' }}>
@@ -63,7 +62,6 @@ const Compliance = () => {
               </div>
             </div>
 
-            {/* Requirement 2 */}
             <div className="compliance-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '8px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div style={{ backgroundColor: '#fef3c7', padding: '10px', borderRadius: '8px', color: '#d97706' }}>

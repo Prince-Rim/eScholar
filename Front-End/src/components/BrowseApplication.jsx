@@ -7,8 +7,6 @@ const BrowseApplication = () => {
   const [isExtracting, setIsExtracting] = useState(false);
   const fileInputRef = useRef(null);
 
-  // 5 scholarships with different grade requirements (PH system: 1.0 is highest, 3.0 is passing)
-  // A student's grade must be <= reqGrade to qualify.
   const allScholarships = [
     {
       id: 1,
@@ -79,9 +77,8 @@ const BrowseApplication = () => {
     setIsExtracting(true);
     setExtractedGrade(null);
 
-    // Simulate API extraction delay
     setTimeout(() => {
-      setExtractedGrade(1.50); // Simulating an extracted grade of 1.50
+      setExtractedGrade(1.50); 
       setIsExtracting(false);
     }, 2500);
   };
@@ -93,15 +90,13 @@ const BrowseApplication = () => {
     }
   };
 
-  // Filter scholarships: if extractedGrade exists, student qualifies if extractedGrade <= reqGrade
   const filteredScholarships = extractedGrade 
     ? allScholarships.filter(s => extractedGrade <= s.reqGrade)
     : allScholarships;
 
   return (
     <main className="browse-content">
-      
-      {/* Top Search and Filter Bar */}
+
       <section className="search-filter-section">
         <div className="search-bar">
           <Search size={20} className="search-icon" />
@@ -112,7 +107,6 @@ const BrowseApplication = () => {
           />
         </div>
 
-        {/* Upload Grade Auto-Match Button */}
         <div className="upload-match-container">
           <input 
             type="file" 
@@ -145,7 +139,6 @@ const BrowseApplication = () => {
         </div>
       </section>
 
-      {/* Active Filters Row */}
       <section className="active-filters-row">
         <span className="filters-label">Active Filters:</span>
         <div className="filter-pills">
@@ -162,7 +155,6 @@ const BrowseApplication = () => {
         <button className="btn-clear-all">Clear all</button>
       </section>
 
-      {/* Results Header */}
       <section className="results-header">
         <div>
           <h2 className="results-title">Available Scholarships</h2>
@@ -174,7 +166,6 @@ const BrowseApplication = () => {
         </div>
       </section>
 
-      {/* Scholarship List */}
       <section className="scholarship-list">
         {filteredScholarships.map(scholarship => (
           <BrowseScholarshipCard 

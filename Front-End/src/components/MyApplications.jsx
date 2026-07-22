@@ -13,8 +13,7 @@ const MyApplications = () => {
 
   return (
     <main className="applications-content" style={{ padding: '2rem' }}>
-      
-      {/* Top Tabs */}
+
       <div className="tabs-container">
         {tabs.map(tab => (
           <button 

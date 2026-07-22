@@ -5,7 +5,6 @@ const AdminDashboard = ({ setActiveView }) => {
   return (
     <main className="admin-dashboard">
       
-      {/* Top Stats Row */}
       <div className="admin-stats-grid">
         <div className="admin-stat-card">
           <h3>10</h3>
@@ -24,10 +23,8 @@ const AdminDashboard = ({ setActiveView }) => {
         </div>
       </div>
 
-      {/* Charts Row */}
       <div className="admin-charts-grid">
-        
-        {/* Line Chart Panel */}
+
         <div className="admin-chart-panel">
           <div className="admin-chart-header">
             <h4>Application Trend</h4>
@@ -35,21 +32,17 @@ const AdminDashboard = ({ setActiveView }) => {
           </div>
           
           <div className="svg-chart-container">
-            {/* Custom SVG Line Chart matching the mockup */}
             <svg viewBox="0 0 500 250" width="100%" height="100%">
-              {/* Grid Lines */}
               <line x1="40" y1="50" x2="480" y2="50" stroke="#f1f5f9" strokeWidth="2" />
               <line x1="40" y1="100" x2="480" y2="100" stroke="#f1f5f9" strokeWidth="2" />
               <line x1="40" y1="150" x2="480" y2="150" stroke="#f1f5f9" strokeWidth="2" />
               <line x1="40" y1="200" x2="480" y2="200" stroke="#94a3b8" strokeWidth="2" />
-              
-              {/* Y-Axis Labels */}
+
               <text x="30" y="55" fontSize="10" fill="#94a3b8" textAnchor="end">400</text>
               <text x="30" y="105" fontSize="10" fill="#94a3b8" textAnchor="end">300</text>
               <text x="30" y="155" fontSize="10" fill="#94a3b8" textAnchor="end">200</text>
               <text x="30" y="205" fontSize="10" fill="#94a3b8" textAnchor="end">0</text>
 
-              {/* X-Axis Labels */}
               <text x="50" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Mon</text>
               <text x="120" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Tue</text>
               <text x="190" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Wed</text>
@@ -58,14 +51,12 @@ const AdminDashboard = ({ setActiveView }) => {
               <text x="400" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Sat</text>
               <text x="470" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Sun</text>
 
-              {/* Data Line */}
               <polyline 
                 points="50,150 120,80 190,120 260,190 330,140 400,135 470,155" 
                 fill="none" 
                 stroke="#6366f1" 
                 strokeWidth="2" 
               />
-              {/* Data Points */}
               <circle cx="50" cy="150" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
               <circle cx="120" cy="80" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
               <circle cx="190" cy="120" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
@@ -82,16 +73,13 @@ const AdminDashboard = ({ setActiveView }) => {
             <h4>Category Distribution</h4>
           </div>
           <div className="svg-chart-container pie-chart-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {/* Custom SVG Pie Chart matching the deep pink mockup */}
             <svg viewBox="0 0 200 200" width="100%" height="100%">
               <circle cx="100" cy="100" r="80" fill="#c2185b" />
               
-              {/* Segment lines to simulate pie slices */}
               <line x1="100" y1="100" x2="20" y2="60" stroke="white" strokeWidth="1" />
               <line x1="100" y1="100" x2="120" y2="180" stroke="white" strokeWidth="1" />
               <line x1="100" y1="100" x2="120" y2="20" stroke="white" strokeWidth="1" />
 
-              {/* Data labels */}
               <g className="pie-data-labels">
                 <text x="15" y="150" fontSize="10" fill="#c2185b">780</text>
                 <line x1="35" y1="145" x2="50" y2="135" stroke="#c2185b" strokeWidth="1" />
@@ -105,15 +93,13 @@ const AdminDashboard = ({ setActiveView }) => {
 
       </div>
 
-      {/* Recent Applications List */}
       <div className="admin-recent-panel">
         <div className="recent-header">
           <h4>Recent Application</h4>
           <button className="link-btn" onClick={() => setActiveView('applications')}>See all</button>
         </div>
         
-        <div className="recent-list">
-          {/* Item 1 */}
+        <div className="recent-list">   
           <div className="recent-item">
             <div className="recent-info">
               <UserCircle size={40} strokeWidth={1} style={{ color: '#94a3b8' }} />
@@ -127,8 +113,7 @@ const AdminDashboard = ({ setActiveView }) => {
               <button className="btn-text-blue">View</button>
             </div>
           </div>
-          
-          {/* Item 2 */}
+
           <div className="recent-item">
             <div className="recent-info">
               <UserCircle size={40} strokeWidth={1} style={{ color: '#94a3b8' }} />
@@ -143,7 +128,6 @@ const AdminDashboard = ({ setActiveView }) => {
             </div>
           </div>
 
-          {/* Item 3 */}
           <div className="recent-item">
             <div className="recent-info">
               <UserCircle size={40} strokeWidth={1} style={{ color: '#94a3b8' }} />
