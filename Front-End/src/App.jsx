@@ -22,6 +22,8 @@ import ProviderPrograms from './components/ProviderPrograms';
 import ProviderProgramDetail from './components/ProviderProgramDetail';
 import ProviderApplicantPipeline from './components/ProviderApplicantPipeline';
 import ProviderActiveScholars from './components/ProviderActiveScholars';
+import ProviderVerification from './components/ProviderVerification';
+import AdminVerifications from './components/AdminVerifications';
 
 function App() {
   const [currentView, setCurrentView] = useState('landing');
@@ -68,6 +70,8 @@ function App() {
             <ProviderApplicantPipeline />
           ) : currentView === 'renewals' || currentView === 'active-scholars' ? (
             <ProviderActiveScholars />
+          ) : currentView === 'verification' ? (
+            <ProviderVerification />
           ) : (
             <ProviderPrograms
               setActiveView={setCurrentView}
@@ -84,6 +88,7 @@ function App() {
         {userRole === 'admin' && currentView === 'compliance' && <AdminCompliance />}
         {userRole === 'admin' && currentView === 'create-program' && <ProviderCreateProgram setActiveView={setCurrentView} />}
         {userRole === 'admin' && currentView === 'reports' && <AdminReports />}
+        {userRole === 'admin' && currentView === 'verifications' && <AdminVerifications />}
         {userRole === 'student' && currentView === 'dashboard' && <Dashboard />}
         {userRole === 'student' && currentView === 'browse' && <BrowseApplication />}
         {userRole === 'student' && currentView === 'applications' && <MyApplications />}

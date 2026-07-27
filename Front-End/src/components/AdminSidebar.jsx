@@ -7,7 +7,8 @@ import {
   LogOut, 
   ClipboardCheck, 
   PlusCircle, 
-  BarChart3 
+  BarChart3,
+  ShieldCheck
 } from 'lucide-react';
 import Logo from './Logo';
 import './ProviderSidebar.css';
@@ -65,6 +66,14 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
         >
           <PlusCircle size={18} />
           <span>Create Program</span>
+        </button>
+
+        <button 
+          className={`provider-nav-item ${activeView === 'verifications' ? 'active' : ''}`}
+          onClick={() => setActiveView('verifications')}
+        >
+          <ShieldCheck size={18} />
+          <span>Verifications</span>
         </button>
 
         <button 
