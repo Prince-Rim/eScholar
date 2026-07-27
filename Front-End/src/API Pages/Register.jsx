@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Search, ChevronDown, Check, X } from 'lucide-react';
 import '../components/LandingPage.css';
 import Logo from '../components/Logo';
 
@@ -7,11 +8,48 @@ const NIDAS_CLIENT_ID = import.meta.env.VITE_NIDAS_CLIENT_ID;
 const NIDAS_CLIENT_SECRET = import.meta.env.VITE_NIDAS_CLIENT_SECRET;
 const NIDAS_PUB_KEY = import.meta.env.VITE_NIDAS_PUB_KEY;
 
+const SCHOOL_OPTIONS = [
+  'STI',
+  'QCU',
+  'PUP',
+  'PU',
+  'PLM',
+  'UP Los Baños',
+  'UP Diliman',
+  'UP Manila',
+  'University of Santo Tomas (UST)',
+  'De La Salle University (DLSU)',
+  'Ateneo de Manila University (ADMU)',
+  'Mapúa University',
+  'Far Eastern University (FEU)',
+  'Technological University of the Philippines (TUP)',
+  'Rizal Technological University (RTU)',
+  'Cavite State University (CvSU)',
+  'Bulacan State University (BulSU)',
+  'Batangas State University (BatStateU)',
+  'Adamson University',
+  'National University (NU)',
+  'Centro Escolar University (CEU)'
+];
+
 const Register = ({ setActiveView }) => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationError, setVerificationError] = useState(null);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
   const [verificationStep, setVerificationStep] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState('');
+  const [schoolSearch, setSchoolSearch] = useState('');
+  const [isSchoolOpen, setIsSchoolOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (!e.target.closest('.searchable-dropdown-container')) {
+        setIsSchoolOpen(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -180,11 +218,11 @@ const Register = ({ setActiveView }) => {
           <div className="form-row form-row-2">
             <div className="form-group">
               <label>Middle Name</label>
-              <input type="text" name="middle_name" placeholder="Middle Name (Optional)" disabled={isVerifying} />
+              <input type="text" name="middle_name" placeholder="Middle Name" disabled={isVerifying} />
             </div>
             <div className="form-group">
               <label>Suffix</label>
-              <input type="text" name="suffix" placeholder="e.g. Jr, III (Optional)" disabled={isVerifying} />
+              <input type="text" name="suffix" placeholder="e.g. Jr, III" disabled={isVerifying} />
             </div>
           </div>
 
@@ -204,15 +242,128 @@ const Register = ({ setActiveView }) => {
               <label>Full Address *</label>
               <input type="text" name="address" placeholder="Enter your full address" required disabled={isVerifying} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ position: 'relative' }}>
               <label>Current School *</label>
-              <select name="school" required className="form-select" disabled={isVerifying} defaultValue="">
-                <option value="" disabled>Select your school</option>
-                <option value="STI">STI</option>
-                <option value="QCU">QCU</option>
-                <option value="PUP">PUP</option>
-                <option value="PU">PU</option>
-              </select>
+              <input type="hidden" name="school" value={selectedSchool} required />
+              
+              <div className="searchable-dropdown-container" style={{ position: 'relative' }}>
+                <div 
+                  onClick={() => !isVerifying && setIsSchoolOpen(!isSchoolOpen)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justify: 'space-between',
+                    width: '100%',
+                    height: '44px',
+                    boxSizing: 'border-box',
+                    cursor: isVerifying ? 'not-allowed' : 'pointer',
+                    background: '#f8fafc',
+                    border: isSchoolOpen ? '1.5px solid #082894' : '1px solid #cbd5e1',
+                    borderRadius: '8px',
+                    padding: '0 1rem',
+                    fontSize: '0.9rem',
+                    color: selectedSchool ? '#0f172a' : '#64748b',
+                    userSelect: 'none'
+                  }}
+                >
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {selectedSchool || 'Select your school'}
+                  </span>
+                  <ChevronDown size={16} style={{ transform: isSchoolOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', color: '#64748b', flexShrink: 0, marginLeft: '0.5rem' }} />
+                </div>
+
+                {isSchoolOpen && (
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 4px)',
+                      left: 0,
+                      right: 0,
+                      background: '#ffffff',
+                      border: '1.5px solid #082894',
+                      borderRadius: '10px',
+                      boxShadow: '0 10px 25px -5px rgba(8, 40, 148, 0.2)',
+                      zIndex: 100,
+                      padding: '0.5rem',
+                      maxHeight: '230px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.4rem'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.6rem', background: '#f1f5f9', borderRadius: '6px' }}>
+                      <Search size={15} style={{ color: '#64748b', flexShrink: 0 }} />
+                      <input 
+                        type="text"
+                        placeholder="Search school..."
+                        value={schoolSearch}
+                        onChange={(e) => setSchoolSearch(e.target.value)}
+                        autoFocus
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          border: 'none',
+                          outline: 'none',
+                          background: 'transparent',
+                          width: '100%',
+                          fontSize: '0.85rem',
+                          color: '#0f172a'
+                        }}
+                      />
+                      {schoolSearch && (
+                        <button 
+                          type="button" 
+                          onClick={(e) => { e.stopPropagation(); setSchoolSearch(''); }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', padding: 0 }}
+                        >
+                          <X size={14} />
+                        </button>
+                      )}
+                    </div>
+
+                    <div style={{ overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                      {SCHOOL_OPTIONS.filter(s => s.toLowerCase().includes(schoolSearch.toLowerCase())).length === 0 ? (
+                        <div style={{ padding: '0.75rem', fontSize: '0.85rem', color: '#94a3b8', textAlign: 'center' }}>
+                          No school found
+                        </div>
+                      ) : (
+                        SCHOOL_OPTIONS.filter(s => s.toLowerCase().includes(schoolSearch.toLowerCase())).map(school => (
+                          <div
+                            key={school}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSchool(school);
+                              setIsSchoolOpen(false);
+                              setSchoolSearch('');
+                            }}
+                            style={{
+                              padding: '0.55rem 0.75rem',
+                              borderRadius: '6px',
+                              fontSize: '0.875rem',
+                              fontWeight: selectedSchool === school ? 700 : 500,
+                              color: selectedSchool === school ? '#082894' : '#334155',
+                              background: selectedSchool === school ? '#eff6ff' : 'transparent',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justify: 'space-between',
+                              transition: 'background 0.15s'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (selectedSchool !== school) e.currentTarget.style.background = '#f8fafc';
+                            }}
+                            onMouseLeave={(e) => {
+                              if (selectedSchool !== school) e.currentTarget.style.background = 'transparent';
+                            }}
+                          >
+                            <span>{school}</span>
+                            {selectedSchool === school && <Check size={14} style={{ color: '#082894' }} />}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
