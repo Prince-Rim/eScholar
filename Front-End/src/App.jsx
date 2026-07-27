@@ -15,10 +15,15 @@ import Compliance from './components/Compliance';
 import AdminCompliance from './components/AdminCompliance';
 import AdminCreateProgram from './components/AdminCreateProgram';
 import AdminReports from './components/AdminReports';
+import LandingPage from './components/LandingPage';
 
 function App() {
-  const [currentView, setCurrentView] = useState('login');
+  const [currentView, setCurrentView] = useState('landing');
   const [userRole, setUserRole] = useState('student');
+
+  if (currentView === 'landing') {
+    return <LandingPage setActiveView={setCurrentView} />;
+  }
 
   const isAuthView = currentView === 'login' || currentView === 'register';
 

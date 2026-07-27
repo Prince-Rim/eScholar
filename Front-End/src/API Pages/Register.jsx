@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../components/LandingPage.css';
 
 const NIDAS_BASE_URL = import.meta.env.VITE_NIDAS_BASE_URL;
 const NIDAS_CLIENT_ID = import.meta.env.VITE_NIDAS_CLIENT_ID;
@@ -134,8 +135,15 @@ const Register = ({ setActiveView }) => {
   };
 
   return (
-    <div className="auth-wrapper">
-      <div className="auth-card register-card">
+    <div className="auth-wrapper" style={{ position: 'relative' }}>
+      <nav className="landing-navbar" style={{ position: 'absolute', top: 0, left: 0, width: '100%', boxSizing: 'border-box' }}>
+        <div className="landing-logo" style={{ cursor: 'pointer' }} onClick={() => setActiveView('landing')}>eScholar</div>
+        <div className="landing-nav-actions">
+          <button className="btn-login-nav" onClick={() => setActiveView('login')} disabled={isVerifying}>Log In</button>
+        </div>
+      </nav>
+      
+      <div className="auth-card register-card" style={{ marginTop: '4rem' }}>
         <div className="auth-header">
           <div className="auth-logo">eScholar</div>
           <h2>Create an Account</h2>
@@ -235,10 +243,6 @@ const Register = ({ setActiveView }) => {
             )}
           </button>
         </form>
-
-        <div className="auth-footer">
-          <p>Already have an account? <button className="link-btn" onClick={() => setActiveView('login')} disabled={isVerifying}>Sign In</button></p>
-        </div>
       </div>
       
       <style>{`

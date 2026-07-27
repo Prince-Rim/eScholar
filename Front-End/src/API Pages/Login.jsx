@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../components/LandingPage.css';
 
 const Login = ({ setActiveView, setUserRole }) => {
 
@@ -99,7 +100,14 @@ const Login = ({ setActiveView, setUserRole }) => {
   };
 
   return (
-    <div className="auth-wrapper">
+    <div className="auth-wrapper" style={{ position: 'relative' }}>
+      <nav className="landing-navbar" style={{ position: 'absolute', top: 0, left: 0, width: '100%', boxSizing: 'border-box' }}>
+        <div className="landing-logo" style={{ cursor: 'pointer' }} onClick={() => setActiveView('landing')}>eScholar</div>
+        <div className="landing-nav-actions">
+          <button className="btn-register-nav" onClick={() => setActiveView('register')}>Register</button>
+        </div>
+      </nav>
+      
       <div className="auth-card">
         <div className="auth-header">
           <div className="auth-logo" style={{ color: 'black' }}>eScholar</div>
@@ -188,12 +196,6 @@ const Login = ({ setActiveView, setUserRole }) => {
               Change Phone Number
             </button>
           </form>
-        )}
-
-        {step === 1 && (
-          <div className="auth-footer" style={{ marginTop: '1.5rem' }}>
-            <p>Don't have an account? <button className="link-btn" onClick={() => setActiveView('register')}>Register here</button></p>
-          </div>
         )}
       </div>
     </div>
