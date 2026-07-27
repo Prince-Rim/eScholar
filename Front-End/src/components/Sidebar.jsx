@@ -65,7 +65,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
           onClick={() => setActiveView('compliance')}
         >
           <ClipboardCheck size={18} />
-          <span>Grant Compliance</span>
+          <span>My Compliance</span>
         </button>
       </nav>
 

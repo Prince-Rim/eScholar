@@ -40,7 +40,7 @@ const Dashboard = ({ setActiveView }) => {
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
           <button className="pd-primary-btn" onClick={() => setActiveView && setActiveView('browse')}>
-            <Search size={15} /> Browse Grants
+            <Search size={15} /> Browse Scholarships
           </button>
         </div>
       </div>

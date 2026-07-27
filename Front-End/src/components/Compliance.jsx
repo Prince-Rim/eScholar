@@ -89,7 +89,7 @@ const Compliance = () => {
       {/* Header */}
       <div className="pd-header">
         <div>
-          <h2 className="pd-title">Grant Compliance</h2>
+          <h2 className="pd-title">My Compliance</h2>
           <p className="pd-subtitle">Upload your required semester credentials to maintain your active scholarship.</p>
         </div>
         {grants.length > 1 && (

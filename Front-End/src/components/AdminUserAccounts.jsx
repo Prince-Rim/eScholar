@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Users, Search, Eye, MoreVertical, CheckCircle, XCircle, 
-  X, Mail, Shield, UserCheck, UserX, Clock, Calendar, KeyRound
+  X, Mail, Shield, UserCheck, UserX, Clock, Calendar, KeyRound,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import './ProviderCreateProgram.css';
 import './ProviderPrograms.css';
@@ -80,6 +81,8 @@ const AdminUserAccounts = () => {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const handleOutsideClick = () => setOpenDropdownId(null);
@@ -117,6 +120,12 @@ const AdminUserAccounts = () => {
     }
     return true;
   });
+
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = filtered.slice(indexOfFirstItem, indexOfLastItem);
 
   const roleBadgeStyle = (role) => {
     if (role === 'Student') return { bg: '#eff6ff', color: '#082894', border: '#bfdbfe' };
@@ -188,7 +197,7 @@ const AdminUserAccounts = () => {
                   <td colSpan="6" className="empty-table-cell">No user accounts found.</td>
                 </tr>
               ) : (
-                filtered.map(u => {
+                currentUsers.map(u => {
                   const roleStyle = roleBadgeStyle(u.role);
                   return (
                     <tr key={u.id} className="program-table-row" onClick={() => setSelectedUser(u)}>
@@ -274,6 +283,38 @@ const AdminUserAccounts = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* User Details Modal */}
@@ -331,7 +372,7 @@ const AdminUserAccounts = () => {
                 className="pd-primary-btn" 
                 style={{ 
                   fontSize: '0.8rem', padding: '0.45rem 1rem',
-                  background: selectedUser.status === 'Active' ? '#dc2626' : 'linear-gradient(135deg, #082894 0%, #2563eb 100%)'
+                  background: selectedUser.status === 'Active' ? '#dc2626' : '#082894'
                 }}
                 onClick={() => { toggleUserStatus(selectedUser.id); setSelectedUser(null); }}
               >

@@ -220,7 +220,7 @@ const MyApplications = ({ setActiveView }) => {
                                   if (setActiveView) setActiveView('compliance');
                                 }}
                               >
-                                <Award size={14} color="#15803d" /> Grant Compliance
+                                <Award size={14} color="#15803d" /> My Compliance
                               </button>
                             )}
                           </div>
@@ -305,7 +305,7 @@ const MyApplications = ({ setActiveView }) => {
                       <Award size={18} /> Scholarship Approved
                     </div>
                     <p style={{ margin: 0, fontSize: '0.8rem', color: '#166534' }}>
-                      You are an active scholar. Submit your semester credentials under Grant Compliance to maintain your grant.
+                      You are an active scholar. Submit your semester credentials under My Compliance to maintain your grant.
                     </p>
                   </div>
                   <button 
@@ -316,7 +316,7 @@ const MyApplications = ({ setActiveView }) => {
                       if (setActiveView) setActiveView('compliance');
                     }}
                   >
-                    Grant Compliance <ArrowRight size={14} />
+                    My Compliance <ArrowRight size={14} />
                   </button>
                 </div>
               )}

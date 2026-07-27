@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Building2, Search, Plus, Eye, MoreVertical, CheckCircle, XCircle, 
-  X, Mail, Phone, MapPin, ShieldCheck, Lock, ToggleLeft, ToggleRight, User, PlusCircle, KeyRound, Edit
+  X, Mail, Phone, MapPin, ShieldCheck, Lock, ToggleLeft, ToggleRight, User, PlusCircle, KeyRound, Edit,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import './ProviderCreateProgram.css';
 import './ProviderPrograms.css';
@@ -82,6 +83,8 @@ const AdminProviders = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   // New Provider Form state
   const [formData, setFormData] = useState({
@@ -155,6 +158,12 @@ const AdminProviders = () => {
     }
     return true;
   });
+
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProviders = filtered.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="pd-page">
@@ -238,7 +247,7 @@ const AdminProviders = () => {
                   <td colSpan="6" className="empty-table-cell">No provider accounts found.</td>
                 </tr>
               ) : (
-                filtered.map(p => (
+                currentProviders.map(p => (
                   <tr key={p.id} className="program-table-row" onClick={() => setSelectedProvider(p)}>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
@@ -313,6 +322,38 @@ const AdminProviders = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
 

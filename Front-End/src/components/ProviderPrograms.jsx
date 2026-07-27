@@ -253,6 +253,8 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
   // KPI Calculations
   const publishedCount = programsList.filter(p => p.status === 'Published').length;
   const totalSlotsSum = programsList.reduce((s, p) => s + p.totalSlots, 0);
+  const totalSlotsFilledSum = programsList.reduce((s, p) => s + p.slotsFilled, 0);
+  const slotUtilizationRate = totalSlotsSum > 0 ? ((totalSlotsFilledSum / totalSlotsSum) * 100).toFixed(1) : '0.0';
   const totalApplicantsSum = programsList.reduce((s, p) => s + p.applicantsCount, 0);
   const totalBudgetSum = programsList.reduce((s, p) => s + p.budgetTotal, 0);
 
@@ -354,9 +356,9 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
           <span className="kpi-subtext">Total received applications</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Disbursement budget</span>
-          <span className="kpi-number">₱{(totalBudgetSum / 1000000).toFixed(2)}M</span>
-          <span className="kpi-subtext">Allocated grant funds</span>
+          <span className="kpi-label">Slot utilization</span>
+          <span className="kpi-number">{slotUtilizationRate}%</span>
+          <span className="kpi-subtext">{totalSlotsFilledSum.toLocaleString()} of {totalSlotsSum.toLocaleString()} slots filled</span>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
-import Topbar from './components/Topbar';
+
 import Dashboard from './components/Dashboard';
 import BrowseApplication from './components/BrowseApplication';
 import MyApplications from './components/MyApplications';
@@ -198,7 +198,6 @@ function MainApp() {
       )}
       
       <div className="main-wrapper">
-        {userRole !== 'provider' && <Topbar />}
         {renderMainContent()}
       </div>
     </div>

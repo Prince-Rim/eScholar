@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  History, Search, Download, CheckCircle, Filter, FileText, User, Building2, Shield, Activity
+  History, Search, Download, CheckCircle, Filter, FileText, User, Building2, Shield, Activity,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import './ProviderCreateProgram.css';
 import './ProviderPrograms.css';
@@ -68,6 +69,8 @@ const AdminAuditTrail = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('All');
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -82,6 +85,12 @@ const AdminAuditTrail = () => {
     }
     return true;
   });
+
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentLogs = filtered.slice(indexOfFirstItem, indexOfLastItem);
 
   const typePillStyle = (type) => {
     if (type === 'Provider') return { bg: '#eff6ff', color: '#082894', border: '#bfdbfe' };
@@ -158,7 +167,7 @@ const AdminAuditTrail = () => {
                   <td colSpan="5" className="empty-table-cell">No activity logs found.</td>
                 </tr>
               ) : (
-                filtered.map(log => {
+                currentLogs.map(log => {
                   const style = typePillStyle(log.type);
                   return (
                     <tr key={log.id} className="program-table-row">
@@ -211,6 +220,38 @@ const AdminAuditTrail = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
