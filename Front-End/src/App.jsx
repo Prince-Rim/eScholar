@@ -22,6 +22,7 @@ import ProviderProgramDetail from './components/ProviderProgramDetail';
 import ProviderApplicantPipeline from './components/ProviderApplicantPipeline';
 import ProviderActiveScholars from './components/ProviderActiveScholars';
 import AdminVerifications from './components/AdminVerifications';
+import ProviderDashboard from './components/ProviderDashboard';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
