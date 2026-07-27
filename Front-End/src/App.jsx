@@ -25,6 +25,7 @@ import ProviderActiveScholars from './components/ProviderActiveScholars';
 import ProviderVerification from './components/ProviderVerification';
 import AdminVerifications from './components/AdminVerifications';
 import ProviderDashboard from './components/ProviderDashboard';
+import ProviderSettings from './components/ProviderSettings';
 
 function App() {
   const [currentView, setCurrentView] = useState('landing');
@@ -75,6 +76,8 @@ function App() {
             <ProviderActiveScholars />
           ) : currentView === 'verification' ? (
             <ProviderVerification />
+          ) : currentView === 'settings' ? (
+            <ProviderSettings setActiveView={setCurrentView} />
           ) : currentView === 'my-programs' || currentView === 'programs' ? (
             <ProviderPrograms
               setActiveView={setCurrentView}

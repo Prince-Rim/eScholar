@@ -5,7 +5,7 @@ import {
   PlusCircle,
   FileText,
   RefreshCw,
-  ShieldCheck,
+  Settings,
   LogOut,
 } from 'lucide-react';
 import Logo from './Logo';
@@ -67,14 +67,6 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
           <RefreshCw size={18} />
           <span>Active Scholars</span>
         </button>
-
-        <button
-          className={`provider-nav-item ${activeView === 'verification' ? 'active' : ''}`}
-          onClick={() => setActiveView('verification')}
-        >
-          <ShieldCheck size={18} />
-          <span>Provider Verification</span>
-        </button>
       </nav>
 
       {/* User Profile Footer */}
@@ -86,6 +78,16 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
             <span className="user-agency">CHED Region IV-A</span>
           </div>
         </div>
+
+        {/* Settings — bottom, above logout */}
+        <button
+          className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
+          style={{ width: '100%', marginBottom: '0.25rem' }}
+          onClick={() => setActiveView('settings')}
+        >
+          <Settings size={16} />
+          <span>Account Settings</span>
+        </button>
 
         <button
           className="logout-nav-item"

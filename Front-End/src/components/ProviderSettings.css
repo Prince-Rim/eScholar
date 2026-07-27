@@ -1,0 +1,460 @@
+/* ================================================================
+   ProviderSettings — delta styles only
+   Base comes from ProviderCreateProgram.css (imported first)
+   ================================================================ */
+
+/* ── Tab Navigation ── */
+.ps-tab-nav {
+  display: flex;
+  gap: 0.25rem;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 0.4rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.ps-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #475569;
+  font-size: 0.855rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+  position: relative;
+}
+
+.ps-tab-btn:hover { background: #f1f5f9; }
+
+.ps-tab-active {
+  background: #082894 !important;
+  color: #ffffff !important;
+}
+
+.ps-danger-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+/* ── Avatar Row ── */
+.ps-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 1.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.ps-avatar-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #082894 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ps-avatar-edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: #ffffff;
+  border: 2px solid #082894;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #082894;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s;
+}
+
+.ps-avatar-edit-btn:hover { background: #eff6ff; }
+
+.ps-avatar-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.15rem;
+}
+
+.ps-avatar-role {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  margin: 0 0 0.1rem;
+}
+
+.ps-avatar-email {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Misc form helpers ── */
+.ps-req { color: #ef4444; }
+.ps-opt { font-weight: 500; color: #94a3b8; font-size: 0.8em; }
+
+.ps-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+.ps-section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #082894;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.85rem;
+}
+
+/* ── Password field ── */
+.ps-pw-wrap {
+  position: relative;
+}
+
+.ps-pw-toggle {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* Password strength chips */
+.ps-strength-row {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.ps-strength-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+}
+
+.ps-chip-ok { background: #dcfce7; color: #15803d; }
+.ps-chip-no { background: #f1f5f9; color: #94a3b8; }
+
+.ps-err-msg {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+/* ── Toggle switch ── */
+.ps-toggle {
+  display: inline-block;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ps-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.ps-toggle-track {
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  background: #cbd5e1;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.ps-toggle input:checked ~ .ps-toggle-track {
+  background: #082894;
+}
+
+.ps-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.ps-toggle input:checked ~ .ps-toggle-track .ps-toggle-thumb {
+  transform: translateX(20px);
+}
+
+/* ── Sessions ── */
+.ps-session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ps-session-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.ps-session-current {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.ps-session-icon {
+  width: 40px;
+  height: 40px;
+  background: #eff6ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ps-session-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ps-session-device {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.2rem;
+}
+
+.ps-current-chip {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: #082894;
+  color: #ffffff;
+}
+
+.ps-session-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.775rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+}
+
+.ps-revoke-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #dc2626;
+  background: #fff;
+  border: 1.5px solid #fecaca;
+  border-radius: 7px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+  flex-shrink: 0;
+}
+
+.ps-revoke-btn:hover { background: #fee2e2; }
+
+/* ── Activity Log ── */
+.ps-activity-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ps-activity-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.ps-activity-row:last-child { border-bottom: none; }
+
+.ps-activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #082894;
+  flex-shrink: 0;
+  margin-top: 0.3rem;
+}
+
+.ps-activity-action {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.15rem;
+}
+
+.ps-activity-meta {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Danger Zone ── */
+.ps-danger-card {
+  border-color: #fecaca !important;
+}
+
+.ps-danger-critical {
+  border-color: #ef4444 !important;
+}
+
+.ps-danger-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid #fef2f2;
+}
+
+.ps-danger-action:last-child { border-bottom: none; }
+
+.ps-danger-item-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.15rem;
+}
+
+.ps-danger-item-sub {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+  max-width: 380px;
+}
+
+.ps-danger-outline-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #dc2626;
+  background: #fff;
+  border: 1.5px solid #fecaca;
+  border-radius: 7px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.12s;
+}
+
+.ps-danger-outline-btn:hover { background: #fee2e2; }
+
+.ps-danger-solid-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+  background: #dc2626;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.35rem;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.ps-danger-solid-btn:hover:not(:disabled) { background: #b91c1c; }
+.ps-danger-solid-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Toast ── */
+.ps-toast {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.25rem;
+  background: #ffffff;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  animation: ps-toast-in 0.2s ease;
+}
+
+@keyframes ps-toast-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
