@@ -9,6 +9,7 @@ import {
   FileText, 
   X, 
   ChevronRight,
+  ChevronLeft,
   Check
 } from 'lucide-react';
 import './ProviderPrograms.css';
@@ -89,6 +90,8 @@ const AdminCompliance = () => {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedCompliance, setSelectedCompliance] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -130,6 +133,12 @@ const AdminCompliance = () => {
     Rejected: compliances.filter(c => c.status === 'Rejected').length
   };
 
+  const totalItems = filteredCompliances.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCompliances = filteredCompliances.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <div className="provider-programs-container">
       {toastMessage && (
@@ -151,40 +160,40 @@ const AdminCompliance = () => {
         <div className="kpi-card">
           <span className="kpi-label">Total Submissions</span>
           <span className="kpi-number">{tabCounts.All}</span>
-          <span className="kpi-subtext">Across all active programs</span>
+          <span className="kpi-subtext">Received this cycle</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Pending Review</span>
+          <span className="kpi-label">Pending Verification</span>
           <span className="kpi-number" style={{ color: '#d97706' }}>{tabCounts.Pending}</span>
-          <span className="kpi-subtext">Awaiting verification</span>
+          <span className="kpi-subtext">Awaiting admin review</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Approved Documents</span>
+          <span className="kpi-label">Approved & Cleared</span>
           <span className="kpi-number" style={{ color: '#15803d' }}>{tabCounts.Approved}</span>
-          <span className="kpi-subtext">Verified & cleared</span>
+          <span className="kpi-subtext">Verified documents</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Rejected / Resubmit</span>
+          <span className="kpi-label">Rejected / Action Needed</span>
           <span className="kpi-number" style={{ color: '#dc2626' }}>{tabCounts.Rejected}</span>
-          <span className="kpi-subtext">Scholar action required</span>
+          <span className="kpi-subtext">Invalid or missing</span>
         </div>
       </div>
 
-      {/* Main Table Card (Matches Provider Programs Design) */}
+      {/* Table Card */}
       <div className="programs-table-card">
         <div className="programs-toolbar">
           {/* Status Tabs */}
           <div className="status-tabs-group">
             {[
               { label: `All (${tabCounts.All})`, val: 'All' },
-              { label: `Pending (${tabCounts.Pending})`, val: 'Pending Review' },
+              { label: `Pending Review (${tabCounts.Pending})`, val: 'Pending Review' },
               { label: `Approved (${tabCounts.Approved})`, val: 'Approved' },
               { label: `Rejected (${tabCounts.Rejected})`, val: 'Rejected' }
             ].map(tab => (
               <button
                 key={tab.val}
                 className={`tab-btn ${activeTab === tab.val ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.val)}
+                onClick={() => { setActiveTab(tab.val); setCurrentPage(1); }}
               >
                 {tab.label}
               </button>
@@ -199,13 +208,13 @@ const AdminCompliance = () => {
                 type="text"
                 placeholder="Search scholar or requirement"
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               />
             </div>
             <select
               className="table-select-cycle"
               value={selectedScholarship}
-              onChange={e => setSelectedScholarship(e.target.value)}
+              onChange={e => { setSelectedScholarship(e.target.value); setCurrentPage(1); }}
             >
               <option value="All scholarships">All scholarships</option>
               <option value="DOST-SEI Merit">DOST-SEI Merit</option>
@@ -213,7 +222,7 @@ const AdminCompliance = () => {
               <option value="LGU Assist">LGU Assist</option>
               <option value="OWWA Scholarship">OWWA Scholarship</option>
             </select>
-            <button className="btn-table-export" onClick={() => showToast('Exporting compliance records...')}>
+            <button className="btn-table-export" onClick={() => showToast('Exporting compliance report CSV...')}>
               <Download size={14} /> Export
             </button>
           </div>
@@ -224,22 +233,23 @@ const AdminCompliance = () => {
           <table className="programs-data-table">
             <thead>
               <tr>
-                <th style={{ width: '30%' }}>Scholar & Submission</th>
-                <th>Requirement</th>
+                <th style={{ width: '28%' }}>Scholar & Submission ID</th>
+                <th>Scholarship & Year</th>
+                <th>Requirement Submitted</th>
                 <th>Date Submitted</th>
                 <th>Status</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredCompliances.length === 0 ? (
+              {currentCompliances.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="empty-table-cell">
-                    No submissions found matching your filters.
+                  <td colSpan="6" className="empty-table-cell">
+                    No compliance records found matching your filters.
                   </td>
                 </tr>
               ) : (
-                filteredCompliances.map(item => (
+                currentCompliances.map(item => (
                   <tr 
                     key={item.id} 
                     className="program-table-row"
@@ -249,19 +259,27 @@ const AdminCompliance = () => {
                     <td>
                       <div className="program-title-cell">
                         <span className="program-main-title">{item.name}</span>
-                        <span className="program-code-sub">{item.id} · {item.scholarship}</span>
+                        <span className="program-code-sub">{item.id} · {item.email}</span>
+                      </div>
+                    </td>
+
+                    {/* Scholarship & AY */}
+                    <td>
+                      <div className="program-title-cell">
+                        <span className="table-text-bold">{item.scholarship}</span>
+                        <span className="program-code-sub">{item.academicYear}</span>
                       </div>
                     </td>
 
                     {/* Requirement */}
                     <td>
                       <div className="program-title-cell">
-                        <span className="table-text-bold">{item.requirement}</span>
-                        <span className="program-code-sub">{item.academicYear}</span>
+                        <span className="table-text-bold" style={{ color: '#082894' }}>{item.requirement}</span>
+                        <span className="program-code-sub">{item.fileName} ({item.fileSize})</span>
                       </div>
                     </td>
 
-                    {/* Date Submitted */}
+                    {/* Date */}
                     <td>
                       <span className="table-date-text">{item.date}</span>
                     </td>
@@ -286,14 +304,6 @@ const AdminCompliance = () => {
                     {/* Actions */}
                     <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
                       <div className="table-actions-cell">
-                        <button
-                          className="btn-row-view"
-                          onClick={() => setSelectedCompliance(item)}
-                          title="View details"
-                        >
-                          View <ChevronRight size={13} />
-                        </button>
-
                         <div className="dropdown-action-wrapper">
                           <button
                             className="btn-dots-menu"
@@ -330,6 +340,38 @@ const AdminCompliance = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
 

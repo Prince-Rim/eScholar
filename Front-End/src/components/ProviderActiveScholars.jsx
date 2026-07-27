@@ -8,6 +8,7 @@ import {
   FileText, 
   X, 
   ChevronRight,
+  ChevronLeft,
   AlertCircle,
   Check,
   Award,
@@ -28,7 +29,7 @@ export const MOCK_ACTIVE_SCHOLARS = [
     stipend: '₱60,000 / year (₱5,000 / month)',
     cycle: 'AY 2026-2027 (2nd Semester)',
     requirementSubmitted: '1st Sem Transcript & COR',
-    currentGwa: '1.25 (Maintained >= 2.00)',
+    currentGwa: '1.25',
     date: 'Jan 24, 2026',
     status: 'Compliant',
     fileName: 'Reyes_2ndSem_COR_Grades.pdf',
@@ -46,7 +47,7 @@ export const MOCK_ACTIVE_SCHOLARS = [
     stipend: '₱60,000 / year (₱5,000 / month)',
     cycle: 'AY 2026-2027 (2nd Semester)',
     requirementSubmitted: '1st Sem Transcript & Registration Form',
-    currentGwa: '1.45 (Maintained >= 2.00)',
+    currentGwa: '1.45',
     date: 'Jan 22, 2026',
     status: 'Pending Review',
     fileName: 'Madronio_Sem1_Grades.pdf',
@@ -64,7 +65,7 @@ export const MOCK_ACTIVE_SCHOLARS = [
     stipend: '₱40,000 / year (₱4,000 / month)',
     cycle: 'AY 2026-2027 (2nd Semester)',
     requirementSubmitted: '1st Sem Grades & Project Report',
-    currentGwa: '1.75 (Maintained >= 2.25)',
+    currentGwa: '1.75',
     date: 'Jan 20, 2026',
     status: 'Pending Review',
     fileName: 'Santos_Academic_Summary.pdf',
@@ -82,7 +83,7 @@ export const MOCK_ACTIVE_SCHOLARS = [
     stipend: '₱60,000 / year (₱5,000 / month)',
     cycle: 'AY 2026-2027 (2nd Semester)',
     requirementSubmitted: '1st Sem Grades & COR',
-    currentGwa: '1.30 (Maintained >= 2.00)',
+    currentGwa: '1.30',
     date: 'Jan 19, 2026',
     status: 'Compliant',
     fileName: 'Lim_2ndSem_Proof.pdf',
@@ -100,7 +101,7 @@ export const MOCK_ACTIVE_SCHOLARS = [
     stipend: '₱25,000 / year (₱2,000 / month)',
     cycle: 'AY 2026-2027 (2nd Semester)',
     requirementSubmitted: '1st Sem Report Card',
-    currentGwa: '2.85 (Minimum 2.50 required)',
+    currentGwa: '2.85',
     date: 'Jan 15, 2026',
     status: 'Flagged',
     fileName: 'Cruz_ReportCard_Unclear.pdf',
@@ -118,7 +119,7 @@ export const MOCK_ACTIVE_SCHOLARS = [
     stipend: '₱60,000 / year (₱5,000 / month)',
     cycle: 'AY 2026-2027 (2nd Semester)',
     requirementSubmitted: '1st Sem Grades & Registration',
-    currentGwa: '1.50 (Maintained >= 2.00)',
+    currentGwa: '1.50',
     date: 'Jan 10, 2026',
     status: 'Compliant',
     fileName: 'Garcia_BatState_Grades.pdf',
@@ -136,6 +137,8 @@ const ProviderActiveScholars = () => {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedScholar, setSelectedScholar] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -183,6 +186,12 @@ const ProviderActiveScholars = () => {
     Flagged: scholars.filter(s => s.status === 'Flagged').length
   };
 
+  const totalItems = filteredScholars.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentScholars = filteredScholars.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <div className="provider-programs-container">
       {toastMessage && (
@@ -207,7 +216,7 @@ const ProviderActiveScholars = () => {
           <span className="kpi-subtext">Accepted grant beneficiaries</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Pending Audit</span>
+          <span className="kpi-label">Pending Review</span>
           <span className="kpi-number" style={{ color: '#d97706' }}>{tabCounts.Pending}</span>
           <span className="kpi-subtext">Awaiting semester verification</span>
         </div>
@@ -237,7 +246,7 @@ const ProviderActiveScholars = () => {
               <button
                 key={tab.val}
                 className={`tab-btn ${activeTab === tab.val ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.val)}
+                onClick={() => { setActiveTab(tab.val); setCurrentPage(1); }}
               >
                 {tab.label}
               </button>
@@ -252,7 +261,7 @@ const ProviderActiveScholars = () => {
                 type="text"
                 placeholder="Search scholar (e.g. Samantha)..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               />
             </div>
 
@@ -260,7 +269,7 @@ const ProviderActiveScholars = () => {
             <select
               className="table-select-cycle"
               value={selectedScholarship}
-              onChange={e => setSelectedScholarship(e.target.value)}
+              onChange={e => { setSelectedScholarship(e.target.value); setCurrentPage(1); }}
               style={{ fontWeight: 600 }}
             >
               <option value="All scholarships">Filter by Scholarship Program</option>
@@ -272,7 +281,7 @@ const ProviderActiveScholars = () => {
             <select
               className="table-select-cycle"
               value={selectedCycle}
-              onChange={e => setSelectedCycle(e.target.value)}
+              onChange={e => { setSelectedCycle(e.target.value); setCurrentPage(1); }}
             >
               <option value="All cycles">All Cycles</option>
               <option value="AY 2026-2027">AY 2026-2027</option>
@@ -299,14 +308,14 @@ const ProviderActiveScholars = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredScholars.length === 0 ? (
+              {currentScholars.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="empty-table-cell">
                     No active scholars found matching your filters.
                   </td>
                 </tr>
               ) : (
-                filteredScholars.map(item => (
+                currentScholars.map(item => (
                   <tr 
                     key={item.id} 
                     className="program-table-row"
@@ -367,14 +376,6 @@ const ProviderActiveScholars = () => {
                     {/* Actions */}
                     <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
                       <div className="table-actions-cell">
-                        <button
-                          className="btn-row-view"
-                          onClick={() => setSelectedScholar(item)}
-                          title="View details"
-                        >
-                          View <ChevronRight size={13} />
-                        </button>
-
                         <div className="dropdown-action-wrapper">
                           <button
                             className="btn-dots-menu"
@@ -411,6 +412,38 @@ const ProviderActiveScholars = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
 

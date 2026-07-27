@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
@@ -13,7 +13,6 @@ import AdminApplicants from './components/AdminApplicants';
 import AdminApplications from './components/AdminApplications';
 import Compliance from './components/Compliance';
 import AdminCompliance from './components/AdminCompliance';
-import AdminCreateProgram from './components/AdminCreateProgram';
 import AdminReports from './components/AdminReports';
 import LandingPage from './components/LandingPage';
 import ProviderSidebar from './components/ProviderSidebar';
@@ -22,21 +21,101 @@ import ProviderPrograms from './components/ProviderPrograms';
 import ProviderProgramDetail from './components/ProviderProgramDetail';
 import ProviderApplicantPipeline from './components/ProviderApplicantPipeline';
 import ProviderActiveScholars from './components/ProviderActiveScholars';
-import ProviderVerification from './components/ProviderVerification';
 import AdminVerifications from './components/AdminVerifications';
 
-function App() {
-  const [currentView, setCurrentView] = useState('landing');
-  const [userRole, setUserRole] = useState('student');
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("eScholar App Error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '4rem 2rem', textAlign: 'center', fontFamily: 'Inter, sans-serif', minHeight: '100vh', background: '#f8fafc' }}>
+          <div style={{ maxWidth: '500px', margin: '0 auto', background: '#fff', padding: '2.5rem', borderRadius: '1rem', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ color: '#dc2626', marginBottom: '0.75rem', fontSize: '1.4rem' }}>Application Notice</h2>
+            <p style={{ color: '#475569', fontSize: '0.9rem', marginBottom: '1.5rem', wordBreak: 'break-word' }}>
+              {this.state.error?.toString() || "A temporary rendering issue occurred."}
+            </p>
+            <button 
+              onClick={() => {
+                localStorage.clear();
+                window.location.href = '/';
+              }}
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: '#082894',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '0.5rem',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              Reset Session & Go to Home
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function MainApp() {
+  const [userRole, setUserRole] = useState(() => {
+    const path = window.location.pathname.toLowerCase().replace('/', '');
+    if (path.includes('admin')) return 'admin';
+    if (path.includes('provider')) return 'provider';
+    return localStorage.getItem('escholar_user_role') || 'student';
+  });
+
+  const [currentView, setCurrentView] = useState(() => {
+    const path = window.location.pathname.toLowerCase().replace('/', '');
+    if (path === 'admin') {
+      localStorage.setItem('escholar_user_role', 'admin');
+      return 'dashboard';
+    }
+    if (path === 'provider') {
+      localStorage.setItem('escholar_user_role', 'provider');
+      return 'my-programs';
+    }
+    if (path === 'login' || path === 'register') {
+      return path;
+    }
+    if (path === 'landing' || path === '') {
+      const sessionExpiry = localStorage.getItem('escholar_2fa_session');
+      const savedRole = localStorage.getItem('escholar_user_role');
+      if (sessionExpiry && new Date().getTime() < parseInt(sessionExpiry, 10)) {
+        return savedRole === 'provider' ? 'my-programs' : 'dashboard';
+      }
+      return 'landing';
+    }
+    return path;
+  });
+
   const [selectedProgram, setSelectedProgram] = useState(null);
+
+  useEffect(() => {
+    if (userRole) {
+      localStorage.setItem('escholar_user_role', userRole);
+    }
+  }, [userRole]);
 
   if (currentView === 'landing') {
     return <LandingPage setActiveView={setCurrentView} />;
   }
 
-  const isAuthView = currentView === 'login' || currentView === 'register';
-
-  if (isAuthView) {
+  if (currentView === 'login' || currentView === 'register') {
     return (
       <div className="app-container">
         {currentView === 'login' && <Login setActiveView={setCurrentView} setUserRole={setUserRole} />}
@@ -44,6 +123,58 @@ function App() {
       </div>
     );
   }
+
+  const renderMainContent = () => {
+    if (userRole === 'provider') {
+      switch (currentView) {
+        case 'create-program':
+        case 'provider-create':
+          return <ProviderCreateProgram setActiveView={setCurrentView} />;
+        case 'program-detail':
+          return <ProviderProgramDetail program={selectedProgram} setActiveView={setCurrentView} />;
+        case 'applicants':
+          return <ProviderApplicantPipeline />;
+        case 'renewals':
+        case 'active-scholars':
+          return <ProviderActiveScholars />;
+        case 'analytics':
+          return <AdminReports />;
+        default:
+          return <ProviderPrograms setActiveView={setCurrentView} setSelectedProgram={setSelectedProgram} />;
+      }
+    }
+
+    if (userRole === 'admin') {
+      switch (currentView) {
+        case 'applicants':
+          return <AdminApplicants />;
+        case 'applications':
+          return <AdminApplications />;
+        case 'compliance':
+          return <AdminCompliance />;
+        case 'create-program':
+          return <ProviderCreateProgram setActiveView={setCurrentView} />;
+        case 'verifications':
+          return <AdminVerifications />;
+        case 'reports':
+        case 'analytics':
+          return <AdminReports />;
+        default:
+          return <AdminDashboard setActiveView={setCurrentView} />;
+      }
+    }
+
+    switch (currentView) {
+      case 'browse':
+        return <BrowseApplication />;
+      case 'applications':
+        return <MyApplications />;
+      case 'compliance':
+        return <Compliance />;
+      default:
+        return <Dashboard />;
+    }
+  };
 
   return (
     <div className="app-container">
@@ -54,46 +185,20 @@ function App() {
       ) : (
         <Sidebar activeView={currentView} setActiveView={setCurrentView} />
       )}
+      
       <div className="main-wrapper">
         {userRole !== 'provider' && <Topbar />}
-
-        {/* Provider Views */}
-        {userRole === 'provider' && (
-          currentView === 'create-program' || currentView === 'provider-create' ? (
-            <ProviderCreateProgram setActiveView={setCurrentView} />
-          ) : currentView === 'program-detail' ? (
-            <ProviderProgramDetail
-              program={selectedProgram}
-              setActiveView={setCurrentView}
-            />
-          ) : currentView === 'applicants' ? (
-            <ProviderApplicantPipeline />
-          ) : currentView === 'renewals' || currentView === 'active-scholars' ? (
-            <ProviderActiveScholars />
-          ) : currentView === 'verification' ? (
-            <ProviderVerification />
-          ) : (
-            <ProviderPrograms
-              setActiveView={setCurrentView}
-              setSelectedProgram={setSelectedProgram}
-            />
-          )
-        )}
-
-        {/* Student & Admin Views */}
-        {userRole === 'student' && currentView === 'compliance' && <Compliance />}
-        {userRole === 'admin' && currentView === 'dashboard' && <AdminDashboard setActiveView={setCurrentView} />}
-        {userRole === 'admin' && currentView === 'applicants' && <AdminApplicants />}
-        {userRole === 'admin' && currentView === 'applications' && <AdminApplications />}
-        {userRole === 'admin' && currentView === 'compliance' && <AdminCompliance />}
-        {userRole === 'admin' && currentView === 'create-program' && <ProviderCreateProgram setActiveView={setCurrentView} />}
-        {userRole === 'admin' && currentView === 'reports' && <AdminReports />}
-        {userRole === 'admin' && currentView === 'verifications' && <AdminVerifications />}
-        {userRole === 'student' && currentView === 'dashboard' && <Dashboard />}
-        {userRole === 'student' && currentView === 'browse' && <BrowseApplication />}
-        {userRole === 'student' && currentView === 'applications' && <MyApplications />}
+        {renderMainContent()}
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <MainApp />
+    </ErrorBoundary>
   );
 }
 

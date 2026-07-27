@@ -65,14 +65,6 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
           <RefreshCw size={18} />
           <span>Active Scholars</span>
         </button>
-
-        <button 
-          className={`provider-nav-item ${activeView === 'verification' ? 'active' : ''}`}
-          onClick={() => setActiveView('verification')}
-        >
-          <ShieldCheck size={18} />
-          <span>Provider Verification</span>
-        </button>
       </nav>
 
       {/* User Profile Footer */}
