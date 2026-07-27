@@ -1,0 +1,161 @@
+/* Provider Sidebar - Clean White & Royal Blue Theme */
+.white-provider-sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  border-right: 1px solid #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+}
+
+.sidebar-brand-header {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.brand-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.brand-icon-box {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #082894 0%, #1e40af 100%);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(8, 40, 148, 0.2);
+}
+
+.brand-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #082894;
+  letter-spacing: -0.5px;
+}
+
+.brand-subtitle {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.provider-nav-menu {
+  flex: 1;
+  padding: 1.25rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.nav-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  padding: 0.5rem 0.875rem 0.25rem;
+}
+
+.provider-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.875rem;
+  border-radius: 8px;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.provider-nav-item:hover {
+  background: #f8fafc;
+  color: #082894;
+}
+
+.provider-nav-item.active {
+  background: #eff6ff;
+  color: #082894;
+  font-weight: 700;
+  border-left: 3px solid #082894;
+  border-radius: 0 8px 8px 0;
+}
+
+.provider-sidebar-footer {
+  padding: 1.25rem 1rem;
+  border-top: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.user-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.user-avatar-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #082894 0%, #2563eb 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.user-agency {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.logout-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  color: #ef4444;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  width: 100%;
+  transition: background 0.2s ease;
+}
+
+.logout-nav-item:hover {
+  background: #fef2f2;
+}
