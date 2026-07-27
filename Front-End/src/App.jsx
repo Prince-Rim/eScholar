@@ -190,52 +190,7 @@ function MainApp() {
       
       <div className="main-wrapper">
         {userRole !== 'provider' && <Topbar />}
-<<<<<<< HEAD
-
-        {/* Provider Views */}
-        {userRole === 'provider' && (
-          currentView === 'provider-dashboard' ? (
-            <ProviderDashboard setActiveView={setCurrentView} />
-          ) : currentView === 'create-program' || currentView === 'provider-create' ? (
-            <ProviderCreateProgram setActiveView={setCurrentView} />
-          ) : currentView === 'program-detail' ? (
-            <ProviderProgramDetail
-              program={selectedProgram}
-              setActiveView={setCurrentView}
-            />
-          ) : currentView === 'applicants' ? (
-            <ProviderApplicantPipeline />
-          ) : currentView === 'renewals' || currentView === 'active-scholars' ? (
-            <ProviderActiveScholars />
-          ) : currentView === 'verification' ? (
-            <ProviderVerification />
-          ) : currentView === 'settings' ? (
-            <ProviderSettings setActiveView={setCurrentView} />
-          ) : currentView === 'my-programs' || currentView === 'programs' ? (
-            <ProviderPrograms
-              setActiveView={setCurrentView}
-              setSelectedProgram={setSelectedProgram}
-            />
-          ) : (
-            <ProviderDashboard setActiveView={setCurrentView} />
-          )
-        )}
-
-        {/* Student & Admin Views */}
-        {userRole === 'student' && currentView === 'compliance' && <Compliance />}
-        {userRole === 'admin' && currentView === 'dashboard' && <AdminDashboard setActiveView={setCurrentView} />}
-        {userRole === 'admin' && currentView === 'applicants' && <AdminApplicants />}
-        {userRole === 'admin' && currentView === 'applications' && <AdminApplications />}
-        {userRole === 'admin' && currentView === 'compliance' && <AdminCompliance />}
-        {userRole === 'admin' && currentView === 'create-program' && <ProviderCreateProgram setActiveView={setCurrentView} />}
-        {userRole === 'admin' && currentView === 'reports' && <AdminReports />}
-        {userRole === 'admin' && currentView === 'verifications' && <AdminVerifications />}
-        {userRole === 'student' && currentView === 'dashboard' && <Dashboard />}
-        {userRole === 'student' && currentView === 'browse' && <BrowseApplication />}
-        {userRole === 'student' && currentView === 'applications' && <MyApplications />}
-=======
         {renderMainContent()}
->>>>>>> b4dae7d541c1a459ec97cf897a689ffd823988d5
       </div>
     </div>
   );
