@@ -20,6 +20,8 @@ import ProviderSidebar from './components/ProviderSidebar';
 import ProviderCreateProgram from './components/ProviderCreateProgram';
 import ProviderPrograms from './components/ProviderPrograms';
 import ProviderProgramDetail from './components/ProviderProgramDetail';
+import ProviderVerification from './components/ProviderVerification';
+import AdminVerifications from './components/AdminVerifications';
 
 function App() {
   const [currentView, setCurrentView] = useState('landing');
@@ -62,6 +64,8 @@ function App() {
               program={selectedProgram}
               setActiveView={setCurrentView}
             />
+          ) : currentView === 'verification' ? (
+            <ProviderVerification />
           ) : (
             <ProviderPrograms
               setActiveView={setCurrentView}
@@ -78,6 +82,7 @@ function App() {
         {userRole === 'admin' && currentView === 'compliance' && <AdminCompliance />}
         {userRole === 'admin' && currentView === 'create-program' && <ProviderCreateProgram setActiveView={setCurrentView} />}
         {userRole === 'admin' && currentView === 'reports' && <AdminReports />}
+        {userRole === 'admin' && currentView === 'verifications' && <AdminVerifications />}
         {userRole === 'student' && currentView === 'dashboard' && <Dashboard />}
         {userRole === 'student' && currentView === 'browse' && <BrowseApplication />}
         {userRole === 'student' && currentView === 'applications' && <MyApplications />}

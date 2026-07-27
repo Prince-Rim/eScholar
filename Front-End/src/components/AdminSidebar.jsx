@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Users, FileText, Settings, LogOut, ClipboardCheck, PlusCircle, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Users, FileText, Settings, LogOut, ClipboardCheck, PlusCircle, BarChart3, ShieldCheck } from 'lucide-react';
 import Logo from './Logo';
 
 const AdminSidebar = ({ activeView, setActiveView }) => {
@@ -45,6 +45,13 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
         >
           <PlusCircle size={20} />
           Create Program
+        </button>
+        <button 
+          className={`nav-item ${activeView === 'verifications' ? 'active' : ''}`}
+          onClick={() => setActiveView('verifications')}
+        >
+          <ShieldCheck size={20} />
+          Verifications
         </button>
         <button 
           className={`nav-item ${activeView === 'reports' ? 'active' : ''}`}
