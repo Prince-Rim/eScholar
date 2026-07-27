@@ -69,7 +69,13 @@ const Login = ({ setActiveView, setUserRole }) => {
         setStep(3); 
       } else {
         const errData = await response.json();
-        setError(`Failed to send SMS: ${JSON.stringify(errData)}`);
+        if (errData.error === 'account_was_temporary_banned') {
+          setError('Our SMS service is currently experiencing issues. Please try again later.');
+        } else if (errData.message) {
+          setError(errData.message);
+        } else {
+          setError('Failed to send SMS. Please try again later.');
+        }
       }
     } catch (err) {
       setError('Network error occurred while sending SMS.');
@@ -105,6 +111,11 @@ const Login = ({ setActiveView, setUserRole }) => {
           </p>
         </div>
 
+        {error && (
+          <div className="error-message" style={{ color: 'red', marginBottom: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>
+            {error}
+          </div>
+        )}
 
         {step === 1 && (
           <form onSubmit={handleLoginSubmit} className="auth-form">
