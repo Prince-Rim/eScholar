@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../components/LandingPage.css';
+import Logo from '../components/Logo';
 
 const Login = ({ setActiveView, setUserRole }) => {
 
@@ -114,7 +115,7 @@ const Login = ({ setActiveView, setUserRole }) => {
   return (
     <div className="auth-wrapper" style={{ position: 'relative' }}>
       <nav className="landing-navbar" style={{ position: 'absolute', top: 0, left: 0, width: '100%', boxSizing: 'border-box' }}>
-        <div className="landing-logo" style={{ cursor: 'pointer' }} onClick={() => setActiveView('landing')}>eScholar</div>
+        <Logo onClick={() => setActiveView('landing')} color="#1d4ed8" />
         <div className="landing-nav-actions">
           <button className="btn-register-nav" onClick={() => setActiveView('register')}>Register</button>
         </div>
@@ -122,7 +123,9 @@ const Login = ({ setActiveView, setUserRole }) => {
       
       <div className="auth-card">
         <div className="auth-header">
-          <div className="auth-logo" style={{ color: 'black' }}>eScholar</div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <Logo size="large" color="#1d4ed8" />
+          </div>
           <h2>{step === 1 ? 'Welcome Back' : step === 2 ? 'Two-Factor Auth' : 'Verify Phone'}</h2>
           <p>
             {step === 1 && 'Please enter your details to sign in.'}

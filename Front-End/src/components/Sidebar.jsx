@@ -1,10 +1,13 @@
 import React from 'react';
 import { LayoutDashboard, Search, FileText, Settings, LogOut, ClipboardCheck } from 'lucide-react';
+import Logo from './Logo';
 
 const Sidebar = ({ activeView, setActiveView }) => {
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo" style={{ color: 'black' }}>eScholar</div>
+      <div style={{ padding: '1.5rem', marginBottom: '1rem' }}>
+        <Logo color="#1e3a8a" size="normal" />
+      </div>
       <nav className="nav-menu">
         <button 
           className={`nav-item ${activeView === 'dashboard' ? 'active' : ''}`}

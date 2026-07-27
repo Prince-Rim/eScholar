@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import './LandingPage.css';
+import Logo from './Logo';
 import heroStudentsImg from '../assets/hero_students.png';
 import scholarMariaImg from '../assets/scholar_maria.png';
 import scholarJuanImg from '../assets/scholar_juan.png';
@@ -228,12 +229,7 @@ const LandingPage = ({ setActiveView }) => {
     <div className="landing-container">
       {/* Top Navbar */}
       <nav className="landing-navbar">
-        <div className="landing-logo-group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="landing-logo-icon">
-            <GraduationCap size={22} />
-          </div>
-          <span className="landing-logo-text">eScholar</span>
-        </div>
+        <Logo onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
 
         <ul className="landing-nav-links">
           <li><a href="#scholarships">Scholarships</a></li>
@@ -635,12 +631,7 @@ const LandingPage = ({ setActiveView }) => {
       <footer className="landing-footer">
         <div className="footer-top">
           <div className="footer-brand">
-            <div className="landing-logo-group">
-              <div className="landing-logo-icon">
-                <GraduationCap size={20} />
-              </div>
-              <span className="landing-logo-text">eScholar</span>
-            </div>
+            <Logo color="white" />
             <p>The Philippines' premier centralized scholarship application and management portal.</p>
           </div>
 
