@@ -2,6 +2,7 @@ import React from 'react';
 import { 
   LayoutDashboard, 
   Search, 
+  Bookmark,
   FileText, 
   ClipboardCheck, 
   Settings, 
@@ -21,7 +22,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
 
       {/* Navigation Menu */}
       <nav className="provider-nav-menu">
-        <div className="nav-section-label">MAIN NAVIGATION</div>
+        <div className="nav-section-label">OVERVIEW</div>
 
         <button 
           className={`provider-nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
@@ -31,20 +32,32 @@ const Sidebar = ({ activeView, setActiveView }) => {
           <span>Dashboard</span>
         </button>
 
+        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>SCHOLARSHIP DISCOVERY</div>
+
         <button 
           className={`provider-nav-item ${activeView === 'browse' ? 'active' : ''}`}
           onClick={() => setActiveView('browse')}
         >
           <Search size={18} />
-          <span>Browse Application</span>
+          <span>Browse Scholarships</span>
         </button>
+
+        <button 
+          className={`provider-nav-item ${activeView === 'saved' || activeView === 'bookmarks' ? 'active' : ''}`}
+          onClick={() => setActiveView('saved')}
+        >
+          <Bookmark size={18} />
+          <span>Saved Scholarships</span>
+        </button>
+
+        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>MY SCHOLARSHIPS</div>
 
         <button 
           className={`provider-nav-item ${activeView === 'applications' ? 'active' : ''}`}
           onClick={() => setActiveView('applications')}
         >
           <FileText size={18} />
-          <span>Applications</span>
+          <span>My Applications</span>
         </button>
 
         <button 
@@ -52,7 +65,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
           onClick={() => setActiveView('compliance')}
         >
           <ClipboardCheck size={18} />
-          <span>Compliance</span>
+          <span>Grant Compliance</span>
         </button>
       </nav>
 

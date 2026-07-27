@@ -1,150 +1,253 @@
-import React from 'react';
-import { Search, UserCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  Building2, Users, GraduationCap, ArrowRight, Eye, CheckCircle, 
+  XCircle, Clock, ShieldCheck, Activity, UserPlus, UserCheck, KeyRound, AlertCircle,
+  FileText, Server, Database, Lock
+} from 'lucide-react';
+import './ProviderCreateProgram.css';
+import './ProviderPrograms.css';
+import './ProviderDashboard.css';
+
+const MOCK_RECENT_ONBOARDINGS = [
+  { id: 'prov-1', code: 'LE', name: 'Lumina Education Foundation', rep: 'Catherine Reyes', email: 'c.reyes@lumina.org', date: 'May 28, 2026', status: 'Active', programs: 4 },
+  { id: 'prov-2', code: 'BS', name: 'Bayanihan Scholarship Fund', rep: 'Miguel Santos', email: 'm.santos@bayanihan.ph', date: 'May 24, 2026', status: 'Active', programs: 6 },
+  { id: 'prov-3', code: 'NA', name: 'NextGen Academic Trust', rep: 'Andrea Lim', email: 'andrea@nextgen.edu', date: 'May 19, 2026', status: 'Disabled', programs: 2 },
+  { id: 'prov-4', code: 'PY', name: 'Pacific Youth Initiative', rep: 'Daniel Cruz', email: 'd.cruz@pacificyouth.org', date: 'May 14, 2026', status: 'Active', programs: 3 },
+];
+
+const MOCK_LATEST_ACTIVITY = [
+  { id: 1, action: 'Created provider account', target: 'Lumina Education Foundation', actor: 'Jeremiah Madronio', time: 'May 28, 2026 · 09:14', type: 'provider' },
+  { id: 2, action: 'Deactivated provider account', target: 'NextGen Academic Trust', actor: 'Jeremiah Madronio', time: 'May 26, 2026 · 16:02', type: 'provider' },
+  { id: 3, action: 'Suspended user account', target: 'Janelle Dela Cruz', actor: 'Jeremiah Madronio', time: 'May 24, 2026 · 11:37', type: 'user' },
+  { id: 4, action: 'Sent password reset link', target: 'Rafael Garcia', actor: 'Jeremiah Madronio', time: 'May 22, 2026 · 08:51', type: 'account' },
+];
 
 const AdminDashboard = ({ setActiveView }) => {
+  const [selectedOrg, setSelectedOrg] = useState(null);
+
   return (
-    <main className="admin-dashboard">
-      
-      <div className="admin-stats-grid">
-        <div className="admin-stat-card">
-          <h3>10</h3>
-          <h4>Total Applicants</h4>
-          <p>Increase 12% by this month</p>
-        </div>
-        <div className="admin-stat-card">
-          <h3>01</h3>
-          <h4>Approved</h4>
-          <p>Increase 6.1% by this month</p>
-        </div>
-        <div className="admin-stat-card">
-          <h3>12</h3>
-          <h4>Under Review</h4>
-          <p>Pending Evaluation</p>
+    <div className="pd-page">
+      {/* Header */}
+      <div className="pd-header">
+        <div>
+          <h2 className="pd-title">Admin Dashboard</h2>
+          <p className="pd-subtitle">Platform governance overview, provider onboardings, and system activity.</p>
         </div>
       </div>
 
-      <div className="admin-charts-grid">
-
-        <div className="admin-chart-panel">
-          <div className="admin-chart-header">
-            <h4>Application Trend</h4>
-            <p>Submitted vs. Approved · Last 6 months</p>
-          </div>
-          
-          <div className="svg-chart-container">
-            <svg viewBox="0 0 500 250" width="100%" height="100%">
-              <line x1="40" y1="50" x2="480" y2="50" stroke="#f1f5f9" strokeWidth="2" />
-              <line x1="40" y1="100" x2="480" y2="100" stroke="#f1f5f9" strokeWidth="2" />
-              <line x1="40" y1="150" x2="480" y2="150" stroke="#f1f5f9" strokeWidth="2" />
-              <line x1="40" y1="200" x2="480" y2="200" stroke="#94a3b8" strokeWidth="2" />
-
-              <text x="30" y="55" fontSize="10" fill="#94a3b8" textAnchor="end">400</text>
-              <text x="30" y="105" fontSize="10" fill="#94a3b8" textAnchor="end">300</text>
-              <text x="30" y="155" fontSize="10" fill="#94a3b8" textAnchor="end">200</text>
-              <text x="30" y="205" fontSize="10" fill="#94a3b8" textAnchor="end">0</text>
-
-              <text x="50" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Mon</text>
-              <text x="120" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Tue</text>
-              <text x="190" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Wed</text>
-              <text x="260" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Thu</text>
-              <text x="330" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Fri</text>
-              <text x="400" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Sat</text>
-              <text x="470" y="220" fontSize="10" fill="#94a3b8" textAnchor="middle">Sun</text>
-
-              <polyline 
-                points="50,150 120,80 190,120 260,190 330,140 400,135 470,155" 
-                fill="none" 
-                stroke="#6366f1" 
-                strokeWidth="2" 
-              />
-              <circle cx="50" cy="150" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-              <circle cx="120" cy="80" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-              <circle cx="190" cy="120" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-              <circle cx="260" cy="190" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-              <circle cx="330" cy="140" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-              <circle cx="400" cy="135" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-              <circle cx="470" cy="155" r="4" fill="white" stroke="#6366f1" strokeWidth="2" />
-            </svg>
+      {/* 4 Top KPI Cards */}
+      <div className="pd-kpi-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="pd-kpi-card">
+          <div className="pd-kpi-icon"><Building2 size={20} /></div>
+          <div>
+            <p className="pd-kpi-label">Total Providers</p>
+            <p className="pd-kpi-value">4</p>
+            <p className="pd-kpi-sub">3 active organizations</p>
           </div>
         </div>
 
-        <div className="admin-chart-panel" style={{ flex: 0.6 }}>
-          <div className="admin-chart-header">
-            <h4>Category Distribution</h4>
-          </div>
-          <div className="svg-chart-container pie-chart-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <svg viewBox="0 0 200 200" width="100%" height="100%">
-              <circle cx="100" cy="100" r="80" fill="#c2185b" />
-              
-              <line x1="100" y1="100" x2="20" y2="60" stroke="white" strokeWidth="1" />
-              <line x1="100" y1="100" x2="120" y2="180" stroke="white" strokeWidth="1" />
-              <line x1="100" y1="100" x2="120" y2="20" stroke="white" strokeWidth="1" />
-
-              <g className="pie-data-labels">
-                <text x="15" y="150" fontSize="10" fill="#c2185b">780</text>
-                <line x1="35" y1="145" x2="50" y2="135" stroke="#c2185b" strokeWidth="1" />
-
-                <text x="160" y="145" fontSize="10" fill="#c2185b">368</text>
-                <line x1="145" y1="140" x2="130" y2="130" stroke="#c2185b" strokeWidth="1" />
-              </g>
-            </svg>
+        <div className="pd-kpi-card">
+          <div className="pd-kpi-icon"><Users size={20} /></div>
+          <div>
+            <p className="pd-kpi-label">Registered Students</p>
+            <p className="pd-kpi-value">3,450</p>
+            <p className="pd-kpi-sub">Verified accounts</p>
           </div>
         </div>
 
-      </div>
-
-      <div className="admin-recent-panel">
-        <div className="recent-header">
-          <h4>Recent Application</h4>
-          <button className="link-btn" onClick={() => setActiveView('verifications')}>See all</button>
+        <div className="pd-kpi-card">
+          <div className="pd-kpi-icon"><GraduationCap size={20} /></div>
+          <div>
+            <p className="pd-kpi-label">Active Programs</p>
+            <p className="pd-kpi-value">18</p>
+            <p className="pd-kpi-sub">Published nationwide</p>
+          </div>
         </div>
-        
-        <div className="recent-list">   
-          <div className="recent-item">
-            <div className="recent-info">
-              <UserCircle size={40} strokeWidth={1} style={{ color: '#94a3b8' }} />
-              <div>
-                <h5>Jeremiah Madronio</h5>
-                <p>DOST SEI Merit Scholarship</p>
-              </div>
-            </div>
-            <div className="recent-actions">
-              <span className="badge-approved">Approved</span>
-              <button className="btn-text-blue">View</button>
-            </div>
-          </div>
 
-          <div className="recent-item">
-            <div className="recent-info">
-              <UserCircle size={40} strokeWidth={1} style={{ color: '#94a3b8' }} />
-              <div>
-                <h5>Samantha Reyes</h5>
-                <p>CHED Merit Scholarship</p>
-              </div>
-            </div>
-            <div className="recent-actions">
-              <span className="badge-approved">Approved</span>
-              <button className="btn-text-blue">View</button>
-            </div>
-          </div>
-
-          <div className="recent-item">
-            <div className="recent-info">
-              <UserCircle size={40} strokeWidth={1} style={{ color: '#94a3b8' }} />
-              <div>
-                <h5>Miguel Santos</h5>
-                <p>LGU Educational Assist</p>
-              </div>
-            </div>
-            <div className="recent-actions">
-              <span className="badge-approved">Approved</span>
-              <button className="btn-text-blue">View</button>
-            </div>
+        <div className="pd-kpi-card">
+          <div className="pd-kpi-icon"><FileText size={20} /></div>
+          <div>
+            <p className="pd-kpi-label">Total Applications</p>
+            <p className="pd-kpi-value">12,102</p>
+            <p className="pd-kpi-sub">2,450 pending evaluation</p>
           </div>
         </div>
       </div>
 
-    </main>
+      {/* System Governance & Health Alert Strip */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: '#ffffff', border: '1.5px solid #cbd5e1', borderRadius: '12px',
+        padding: '0.85rem 1.25rem', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '36px', height: '36px', background: '#dcfce7', border: '1px solid #bbf7d0', borderRadius: '8px', color: '#15803d', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Server size={18} />
+          </div>
+          <div>
+            <p style={{ margin: '0 0 0.1rem', fontSize: '0.85rem', fontWeight: 800, color: '#0f172a' }}>
+              System Status: Operational (100% Uptime)
+            </p>
+            <p style={{ margin: 0, fontSize: '0.76rem', color: '#64748b' }}>
+              All core services online · Automated database backups active · 2FA Security Enforced
+            </p>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button 
+            className="btn-table-export" 
+            style={{ fontSize: '0.78rem', padding: '0.35rem 0.75rem' }}
+            onClick={() => setActiveView && setActiveView('audit')}
+          >
+            Audit Logs <ArrowRight size={13} />
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content Grid (2 Columns) */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.7fr 1fr', gap: '1.25rem', alignItems: 'flex-start' }}>
+
+        {/* Left Column: Recent Provider Onboardings */}
+        <div className="pd-card" style={{ padding: '1.25rem 1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.1rem' }}>
+            <div>
+              <p className="pd-card-title">Recent provider onboardings</p>
+              <p className="pd-card-sub" style={{ margin: 0 }}>Latest organizations added to the platform.</p>
+            </div>
+            <button 
+              className="btn-table-export" 
+              style={{ fontSize: '0.8rem', padding: '0.35rem 0.8rem' }}
+              onClick={() => setActiveView && setActiveView('providers')}
+            >
+              View all <ArrowRight size={14} />
+            </button>
+          </div>
+
+          <div className="table-responsive-wrapper">
+            <table className="programs-data-table">
+              <thead>
+                <tr>
+                  <th>Provider Name</th>
+                  <th>Date Added</th>
+                  <th>Status</th>
+                  <th style={{ textAlign: 'right' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {MOCK_RECENT_ONBOARDINGS.map(org => (
+                  <tr key={org.id} className="program-table-row" onClick={() => setSelectedOrg(org)}>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div style={{
+                          width: '32px', height: '32px', borderRadius: '7px',
+                          background: '#eff6ff', border: '1px solid #bfdbfe',
+                          color: '#082894', fontWeight: 800, fontSize: '0.78rem',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                        }}>
+                          {org.code}
+                        </div>
+                        <span style={{ fontWeight: 600, fontSize: '0.86rem', color: '#0f172a' }}>
+                          {org.name}
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="table-date-text">{org.date}</span>
+                    </td>
+                    <td>
+                      <span className={`status-badge-pill ${org.status === 'Active' ? 'status-published' : 'status-draft'}`}>
+                        {org.status}
+                      </span>
+                    </td>
+                    <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
+                      <button className="btn-table-export" style={{ fontSize: '0.78rem', padding: '0.3rem 0.65rem' }} onClick={() => setSelectedOrg(org)}>
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Right Column: Latest Activity */}
+        <div className="pd-card" style={{ padding: '1.25rem 1.5rem' }}>
+          <p className="pd-card-title">Latest activity</p>
+          <p className="pd-card-sub">Recorded administrative actions.</p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginTop: '0.5rem' }}>
+            {MOCK_LATEST_ACTIVITY.map(act => (
+              <div 
+                key={act.id} 
+                style={{ 
+                  padding: '0.75rem 0', 
+                  borderBottom: act.id < MOCK_LATEST_ACTIVITY.length ? '1px solid #f1f5f9' : 'none' 
+                }}
+              >
+                <p style={{ margin: '0 0 0.15rem', fontSize: '0.85rem', fontWeight: 700, color: '#0f172a' }}>
+                  {act.action}
+                </p>
+                <p style={{ margin: '0 0 0.2rem', fontSize: '0.8rem', color: '#082894', fontWeight: 600 }}>
+                  {act.target}
+                </p>
+                <p style={{ margin: 0, fontSize: '0.74rem', color: '#94a3b8' }}>
+                  {act.actor} · {act.time}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      {/* Provider Details Quick Modal */}
+      {selectedOrg && (
+        <div className="modal-overlay" onClick={() => setSelectedOrg(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{
+            maxWidth: '460px', width: '92%', borderRadius: '14px', border: '1.5px solid #cbd5e1', background: '#fff', padding: '1.5rem'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <div style={{ width: '40px', height: '40px', background: '#eff6ff', borderRadius: '8px', color: '#082894', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {selectedOrg.code}
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>{selectedOrg.name}</h3>
+                  <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748b' }}>{selectedOrg.email}</p>
+                </div>
+              </div>
+              <span className={`status-badge-pill ${selectedOrg.status === 'Active' ? 'status-published' : 'status-draft'}`}>
+                {selectedOrg.status}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.82rem', marginBottom: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.4rem' }}>
+                <span style={{ color: '#64748b' }}>Representative:</span>
+                <span style={{ fontWeight: 700, color: '#0f172a' }}>{selectedOrg.rep}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.4rem' }}>
+                <span style={{ color: '#64748b' }}>Active Programs:</span>
+                <span style={{ fontWeight: 700, color: '#082894' }}>{selectedOrg.programs} Programs</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Date Onboarded:</span>
+                <span style={{ fontWeight: 600, color: '#334155' }}>{selectedOrg.date}</span>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+              <button className="btn-modal-close" onClick={() => setSelectedOrg(null)}>Close</button>
+              <button className="pd-primary-btn" style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem' }} onClick={() => { setSelectedOrg(null); setActiveView('providers'); }}>
+                Manage in Providers
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -160,10 +160,10 @@ const ProviderDashboard = ({ setActiveView }) => {
       {/* ── KPI Cards ── */}
       <div className="pd-kpi-grid">
         {[
-          { icon: <BookOpen size={19} />, label: 'Active Programs',  value: kpis.published,                         sub: `${programs.length} total` },
-          { icon: <Users size={19} />,    label: 'Total Applicants', value: kpis.totalApps.toLocaleString(),        sub: `${kpis.pending.toLocaleString()} pending` },
-          { icon: <GraduationCap size={19} />, label: 'Active Scholars', value: kpis.totalFilled.toLocaleString(), sub: `of ${kpis.totalSlots.toLocaleString()} slots` },
-          { icon: <Banknote size={19} />, label: 'Budget Disbursed', value: `₱${(kpis.usedBudget/1e6).toFixed(1)}M`, sub: `of ₱${(kpis.totalBudget/1e6).toFixed(1)}M` },
+          { icon: <BookOpen size={19} />, label: 'Active Programs',  value: kpis.published,                         sub: `${programs.length} total programs` },
+          { icon: <Users size={19} />,    label: 'Total Applicants', value: kpis.totalApps.toLocaleString(),        sub: `${kpis.pending.toLocaleString()} pending review` },
+          { icon: <GraduationCap size={19} />, label: 'Active Scholars', value: kpis.totalFilled.toLocaleString(), sub: `of ${kpis.totalSlots.toLocaleString()} total slots` },
+          { icon: <ShieldCheck size={19} />, label: 'Slot Fill Rate', value: `${((kpis.totalFilled / (kpis.totalSlots || 1)) * 100).toFixed(1)}%`, sub: `${kpis.totalFilled} slots awarded` },
         ].map(({ icon, label, value, sub }) => (
           <div key={label} className="pd-kpi-card">
             <div className="pd-kpi-icon">{icon}</div>

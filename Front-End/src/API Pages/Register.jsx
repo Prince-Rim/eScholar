@@ -144,9 +144,9 @@ const Register = ({ setActiveView }) => {
         </div>
       </nav>
       
-      <div className="auth-card register-card" style={{ marginTop: '4rem' }}>
+      <div className="auth-card register-card">
         <div className="auth-header">
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.5rem' }}>
             <Logo size="large" color="#1d4ed8" />
           </div>
           <h2>Create an Account</h2>

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import './LandingPage.css';
 import Logo from './Logo';
-import heroStudentsImg from '../assets/hero_students.png';
+import heroStudentsImg from '../assets/student.png';
 import scholarMariaImg from '../assets/scholar_maria.png';
 import scholarJuanImg from '../assets/scholar_juan.png';
 import { 

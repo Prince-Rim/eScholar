@@ -174,11 +174,11 @@ const ProviderSettings = ({ setActiveView, userRole = 'provider' }) => {
   const [confirmDeact, setConfirmDeact] = useState('');
 
   const TABS = [
-    { key: 'profile',       label: 'Profile',        icon: <User size={16} /> },
-    { key: 'security',      label: 'Security',       icon: <Lock size={16} /> },
-    { key: 'notifications', label: 'Notifications',  icon: <Bell size={16} /> },
-    { key: 'sessions',      label: 'Sessions',       icon: <Monitor size={16} /> },
-  ];
+    { key: 'profile',       label: 'Profile',        icon: <User size={16} />, roles: ['provider', 'admin', 'student'] },
+    { key: 'security',      label: 'Security',       icon: <Lock size={16} />, roles: ['provider', 'admin', 'student'] },
+    { key: 'notifications', label: 'Notifications',  icon: <Bell size={16} />, roles: ['provider'] },
+    { key: 'sessions',      label: 'Sessions',       icon: <Monitor size={16} />, roles: ['provider', 'admin', 'student'] },
+  ].filter(t => t.roles.includes(userRole));
 
   return (
     <div className="provider-builder-wrapper">
@@ -479,7 +479,7 @@ const ProviderSettings = ({ setActiveView, userRole = 'provider' }) => {
           <div className="builder-content-card">
             <div className="panel-header">
               <h3><Monitor size={16} style={{ display: 'inline', marginRight: 6, color: '#082894' }} />Active Sessions</h3>
-              <p>Devices currently logged into your eScholar provider account. Revoke any sessions you don't recognize.</p>
+              <p>Devices currently logged into your eScholar account. Revoke any sessions you don't recognize.</p>
             </div>
             <div className="ps-session-list">
               {sessions.map(s => (

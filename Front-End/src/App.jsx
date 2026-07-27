@@ -9,11 +9,10 @@ import Login from './API Pages/Login';
 import Register from './API Pages/Register';
 import AdminSidebar from './components/AdminSidebar';
 import AdminDashboard from './components/AdminDashboard';
-import AdminApplicants from './components/AdminApplicants';
-import AdminApplications from './components/AdminApplications';
+import AdminProviders from './components/AdminProviders';
+import AdminUserAccounts from './components/AdminUserAccounts';
+import AdminAuditTrail from './components/AdminAuditTrail';
 import Compliance from './components/Compliance';
-import AdminCompliance from './components/AdminCompliance';
-import AdminReports from './components/AdminReports';
 import LandingPage from './components/LandingPage';
 import ProviderSidebar from './components/ProviderSidebar';
 import ProviderCreateProgram from './components/ProviderCreateProgram';
@@ -21,7 +20,6 @@ import ProviderPrograms from './components/ProviderPrograms';
 import ProviderProgramDetail from './components/ProviderProgramDetail';
 import ProviderApplicantPipeline from './components/ProviderApplicantPipeline';
 import ProviderActiveScholars from './components/ProviderActiveScholars';
-import AdminVerifications from './components/AdminVerifications';
 import ProviderDashboard from './components/ProviderDashboard';
 import ProviderSettings from './components/ProviderSettings';
 
@@ -155,19 +153,16 @@ function MainApp() {
 
     if (userRole === 'admin') {
       switch (currentView) {
-        case 'applicants':
-          return <AdminApplicants />;
-        case 'applications':
-          return <AdminApplications />;
-        case 'compliance':
-          return <AdminCompliance />;
-        case 'create-program':
-          return <ProviderCreateProgram setActiveView={setCurrentView} />;
+        case 'providers':
         case 'verifications':
-          return <AdminVerifications />;
+          return <AdminProviders setActiveView={setCurrentView} />;
+        case 'users':
+        case 'applications':
+          return <AdminUserAccounts setActiveView={setCurrentView} />;
+        case 'audit':
         case 'reports':
         case 'analytics':
-          return <AdminReports />;
+          return <AdminAuditTrail setActiveView={setCurrentView} />;
         case 'settings':
           return <ProviderSettings userRole="admin" setActiveView={setCurrentView} />;
         default:
@@ -177,15 +172,18 @@ function MainApp() {
 
     switch (currentView) {
       case 'browse':
-        return <BrowseApplication />;
+        return <BrowseApplication setActiveView={setCurrentView} />;
+      case 'saved':
+      case 'bookmarks':
+        return <BrowseApplication initialView="saved" setActiveView={setCurrentView} />;
       case 'applications':
-        return <MyApplications />;
+        return <MyApplications setActiveView={setCurrentView} />;
       case 'compliance':
-        return <Compliance />;
+        return <Compliance setActiveView={setCurrentView} />;
       case 'settings':
         return <ProviderSettings userRole="student" setActiveView={setCurrentView} />;
       default:
-        return <Dashboard />;
+        return <Dashboard setActiveView={setCurrentView} />;
     }
   };
 

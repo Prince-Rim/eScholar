@@ -1,14 +1,13 @@
 import React from 'react';
 import { 
   LayoutDashboard, 
+  Building2, 
   Users, 
   FileText, 
   Settings, 
-  LogOut, 
-  ClipboardCheck, 
-  PlusCircle, 
-  BarChart3,
-  ShieldCheck
+  LogOut,
+  ShieldCheck,
+  History
 } from 'lucide-react';
 import Logo from './Logo';
 import './ProviderSidebar.css';
@@ -19,12 +18,12 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
       {/* Brand Header */}
       <div className="sidebar-brand-header">
         <Logo size="normal" onClick={() => setActiveView && setActiveView('dashboard')} style={{ cursor: 'pointer', marginLeft: '-3px' }} />
-        <span className="brand-subtitle">Admin Portal</span>
+        <span className="brand-subtitle">System Admin</span>
       </div>
 
       {/* Navigation Menu */}
       <nav className="provider-nav-menu">
-        <div className="nav-section-label">MAIN NAVIGATION</div>
+        <div className="nav-section-label">ADMINISTRATION</div>
 
         <button 
           className={`provider-nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
@@ -35,19 +34,27 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
         </button>
 
         <button 
-          className={`provider-nav-item ${activeView === 'verifications' ? 'active' : ''}`}
-          onClick={() => setActiveView('verifications')}
+          className={`provider-nav-item ${activeView === 'providers' || activeView === 'verifications' ? 'active' : ''}`}
+          onClick={() => setActiveView('providers')}
         >
-          <ShieldCheck size={18} />
-          <span>Verifications</span>
+          <Building2 size={18} />
+          <span>Provider Accounts</span>
         </button>
 
         <button 
-          className={`provider-nav-item ${activeView === 'reports' ? 'active' : ''}`}
-          onClick={() => setActiveView('reports')}
+          className={`provider-nav-item ${activeView === 'users' || activeView === 'applications' ? 'active' : ''}`}
+          onClick={() => setActiveView('users')}
         >
-          <BarChart3 size={18} />
-          <span>Reports</span>
+          <Users size={18} />
+          <span>User Accounts</span>
+        </button>
+
+        <button 
+          className={`provider-nav-item ${activeView === 'audit' || activeView === 'reports' ? 'active' : ''}`}
+          onClick={() => setActiveView('audit')}
+        >
+          <History size={18} />
+          <span>Audit Trail</span>
         </button>
       </nav>
 
@@ -61,7 +68,7 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
           </div>
         </div>
 
-        {/* Settings — bottom, above logout */}
+        {/* Settings */}
         <button
           className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
           style={{ width: '100%', marginBottom: '0.25rem' }}
