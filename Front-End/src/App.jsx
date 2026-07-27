@@ -18,10 +18,13 @@ import AdminReports from './components/AdminReports';
 import LandingPage from './components/LandingPage';
 import ProviderSidebar from './components/ProviderSidebar';
 import ProviderCreateProgram from './components/ProviderCreateProgram';
+import ProviderPrograms from './components/ProviderPrograms';
+import ProviderProgramDetail from './components/ProviderProgramDetail';
 
 function App() {
   const [currentView, setCurrentView] = useState('landing');
   const [userRole, setUserRole] = useState('student');
+  const [selectedProgram, setSelectedProgram] = useState(null);
 
   if (currentView === 'landing') {
     return <LandingPage setActiveView={setCurrentView} />;
@@ -52,7 +55,19 @@ function App() {
 
         {/* Provider Views */}
         {userRole === 'provider' && (
-          <ProviderCreateProgram setActiveView={setCurrentView} />
+          currentView === 'create-program' || currentView === 'provider-create' ? (
+            <ProviderCreateProgram setActiveView={setCurrentView} />
+          ) : currentView === 'program-detail' ? (
+            <ProviderProgramDetail
+              program={selectedProgram}
+              setActiveView={setCurrentView}
+            />
+          ) : (
+            <ProviderPrograms
+              setActiveView={setCurrentView}
+              setSelectedProgram={setSelectedProgram}
+            />
+          )
         )}
 
         {/* Student & Admin Views */}

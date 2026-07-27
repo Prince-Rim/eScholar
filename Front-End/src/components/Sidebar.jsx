@@ -28,6 +28,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
           <FileText size={20} />
           Applications
         </button>
+
         <button 
           className={`nav-item ${activeView === 'compliance' ? 'active' : ''}`}
           onClick={() => setActiveView('compliance')}

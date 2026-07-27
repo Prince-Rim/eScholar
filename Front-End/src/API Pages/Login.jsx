@@ -21,7 +21,7 @@ const Login = ({ setActiveView, setUserRole }) => {
     const savedRole = localStorage.getItem('escholar_user_role');
     if (sessionExpiry && new Date().getTime() < parseInt(sessionExpiry, 10)) {
       if (savedRole && setUserRole) setUserRole(savedRole);
-      setActiveView('dashboard');
+      setActiveView(savedRole === 'provider' ? 'my-programs' : 'dashboard');
     }
   }, [setActiveView, setUserRole]);
 
@@ -96,8 +96,7 @@ const Login = ({ setActiveView, setUserRole }) => {
       localStorage.setItem('escholar_2fa_session', expiry.toString());
       localStorage.setItem('escholar_user_role', roleToSet);
       if (setUserRole) setUserRole(roleToSet);
-      
-      setActiveView('dashboard');
+      setActiveView(roleToSet === 'provider' ? 'my-programs' : 'dashboard');
     } else {
       setError('Incorrect verification code. Please try again.');
     }
@@ -109,8 +108,7 @@ const Login = ({ setActiveView, setUserRole }) => {
     localStorage.setItem('escholar_2fa_session', expiry.toString());
     localStorage.setItem('escholar_user_role', roleToSet);
     if (setUserRole) setUserRole(roleToSet);
-    
-    setActiveView('dashboard');
+    setActiveView(roleToSet === 'provider' ? 'my-programs' : 'dashboard');
   };
 
   return (

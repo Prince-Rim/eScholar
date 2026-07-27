@@ -13,6 +13,7 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
           <LayoutDashboard size={20} />
           Dashboard
         </button>
+
         <button 
           className={`nav-item ${activeView === 'applicants' ? 'active' : ''}`}
           onClick={() => setActiveView('applicants')}

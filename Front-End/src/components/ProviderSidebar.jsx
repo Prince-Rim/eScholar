@@ -6,7 +6,8 @@ import {
   PlusCircle, 
   ShieldCheck, 
   LogOut,
-  GraduationCap 
+  GraduationCap,
+  BookOpen
 } from 'lucide-react';
 import './ProviderSidebar.css';
 
@@ -26,7 +27,25 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
 
       {/* Navigation Menu */}
       <nav className="provider-nav-menu">
-        <div className="nav-section-label">OPERATIONS</div>
+        <div className="nav-section-label">PROGRAM MANAGEMENT</div>
+
+        <button 
+          className={`provider-nav-item ${activeView === 'my-programs' || activeView === 'programs' ? 'active' : ''}`}
+          onClick={() => setActiveView('my-programs')}
+        >
+          <BookOpen size={18} />
+          <span>My Scholarships</span>
+        </button>
+
+        <button 
+          className={`provider-nav-item ${activeView === 'create-program' || activeView === 'provider-create' ? 'active' : ''}`}
+          onClick={() => setActiveView('create-program')}
+        >
+          <PlusCircle size={18} />
+          <span>Create Scholarship</span>
+        </button>
+
+        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>OPERATIONS & AUDIT</div>
 
         <button 
           className={`provider-nav-item ${activeView === 'analytics' ? 'active' : ''}`}
@@ -50,16 +69,6 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
         >
           <RefreshCw size={18} />
           <span>Grant Renewals</span>
-        </button>
-
-        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>PROGRAM SETUP</div>
-
-        <button 
-          className={`provider-nav-item ${activeView === 'create-program' || activeView === 'provider-create' ? 'active' : ''}`}
-          onClick={() => setActiveView('create-program')}
-        >
-          <PlusCircle size={18} />
-          <span>Create Scholarship</span>
         </button>
 
         <button 
