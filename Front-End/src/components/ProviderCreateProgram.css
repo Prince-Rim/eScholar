@@ -279,12 +279,18 @@
   position: absolute;
   left: 1rem;
   color: #082894 !important;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .clean-input.with-icon {
   padding-left: 2.5rem;
   font-weight: 700 !important;
   color: #0f172a !important;
+}
+
+.clean-input[type="date"] {
+  cursor: pointer;
 }
 
 /* Toggle Card */

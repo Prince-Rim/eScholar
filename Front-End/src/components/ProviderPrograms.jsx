@@ -11,7 +11,8 @@ import {
   Edit,
   Trash2,
   Copy,
-  ChevronRight
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
 import './ProviderPrograms.css';
 
@@ -160,6 +161,8 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
   const [selectedCycle, setSelectedCycle] = useState('All cycles');
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -226,6 +229,12 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
     setOpenDropdownId(null);
   };
 
+  const totalItems = filteredPrograms.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentPrograms = filteredPrograms.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <div className="provider-programs-container">
       {toastMessage && (
@@ -259,14 +268,14 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
           <span className="kpi-subtext">Across all cycles</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Applicants received</span>
+          <span className="kpi-label">Active applicants</span>
           <span className="kpi-number">{totalApplicantsSum.toLocaleString()}</span>
-          <span className="kpi-subtext">All-time submissions</span>
+          <span className="kpi-subtext">Total received applications</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Committed funding</span>
-          <span className="kpi-number">₱{(totalBudgetSum / 1000000).toFixed(1)}M</span>
-          <span className="kpi-subtext">Sum of all program budgets</span>
+          <span className="kpi-label">Disbursement budget</span>
+          <span className="kpi-number">₱{(totalBudgetSum / 1000000).toFixed(2)}M</span>
+          <span className="kpi-subtext">Allocated grant funds</span>
         </div>
       </div>
 
@@ -279,7 +288,7 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
               <button
                 key={tab}
                 className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => { setActiveTab(tab); setCurrentPage(1); }}
               >
                 {tab === 'All' ? `All (${tabCounts.All})` : tab}
               </button>
@@ -293,13 +302,13 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
                 type="text"
                 placeholder="Search by title or code"
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               />
             </div>
             <select
               className="table-select-cycle"
               value={selectedCycle}
-              onChange={e => setSelectedCycle(e.target.value)}
+              onChange={e => { setSelectedCycle(e.target.value); setCurrentPage(1); }}
             >
               <option value="All cycles">All cycles</option>
               <option value="AY 2026-2027">AY 2026-2027</option>
@@ -325,14 +334,14 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
               </tr>
             </thead>
             <tbody>
-              {filteredPrograms.length === 0 ? (
+              {currentPrograms.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="empty-table-cell">
                     No programs found matching your filters.
                   </td>
                 </tr>
               ) : (
-                filteredPrograms.map(program => {
+                currentPrograms.map(program => {
                   const slotsPercent = Math.min(100, Math.round((program.slotsFilled / program.totalSlots) * 100));
                   return (
                     <tr
@@ -385,14 +394,6 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
                       {/* Actions */}
                       <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
                         <div className="table-actions-cell">
-                          <button
-                            className="btn-row-view"
-                            onClick={() => handleViewDetails(program)}
-                            title="View details"
-                          >
-                            View <ChevronRight size={13} />
-                          </button>
-
                           <div className="dropdown-action-wrapper">
                             <button
                               className="btn-dots-menu"
@@ -443,6 +444,38 @@ const ProviderPrograms = ({ setActiveView, setSelectedProgram }) => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

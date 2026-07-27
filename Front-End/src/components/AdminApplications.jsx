@@ -9,64 +9,63 @@ import {
   FileText, 
   X, 
   ChevronRight,
+  ChevronLeft,
   Trash2,
-  Check,
-  User,
-  GraduationCap
+  Check
 } from 'lucide-react';
 import './ProviderPrograms.css';
 
 export const MOCK_APPLICATIONS = [
   { 
-    id: 'APP-23423', 
+    id: 'APP-99485', 
+    name: 'Samantha Reyes', 
+    email: 'samantha.r@example.com',
+    scholarship: 'CHED Merit Scholarship for STEM',
+    category: 'STEM · Region IV-A',
+    gwa: '1.25 (96.0%)',
+    income: '₱220,000 / year',
+    date: 'Jan 24, 2026',
+    status: 'Approved',
+    documents: ['Form 138 / TOR', 'Certificate of Indigency', 'Good Moral Certificate']
+  },
+  { 
+    id: 'APP-99484', 
     name: 'Jeremiah Madronio', 
     email: 'jeremiah.m@example.com',
-    scholarship: 'DOST-SEI Merit Scholarship',
+    scholarship: 'CHED Merit Scholarship for STEM',
     category: 'STEM · Region IV-A',
     gwa: '1.45 (94.5%)',
     income: '₱180,000 / year',
-    date: 'Jan 18, 2026',
+    date: 'Jan 22, 2026',
     status: 'Under Review',
-    documents: ['Form 138 / TOR', 'Certificate of Indigency', 'PSA Birth Certificate']
+    documents: ['Form 138 / TOR', 'Barangay Indigency', 'Good Moral Certificate']
   },
   { 
-    id: 'APP-19284', 
-    name: 'Samantha Reyes', 
-    email: 'samantha.r@example.com',
-    scholarship: 'CHED Merit Scholarship',
-    category: 'General · Nationwide',
-    gwa: '1.25 (96.0%)',
-    income: '₱220,000 / year',
-    date: 'Jan 15, 2026',
-    status: 'Approved',
-    documents: ['Form 138 / TOR', 'Good Moral Certificate', 'PSA Birth Certificate']
-  },
-  { 
-    id: 'APP-84729', 
+    id: 'APP-99483', 
     name: 'Miguel Santos', 
     email: 'miguel.s@example.com',
-    scholarship: 'LGU Educational Assist',
-    category: 'Indigent · Cavite',
-    gwa: '1.75 (90.0%)',
-    income: '₱120,000 / year',
-    date: 'Jan 12, 2026',
+    scholarship: 'Foundation Digital Skills Fellowship',
+    category: 'IT & Data · CALABARZON',
+    gwa: '1.75 (91.0%)',
+    income: '₱140,000 / year',
+    date: 'Jan 18, 2026',
     status: 'Under Review',
-    documents: ['Barangay Residency', 'Certificate of Indigency']
+    documents: ['Academic Transcript', 'Portfolio Certificate', 'Indigency Certificate']
   },
   { 
-    id: 'APP-56210', 
+    id: 'APP-99482', 
     name: 'Chloe Lim', 
     email: 'chloe.l@example.com',
-    scholarship: 'DOST-SEI Merit Scholarship',
-    category: 'STEM · Nationwide',
-    gwa: '1.30 (95.5%)',
-    income: '₱250,000 / year',
-    date: 'Jan 10, 2026',
+    scholarship: 'CHED Merit Scholarship for STEM',
+    category: 'STEM · Region IV-A',
+    gwa: '1.30 (95.0%)',
+    income: '₱160,000 / year',
+    date: 'Jan 12, 2026',
     status: 'Approved',
-    documents: ['Form 138 / TOR', 'Good Moral Certificate', 'ITR']
+    documents: ['Form 138 / TOR', 'Good Moral Certificate']
   },
   { 
-    id: 'APP-10394', 
+    id: 'APP-99481', 
     name: 'Alexander Cruz', 
     email: 'alex.cruz@example.com',
     scholarship: 'OWWA Scholarship',
@@ -78,7 +77,7 @@ export const MOCK_APPLICATIONS = [
     documents: ['OFW Employment Contract', 'Form 138']
   },
   { 
-    id: 'APP-99482', 
+    id: 'APP-99480', 
     name: 'Isabella Garcia', 
     email: 'isabella.g@example.com',
     scholarship: 'CHED Merit Scholarship',
@@ -99,6 +98,8 @@ const AdminApplications = () => {
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -150,6 +151,12 @@ const AdminApplications = () => {
     Approved: applications.filter(a => a.status === 'Approved').length,
     Rejected: applications.filter(a => a.status === 'Rejected').length
   };
+
+  const totalItems = filteredApplications.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentApplications = filteredApplications.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div className="provider-programs-container">
@@ -205,7 +212,7 @@ const AdminApplications = () => {
               <button
                 key={tab.val}
                 className={`tab-btn ${activeTab === tab.val ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.val)}
+                onClick={() => { setActiveTab(tab.val); setCurrentPage(1); }}
               >
                 {tab.label}
               </button>
@@ -220,21 +227,20 @@ const AdminApplications = () => {
                 type="text"
                 placeholder="Search applicant or ID"
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               />
             </div>
             <select
               className="table-select-cycle"
               value={selectedScholarship}
-              onChange={e => setSelectedScholarship(e.target.value)}
+              onChange={e => { setSelectedScholarship(e.target.value); setCurrentPage(1); }}
             >
               <option value="All scholarships">All scholarships</option>
-              <option value="DOST-SEI Merit Scholarship">DOST-SEI Merit</option>
-              <option value="CHED Merit Scholarship">CHED Merit</option>
-              <option value="LGU Educational Assist">LGU Assist</option>
+              <option value="CHED Merit Scholarship for STEM">CHED Merit</option>
+              <option value="Foundation Digital Skills Fellowship">Digital Skills Fellowship</option>
               <option value="OWWA Scholarship">OWWA Scholarship</option>
             </select>
-            <button className="btn-table-export" onClick={() => showToast('Exporting application records...')}>
+            <button className="btn-table-export" onClick={() => showToast('Exporting applications CSV...')}>
               <Download size={14} /> Export
             </button>
           </div>
@@ -245,22 +251,23 @@ const AdminApplications = () => {
           <table className="programs-data-table">
             <thead>
               <tr>
-                <th style={{ width: '32%' }}>Applicant & ID</th>
-                <th>Scholarship Program</th>
+                <th style={{ width: '28%' }}>Applicant Name & ID</th>
+                <th>Target Scholarship</th>
+                <th>Academic GWA</th>
                 <th>Date Applied</th>
                 <th>Status</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredApplications.length === 0 ? (
+              {currentApplications.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="empty-table-cell">
+                  <td colSpan="6" className="empty-table-cell">
                     No applications found matching your filters.
                   </td>
                 </tr>
               ) : (
-                filteredApplications.map(app => (
+                currentApplications.map(app => (
                   <tr 
                     key={app.id} 
                     className="program-table-row"
@@ -274,11 +281,19 @@ const AdminApplications = () => {
                       </div>
                     </td>
 
-                    {/* Scholarship Program */}
+                    {/* Scholarship */}
                     <td>
                       <div className="program-title-cell">
                         <span className="table-text-bold">{app.scholarship}</span>
                         <span className="program-code-sub">{app.category}</span>
+                      </div>
+                    </td>
+
+                    {/* GWA */}
+                    <td>
+                      <div className="program-title-cell">
+                        <span className="table-text-bold" style={{ color: '#082894' }}>{app.gwa}</span>
+                        <span className="program-code-sub">Income: {app.income}</span>
                       </div>
                     </td>
 
@@ -307,14 +322,6 @@ const AdminApplications = () => {
                     {/* Actions */}
                     <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
                       <div className="table-actions-cell">
-                        <button
-                          className="btn-row-view"
-                          onClick={() => setSelectedApplication(app)}
-                          title="View details"
-                        >
-                          View <ChevronRight size={13} />
-                        </button>
-
                         <div className="dropdown-action-wrapper">
                           <button
                             className="btn-dots-menu"
@@ -354,6 +361,38 @@ const AdminApplications = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Table Pagination */}
+        <div className="table-pagination">
+          <span className="pagination-info">
+            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+          </span>
+          <div className="pagination-controls">
+            <button 
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button 
+                key={page} 
+                className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button 
+              className="page-btn"
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
 

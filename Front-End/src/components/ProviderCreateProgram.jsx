@@ -26,53 +26,51 @@ const ProviderCreateProgram = ({ setActiveView }) => {
 
   // Step 1 State: Metadata
   const [metadata, setMetadata] = useState({
-    title: 'Laguna STEM Excellence Grant 2027',
-    description: 'Provide full financial subsidy, monthly living allowance, and laptop support for underprivileged students pursuing priority STEM courses in Laguna.',
-    slots: '500',
-    startDate: '2026-07-01',
-    endDate: '2026-08-02',
-    tuitionSubsidy: '40,000.00',
-    monthlyAllowance: '5,000.00',
-    bookAllowance: '3,000.00'
+    title: '',
+    description: '',
+    slots: '',
+    startDate: '',
+    endDate: '',
+    tuitionSubsidy: '',
+    monthlyAllowance: '',
+    bookAllowance: ''
   });
 
   // Step 2 State: Eligibility Engine
   const [eligibility, setEligibility] = useState({
-    enforceMinGwa: true,
-    minGwaPercent: 88, // 88% GWA
+    enforceMinGwa: false,
+    minGwaPercent: 88,
     targetCourse: 'STEM / Computer Science & IT',
-    maxIncome: '300,000.00',
+    maxIncome: '',
     yearLevel: 'Incoming freshmen',
     residency: 'Province of Laguna',
     prioritySectors: {
-      pwd: true,
-      fourPs: true,
+      pwd: false,
+      fourPs: false,
       indigenous: false,
       soloParent: false,
-      ofwChild: true,
+      ofwChild: false,
       calamity: false
     }
   });
 
   // Step 3 State: Required Documents
   const [documents, setDocuments] = useState({
-    psaBirth: true,
-    form138: true,
-    goodMoral: true,
-    itrParent: true,
+    psaBirth: false,
+    form138: false,
+    goodMoral: false,
+    itrParent: false,
     indigency: false,
-    barangayResidency: true,
+    barangayResidency: false,
     enrollmentCert: false,
     idPhoto: false,
-    philSysId: true
+    philSysId: false
   });
   const [customDocName, setCustomDocName] = useState('');
   const [customDocsList, setCustomDocsList] = useState([]);
 
   // Step 4 State: Essay Prompts
-  const [essayPrompts, setEssayPrompts] = useState([
-    'Describe how this scholarship will change your community.'
-  ]);
+  const [essayPrompts, setEssayPrompts] = useState([]);
   const [newPromptText, setNewPromptText] = useState('');
 
   const handleNextStep = () => {
@@ -248,15 +246,29 @@ const ProviderCreateProgram = ({ setActiveView }) => {
               </div>
 
               <div className="form-group">
-                <label className="input-label">Application Window</label>
+                <label className="input-label">Application Start Date</label>
                 <div className="date-input-wrapper">
                   <Calendar size={18} className="input-icon" />
                   <input 
-                    type="text" 
+                    type="date" 
                     className="clean-input with-icon" 
-                    value={`${metadata.startDate} – ${metadata.endDate}`}
-                    onChange={() => {}}
-                    placeholder="Pick open and close dates"
+                    value={metadata.startDate}
+                    onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                    onChange={(e) => setMetadata({ ...metadata, startDate: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="input-label">Application End Date</label>
+                <div className="date-input-wrapper">
+                  <Calendar size={18} className="input-icon" />
+                  <input 
+                    type="date" 
+                    className="clean-input with-icon" 
+                    value={metadata.endDate}
+                    onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                    onChange={(e) => setMetadata({ ...metadata, endDate: e.target.value })}
                   />
                 </div>
               </div>
