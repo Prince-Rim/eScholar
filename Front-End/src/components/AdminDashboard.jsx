@@ -96,7 +96,7 @@ const AdminDashboard = ({ setActiveView }) => {
       <div className="admin-recent-panel">
         <div className="recent-header">
           <h4>Recent Application</h4>
-          <button className="link-btn" onClick={() => setActiveView('applications')}>See all</button>
+          <button className="link-btn" onClick={() => setActiveView('verifications')}>See all</button>
         </div>
         
         <div className="recent-list">   

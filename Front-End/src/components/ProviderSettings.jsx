@@ -9,8 +9,8 @@ import {
 import './ProviderCreateProgram.css';
 import './ProviderSettings.css';
 
-/* ── Default profile (loaded from localStorage or defaults) ─ */
-const DEFAULT_PROFILE = {
+/* ── Default profiles (loaded from localStorage or defaults) ─ */
+const DEFAULT_PROVIDER_PROFILE = {
   firstName: 'Divina',
   lastName: 'Ramos',
   designation: 'Regional Director',
@@ -21,8 +21,38 @@ const DEFAULT_PROFILE = {
   orgEmail: 'scholarships@ched4a.gov.ph',
   orgPhone: '(049) 523-0017',
   orgAddress: '2F BEF Bldg., National Highway, Calamba City, Laguna',
-  bio: '',
+  bio: 'Overseeing higher education scholarship programs across Calabarzon.',
   avatarInitials: 'DR',
+};
+
+const DEFAULT_ADMIN_PROFILE = {
+  firstName: 'Fransee',
+  lastName: 'Azucena',
+  designation: 'System Administrator',
+  email: 'admin@escholar.gov.ph',
+  contactNumber: '+63 917 888 9999',
+  orgName: 'eScholar National Administration',
+  orgType: 'System Administrator',
+  orgEmail: 'admin@escholar.gov.ph',
+  orgPhone: '(02) 8888-0000',
+  orgAddress: 'DICT Central Office, C.P. Garcia Ave, Diliman, Quezon City',
+  bio: 'Managing platform governance, security compliance, and provider verifications.',
+  avatarInitials: 'FA',
+};
+
+const DEFAULT_STUDENT_PROFILE = {
+  firstName: 'Fransee',
+  lastName: 'Azucena',
+  designation: 'Student Applicant',
+  email: 'student@escholar.ph',
+  contactNumber: '+63 918 123 4567',
+  orgName: 'University of the Philippines Los Baños',
+  orgType: 'Undergraduate Student',
+  orgEmail: 'student@escholar.ph',
+  orgPhone: '+63 918 123 4567',
+  orgAddress: 'College, Los Baños, Laguna, 4031',
+  bio: 'Passionate STEM student pursuing higher education opportunities.',
+  avatarInitials: 'FA',
 };
 
 const DEFAULT_NOTIF = {
@@ -41,14 +71,6 @@ const MOCK_SESSIONS = [
   { id: 1, device: 'Chrome on Windows 11', location: 'Calamba City, Laguna, PH', lastActive: 'Active now', current: true, icon: 'desktop' },
   { id: 2, device: 'Safari on iPhone 15',  location: 'Quezon City, PH',          lastActive: '3 hours ago',  current: false, icon: 'mobile' },
   { id: 3, device: 'Chrome on macOS',      location: 'Manila, PH',               lastActive: '2 days ago',   current: false, icon: 'desktop' },
-];
-
-const ACTIVITY_LOG = [
-  { action: 'Logged in',                   time: 'Today, 11:42 PM', location: 'Calamba City, PH' },
-  { action: 'Changed notification settings', time: 'Today, 11:30 PM', location: 'Calamba City, PH' },
-  { action: 'Submitted verification application', time: 'Jul 27, 3:12 PM', location: 'Calamba City, PH' },
-  { action: 'Published CHED Merit Scholarship', time: 'Jul 25, 10:05 AM', location: 'Calamba City, PH' },
-  { action: 'Logged in', time: 'Jul 25, 9:58 AM', location: 'Calamba City, PH' },
 ];
 
 /* ── Toggle Switch ── */
@@ -70,17 +92,25 @@ const Toast = ({ msg }) => msg ? (
 ) : null;
 
 /* ================================================================
-   Main ProviderSettings
+   Main Settings Component (Supports Student, Admin & Provider)
    ================================================================ */
-const ProviderSettings = ({ setActiveView }) => {
+const ProviderSettings = ({ setActiveView, userRole = 'provider' }) => {
+  const defaultProf = userRole === 'admin' 
+    ? DEFAULT_ADMIN_PROFILE 
+    : userRole === 'student' 
+    ? DEFAULT_STUDENT_PROFILE 
+    : DEFAULT_PROVIDER_PROFILE;
+
+  const storageKey = `escholar_${userRole}_profile`;
+
   const [tab, setTab] = useState('profile');
   const [toast, setToast]   = useState('');
   const [profile, setProfile] = useState(() => {
-    try { return { ...DEFAULT_PROFILE, ...JSON.parse(localStorage.getItem('provider_profile') || '{}') }; }
-    catch { return DEFAULT_PROFILE; }
+    try { return { ...defaultProf, ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; }
+    catch { return defaultProf; }
   });
   const [notif, setNotif] = useState(() => {
-    try { return { ...DEFAULT_NOTIF, ...JSON.parse(localStorage.getItem('provider_notif') || '{}') }; }
+    try { return { ...DEFAULT_NOTIF, ...JSON.parse(localStorage.getItem(`escholar_${userRole}_notif`) || '{}') }; }
     catch { return DEFAULT_NOTIF; }
   });
   const [sessions, setSessions] = useState(MOCK_SESSIONS);
@@ -92,39 +122,24 @@ const ProviderSettings = ({ setActiveView }) => {
   const [twoFA, setTwoFA] = useState(true);
   const [loginAlerts, setLoginAlerts] = useState(true);
 
-  /* Danger zone */
-  const [confirmDeact, setConfirmDeact] = useState('');
-
   const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(''), 3000);
   };
 
   const setP = (field, val) => setProfile(p => ({ ...p, [field]: val }));
-  const setN = (field, val) => setNotif(n => ({ ...n, [field]: val }));
 
   const saveProfile = () => {
-    localStorage.setItem('provider_profile', JSON.stringify(profile));
+    localStorage.setItem(storageKey, JSON.stringify(profile));
     showToast('Profile saved successfully.');
   };
 
-  const saveNotif = () => {
-    localStorage.setItem('provider_notif', JSON.stringify(notif));
-    showToast('Notification preferences saved.');
-  };
-
-  const changePw = () => {
-    if (!pw.current) { setPwErr('Enter your current password.'); return; }
-    if (pw.newPw.length < 8) { setPwErr('New password must be at least 8 characters.'); return; }
-    if (pw.newPw !== pw.confirm) { setPwErr('Passwords do not match.'); return; }
-    setPwErr('');
-    setPw({ current: '', newPw: '', confirm: '' });
-    showToast('Password changed successfully.');
-  };
-
-  const revokeSession = (id) => {
-    setSessions(s => s.filter(s => s.id !== id));
-    showToast('Session revoked.');
+  const handleCancel = () => {
+    if (userRole === 'admin' || userRole === 'student') {
+      setActiveView && setActiveView('dashboard');
+    } else {
+      setActiveView && setActiveView('provider-dashboard');
+    }
   };
 
   const TABS = [
@@ -161,14 +176,11 @@ const ProviderSettings = ({ setActiveView }) => {
           >
             {t.icon}
             <span>{t.label}</span>
-            {t.key === 'danger' && <span className="ps-danger-dot" />}
           </button>
         ))}
       </div>
 
-      {/* ════════════════════════════════════════
-          TAB: PROFILE
-          ════════════════════════════════════════ */}
+      {/* TAB: PROFILE */}
       {tab === 'profile' && (
         <div className="builder-content-card">
           {/* Avatar Row */}
@@ -190,8 +202,8 @@ const ProviderSettings = ({ setActiveView }) => {
 
           {/* Personal Information */}
           <div className="panel-header">
-            <h3>Personal Information</h3>
-            <p>Your name and contact details as the authorized representative.</p>
+            <h3>{userRole === 'student' ? 'Student Information' : userRole === 'admin' ? 'Administrator Profile' : 'Personal Information'}</h3>
+            <p>{userRole === 'student' ? 'Your personal details and contact information.' : 'Your name and contact details as the authorized user.'}</p>
           </div>
           <div className="form-grid">
             <div className="form-group">
@@ -203,61 +215,55 @@ const ProviderSettings = ({ setActiveView }) => {
               <input className="clean-input" value={profile.lastName} onChange={e => setP('lastName', e.target.value)} placeholder="Last name" />
             </div>
             <div className="form-group">
-              <label className="input-label">Designation / Title <span className="ps-req">*</span></label>
-              <input className="clean-input" value={profile.designation} onChange={e => setP('designation', e.target.value)} placeholder="e.g. Regional Director" />
+              <label className="input-label">{userRole === 'student' ? 'Current Academic Status' : 'Designation / Title'} <span className="ps-req">*</span></label>
+              <input className="clean-input" value={profile.designation} onChange={e => setP('designation', e.target.value)} placeholder={userRole === 'student' ? 'e.g. Undergraduate Student' : 'e.g. Regional Director'} />
             </div>
             <div className="form-group">
-              <label className="input-label">Official Email Address <span className="ps-req">*</span></label>
-              <input className="clean-input" type="email" value={profile.email} onChange={e => setP('email', e.target.value)} placeholder="email@agency.gov.ph" />
+              <label className="input-label">Email Address <span className="ps-req">*</span></label>
+              <input className="clean-input" type="email" value={profile.email} onChange={e => setP('email', e.target.value)} placeholder="email@example.com" />
             </div>
             <div className="form-group">
               <label className="input-label">Contact Number</label>
               <input className="clean-input" type="tel" value={profile.contactNumber} onChange={e => setP('contactNumber', e.target.value)} placeholder="+63 9XX XXX XXXX" />
             </div>
             <div className="form-group">
-              <label className="input-label">Short Bio <span className="ps-opt">(optional)</span></label>
-              <input className="clean-input" value={profile.bio} onChange={e => setP('bio', e.target.value)} placeholder="A short description about you" />
+              <label className="input-label">Bio <span className="ps-opt">(optional)</span></label>
+              <input className="clean-input" value={profile.bio} onChange={e => setP('bio', e.target.value)} placeholder="Short description" />
             </div>
           </div>
 
           <hr className="ps-divider" />
 
-          {/* Organization Details */}
+          {/* Organization / Academic Details */}
           <div className="panel-header">
-            <h3>Organization Details</h3>
-            <p>Information about the provider organization you represent.</p>
+            <h3>{userRole === 'student' ? 'Academic Institution Details' : userRole === 'admin' ? 'System Governance Details' : 'Organization Details'}</h3>
+            <p>{userRole === 'student' ? 'Details about your school or university.' : userRole === 'admin' ? 'System administrative department information.' : 'Information about the provider organization.'}</p>
           </div>
           <div className="form-grid">
             <div className="form-group full-width">
-              <label className="input-label">Legal Organization Name <span className="ps-req">*</span></label>
-              <input className="clean-input" value={profile.orgName} onChange={e => setP('orgName', e.target.value)} placeholder="e.g. CHED Region IV-A" />
+              <label className="input-label">{userRole === 'student' ? 'School / University Name' : 'Legal Organization Name'} <span className="ps-req">*</span></label>
+              <input className="clean-input" value={profile.orgName} onChange={e => setP('orgName', e.target.value)} placeholder={userRole === 'student' ? 'e.g. University of the Philippines' : 'e.g. CHED Region IV-A'} />
             </div>
             <div className="form-group">
-              <label className="input-label">Organization Type</label>
-              <select className="clean-select" value={profile.orgType} onChange={e => setP('orgType', e.target.value)}>
-                <option>Government Agency</option>
-                <option>State University / HEI</option>
-                <option>Local Government Unit (LGU)</option>
-                <option>Private Foundation / NGO</option>
-                <option>Corporate CSR Program</option>
-              </select>
+              <label className="input-label">{userRole === 'student' ? 'Student / User Type' : 'Organization Type'}</label>
+              <input className="clean-input" value={profile.orgType} onChange={e => setP('orgType', e.target.value)} />
             </div>
             <div className="form-group">
-              <label className="input-label">Organization Email</label>
+              <label className="input-label">Institutional Email</label>
               <input className="clean-input" type="email" value={profile.orgEmail} onChange={e => setP('orgEmail', e.target.value)} />
             </div>
             <div className="form-group">
-              <label className="input-label">Organization Phone</label>
+              <label className="input-label">Institutional Contact Phone</label>
               <input className="clean-input" type="tel" value={profile.orgPhone} onChange={e => setP('orgPhone', e.target.value)} />
             </div>
             <div className="form-group full-width">
-              <label className="input-label">Principal Office Address</label>
+              <label className="input-label">Address</label>
               <textarea className="clean-textarea" rows={2} value={profile.orgAddress} onChange={e => setP('orgAddress', e.target.value)} />
             </div>
           </div>
 
           <div className="builder-footer-controls">
-            <button className="btn-step-back" onClick={() => setActiveView('provider-dashboard')}>Cancel</button>
+            <button className="btn-step-back" onClick={handleCancel}>Cancel</button>
             <button className="btn-step-continue" onClick={saveProfile}>
               <Save size={15} /> Save Profile
             </button>

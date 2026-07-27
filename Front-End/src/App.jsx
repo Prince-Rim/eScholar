@@ -144,7 +144,7 @@ function MainApp() {
         case 'analytics':
           return <AdminReports />;
         case 'settings':
-          return <ProviderSettings setActiveView={setCurrentView} />;
+          return <ProviderSettings userRole="provider" setActiveView={setCurrentView} />;
         case 'my-programs':
         case 'programs':
           return <ProviderPrograms setActiveView={setCurrentView} setSelectedProgram={setSelectedProgram} />;
@@ -168,6 +168,8 @@ function MainApp() {
         case 'reports':
         case 'analytics':
           return <AdminReports />;
+        case 'settings':
+          return <ProviderSettings userRole="admin" setActiveView={setCurrentView} />;
         default:
           return <AdminDashboard setActiveView={setCurrentView} />;
       }
@@ -180,6 +182,8 @@ function MainApp() {
         return <MyApplications />;
       case 'compliance':
         return <Compliance />;
+      case 'settings':
+        return <ProviderSettings userRole="student" setActiveView={setCurrentView} />;
       default:
         return <Dashboard />;
     }

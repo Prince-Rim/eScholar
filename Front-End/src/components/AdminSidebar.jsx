@@ -35,40 +35,6 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
         </button>
 
         <button 
-          className={`provider-nav-item ${activeView === 'applicants' ? 'active' : ''}`}
-          onClick={() => setActiveView('applicants')}
-        >
-          <Users size={18} />
-          <span>Applicants</span>
-        </button>
-
-        <button 
-          className={`provider-nav-item ${activeView === 'applications' ? 'active' : ''}`}
-          onClick={() => setActiveView('applications')}
-        >
-          <FileText size={18} />
-          <span>Applications</span>
-        </button>
-
-        <button 
-          className={`provider-nav-item ${activeView === 'compliance' ? 'active' : ''}`}
-          onClick={() => setActiveView('compliance')}
-        >
-          <ClipboardCheck size={18} />
-          <span>Compliance</span>
-        </button>
-
-        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>PROGRAMS & SYSTEM</div>
-
-        <button 
-          className={`provider-nav-item ${activeView === 'create-program' ? 'active' : ''}`}
-          onClick={() => setActiveView('create-program')}
-        >
-          <PlusCircle size={18} />
-          <span>Create Program</span>
-        </button>
-
-        <button 
           className={`provider-nav-item ${activeView === 'verifications' ? 'active' : ''}`}
           onClick={() => setActiveView('verifications')}
         >
@@ -83,6 +49,8 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
           <BarChart3 size={18} />
           <span>Reports</span>
         </button>
+
+        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>SYSTEM</div>
 
         <button 
           className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
