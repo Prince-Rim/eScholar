@@ -9,95 +9,114 @@ import {
   FileText, 
   X, 
   ChevronRight,
-  Trash2,
-  Check,
   User,
-  GraduationCap
+  GraduationCap,
+  Check,
+  Building2,
+  Award
 } from 'lucide-react';
 import './ProviderPrograms.css';
 
-export const MOCK_APPLICATIONS = [
+export const MOCK_PROVIDER_APPLICANTS = [
   { 
-    id: 'APP-23423', 
+    id: 'APP-2026-001', 
     name: 'Jeremiah Madronio', 
     email: 'jeremiah.m@example.com',
-    scholarship: 'DOST-SEI Merit Scholarship',
+    school: 'Cavite State University - Main Campus',
+    course: 'BS Computer Science (2nd Year)',
+    scholarship: 'CHED Merit Scholarship for STEM',
+    scholarshipCode: 'CHED-STEM-26',
     category: 'STEM · Region IV-A',
     gwa: '1.45 (94.5%)',
     income: '₱180,000 / year',
     date: 'Jan 18, 2026',
     status: 'Under Review',
-    documents: ['Form 138 / TOR', 'Certificate of Indigency', 'PSA Birth Certificate']
+    documents: ['Form 138 / TOR Transcript', 'Certificate of Indigency (Barangay)', 'PSA Birth Certificate', 'Good Moral Clearance']
   },
   { 
-    id: 'APP-19284', 
+    id: 'APP-2026-002', 
     name: 'Samantha Reyes', 
     email: 'samantha.r@example.com',
-    scholarship: 'CHED Merit Scholarship',
-    category: 'General · Nationwide',
+    school: 'Polytechnic University of the Philippines',
+    course: 'BS Industrial Engineering (1st Year)',
+    scholarship: 'CHED Merit Scholarship for STEM',
+    scholarshipCode: 'CHED-STEM-26',
+    category: 'STEM · Region IV-A',
     gwa: '1.25 (96.0%)',
     income: '₱220,000 / year',
     date: 'Jan 15, 2026',
     status: 'Approved',
-    documents: ['Form 138 / TOR', 'Good Moral Certificate', 'PSA Birth Certificate']
+    documents: ['Form 138 / TOR Transcript', 'Certificate of Good Moral Character', 'PSA Birth Certificate', 'Parent ITR 2025']
   },
   { 
-    id: 'APP-84729', 
+    id: 'APP-2026-003', 
     name: 'Miguel Santos', 
     email: 'miguel.s@example.com',
-    scholarship: 'LGU Educational Assist',
-    category: 'Indigent · Cavite',
+    school: 'De La Salle University - Dasmariñas',
+    course: 'BS Information Technology (3rd Year)',
+    scholarship: 'Foundation Digital Skills Fellowship',
+    scholarshipCode: 'FDN-DIGI-26',
+    category: 'IT · Nationwide',
     gwa: '1.75 (90.0%)',
     income: '₱120,000 / year',
     date: 'Jan 12, 2026',
     status: 'Under Review',
-    documents: ['Barangay Residency', 'Certificate of Indigency']
+    documents: ['Official Transcript of Records', 'Proof of Cavite Residency', 'Certificate of Indigency']
   },
   { 
-    id: 'APP-56210', 
+    id: 'APP-2026-004', 
     name: 'Chloe Lim', 
     email: 'chloe.l@example.com',
-    scholarship: 'DOST-SEI Merit Scholarship',
-    category: 'STEM · Nationwide',
+    school: 'University of the Philippines - Los Baños',
+    course: 'BS Agricultural Chemistry (1st Year)',
+    scholarship: 'CHED Merit Scholarship for STEM',
+    scholarshipCode: 'CHED-STEM-26',
+    category: 'STEM · Region IV-A',
     gwa: '1.30 (95.5%)',
     income: '₱250,000 / year',
     date: 'Jan 10, 2026',
     status: 'Approved',
-    documents: ['Form 138 / TOR', 'Good Moral Certificate', 'ITR']
+    documents: ['Form 138 / TOR Transcript', 'Good Moral Certificate', 'Parent ITR 2025']
   },
   { 
-    id: 'APP-10394', 
+    id: 'APP-2026-005', 
     name: 'Alexander Cruz', 
     email: 'alex.cruz@example.com',
-    scholarship: 'OWWA Scholarship',
-    category: 'OFW Dependent · Region IV-A',
+    school: 'Emilio Aguinaldo College - Cavite',
+    course: 'BS Nursing (2nd Year)',
+    scholarship: 'LGU Cavite Tulong Dunong Grant',
+    scholarshipCode: 'LGU-CAV-TD',
+    category: 'Indigent · Cavite',
     gwa: '2.50 (83.0%)',
     income: '₱350,000 / year',
     date: 'Jan 08, 2026',
     status: 'Rejected',
-    documents: ['OFW Employment Contract', 'Form 138']
+    documents: ['Barangay Certificate of Indigency', 'Form 138']
   },
   { 
-    id: 'APP-99482', 
+    id: 'APP-2026-006', 
     name: 'Isabella Garcia', 
     email: 'isabella.g@example.com',
-    scholarship: 'CHED Merit Scholarship',
-    category: 'Arts & Humanities · Nationwide',
+    school: 'Batangas State University',
+    course: 'BS Mechanical Engineering (1st Year)',
+    scholarship: 'CHED Merit Scholarship for STEM',
+    scholarshipCode: 'CHED-STEM-26',
+    category: 'STEM · Region IV-A',
     gwa: '1.50 (93.5%)',
     income: '₱190,000 / year',
     date: 'Jan 05, 2026',
     status: 'Approved',
-    documents: ['Form 138 / TOR', 'Good Moral Certificate']
+    documents: ['Form 138 / TOR Transcript', 'Good Moral Certificate', 'Barangay Clearance']
   }
 ];
 
-const AdminApplications = () => {
-  const [applications, setApplications] = useState(MOCK_APPLICATIONS);
+const ProviderApplicantPipeline = () => {
+  const [applicants, setApplicants] = useState(MOCK_PROVIDER_APPLICANTS);
   const [activeTab, setActiveTab] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedScholarship, setSelectedScholarship] = useState('All scholarships');
   const [openDropdownId, setOpenDropdownId] = useState(null);
-  const [selectedApplication, setSelectedApplication] = useState(null);
+  const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
 
   const showToast = (msg) => {
@@ -106,26 +125,15 @@ const AdminApplications = () => {
   };
 
   const handleUpdateStatus = (id, newStatus) => {
-    setApplications(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
-    if (selectedApplication && selectedApplication.id === id) {
-      setSelectedApplication(prev => prev ? { ...prev, status: newStatus } : null);
+    setApplicants(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
+    if (selectedApplicant && selectedApplicant.id === id) {
+      setSelectedApplicant(prev => prev ? { ...prev, status: newStatus } : null);
     }
     setOpenDropdownId(null);
-    showToast(`Application status updated to ${newStatus}`);
+    showToast(`Applicant status updated to ${newStatus}`);
   };
 
-  const handleDelete = (id, name) => {
-    if (window.confirm(`Remove application for ${name}?`)) {
-      setApplications(prev => prev.filter(a => a.id !== id));
-      if (selectedApplication && selectedApplication.id === id) {
-        setSelectedApplication(null);
-      }
-      setOpenDropdownId(null);
-      showToast('Application removed');
-    }
-  };
-
-  const filteredApplications = applications.filter(a => {
+  const filteredApplicants = applicants.filter(a => {
     if (activeTab === 'Under Review' && a.status !== 'Under Review') return false;
     if (activeTab === 'Approved' && a.status !== 'Approved') return false;
     if (activeTab === 'Rejected' && a.status !== 'Rejected') return false;
@@ -136,19 +144,19 @@ const AdminApplications = () => {
       const q = searchQuery.toLowerCase();
       return (
         a.name.toLowerCase().includes(q) ||
+        a.school.toLowerCase().includes(q) ||
         a.scholarship.toLowerCase().includes(q) ||
-        a.id.toLowerCase().includes(q) ||
-        a.email.toLowerCase().includes(q)
+        a.id.toLowerCase().includes(q)
       );
     }
     return true;
   });
 
   const tabCounts = {
-    All: applications.length,
-    Review: applications.filter(a => a.status === 'Under Review').length,
-    Approved: applications.filter(a => a.status === 'Approved').length,
-    Rejected: applications.filter(a => a.status === 'Rejected').length
+    All: applicants.length,
+    Review: applicants.filter(a => a.status === 'Under Review').length,
+    Approved: applicants.filter(a => a.status === 'Approved').length,
+    Rejected: applicants.filter(a => a.status === 'Rejected').length
   };
 
   return (
@@ -159,45 +167,45 @@ const AdminApplications = () => {
         </div>
       )}
 
-      {/* Page Header */}
+      {/* Header */}
       <div className="programs-header-row">
         <div>
-          <h2 className="programs-header-title">Application Management</h2>
-          <p className="programs-header-subtitle">Evaluate, verify, and approve scholarship grant applications.</p>
+          <h2 className="programs-header-title">Applicant Pipeline</h2>
+          <p className="programs-header-subtitle">Evaluate and award students who applied to your active scholarship grants.</p>
         </div>
       </div>
 
       {/* KPI Cards */}
       <div className="summary-kpi-grid">
         <div className="kpi-card">
-          <span className="kpi-label">Total Applications</span>
+          <span className="kpi-label">Total Applicants</span>
           <span className="kpi-number">{tabCounts.All}</span>
-          <span className="kpi-subtext">Received across programs</span>
+          <span className="kpi-subtext">Received this active cycle</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Under Review</span>
+          <span className="kpi-label">Under Evaluation</span>
           <span className="kpi-number" style={{ color: '#d97706' }}>{tabCounts.Review}</span>
-          <span className="kpi-subtext">Pending evaluation</span>
+          <span className="kpi-subtext">Awaiting provider review</span>
         </div>
         <div className="kpi-card">
-          <span className="kpi-label">Approved Grants</span>
+          <span className="kpi-label">Grants Awarded</span>
           <span className="kpi-number" style={{ color: '#15803d' }}>{tabCounts.Approved}</span>
-          <span className="kpi-subtext">Scholarships awarded</span>
+          <span className="kpi-subtext">Approved for stipend</span>
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Rejected</span>
           <span className="kpi-number" style={{ color: '#dc2626' }}>{tabCounts.Rejected}</span>
-          <span className="kpi-subtext">Did not meet eligibility</span>
+          <span className="kpi-subtext">Did not meet criteria</span>
         </div>
       </div>
 
-      {/* Table Card */}
+      {/* Main Table Card */}
       <div className="programs-table-card">
         <div className="programs-toolbar">
           {/* Status Tabs */}
           <div className="status-tabs-group">
             {[
-              { label: `All (${tabCounts.All})`, val: 'All' },
+              { label: `All Applicants (${tabCounts.All})`, val: 'All' },
               { label: `Under Review (${tabCounts.Review})`, val: 'Under Review' },
               { label: `Approved (${tabCounts.Approved})`, val: 'Approved' },
               { label: `Rejected (${tabCounts.Rejected})`, val: 'Rejected' }
@@ -218,7 +226,7 @@ const AdminApplications = () => {
               <Search size={15} className="search-icon-muted" />
               <input
                 type="text"
-                placeholder="Search applicant or ID"
+                placeholder="Search student or school"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
               />
@@ -229,12 +237,11 @@ const AdminApplications = () => {
               onChange={e => setSelectedScholarship(e.target.value)}
             >
               <option value="All scholarships">All scholarships</option>
-              <option value="DOST-SEI Merit Scholarship">DOST-SEI Merit</option>
-              <option value="CHED Merit Scholarship">CHED Merit</option>
-              <option value="LGU Educational Assist">LGU Assist</option>
-              <option value="OWWA Scholarship">OWWA Scholarship</option>
+              <option value="CHED Merit Scholarship for STEM">CHED Merit for STEM</option>
+              <option value="LGU Cavite Tulong Dunong Grant">LGU Cavite Tulong Dunong</option>
+              <option value="Foundation Digital Skills Fellowship">Digital Skills Fellowship</option>
             </select>
-            <button className="btn-table-export" onClick={() => showToast('Exporting application records...')}>
+            <button className="btn-table-export" onClick={() => showToast('Exporting applicant pipeline to CSV...')}>
               <Download size={14} /> Export
             </button>
           </div>
@@ -245,40 +252,49 @@ const AdminApplications = () => {
           <table className="programs-data-table">
             <thead>
               <tr>
-                <th style={{ width: '32%' }}>Applicant & ID</th>
-                <th>Scholarship Program</th>
+                <th style={{ width: '32%' }}>Applicant & University</th>
+                <th>Applied Scholarship</th>
+                <th>Academic GWA</th>
                 <th>Date Applied</th>
                 <th>Status</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredApplications.length === 0 ? (
+              {filteredApplicants.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="empty-table-cell">
-                    No applications found matching your filters.
+                  <td colSpan="6" className="empty-table-cell">
+                    No applicants found matching your filters.
                   </td>
                 </tr>
               ) : (
-                filteredApplications.map(app => (
+                filteredApplicants.map(app => (
                   <tr 
                     key={app.id} 
                     className="program-table-row"
-                    onClick={() => setSelectedApplication(app)}
+                    onClick={() => setSelectedApplicant(app)}
                   >
-                    {/* Applicant */}
+                    {/* Applicant & University */}
                     <td>
                       <div className="program-title-cell">
                         <span className="program-main-title">{app.name}</span>
-                        <span className="program-code-sub">{app.id} · {app.email}</span>
+                        <span className="program-code-sub">{app.id} · {app.school}</span>
                       </div>
                     </td>
 
-                    {/* Scholarship Program */}
+                    {/* Applied Scholarship */}
                     <td>
                       <div className="program-title-cell">
                         <span className="table-text-bold">{app.scholarship}</span>
-                        <span className="program-code-sub">{app.category}</span>
+                        <span className="program-code-sub">{app.course}</span>
+                      </div>
+                    </td>
+
+                    {/* Academic GWA */}
+                    <td>
+                      <div className="program-title-cell">
+                        <span className="table-text-bold" style={{ color: '#082894' }}>{app.gwa}</span>
+                        <span className="program-code-sub">Inc: {app.income}</span>
                       </div>
                     </td>
 
@@ -309,7 +325,7 @@ const AdminApplications = () => {
                       <div className="table-actions-cell">
                         <button
                           className="btn-row-view"
-                          onClick={() => setSelectedApplication(app)}
+                          onClick={() => setSelectedApplicant(app)}
                           title="View details"
                         >
                           View <ChevronRight size={13} />
@@ -325,25 +341,22 @@ const AdminApplications = () => {
 
                           {openDropdownId === app.id && (
                             <div className="action-dropdown-menu">
-                              <button onClick={() => { setSelectedApplication(app); setOpenDropdownId(null); }}>
-                                <Eye size={13} /> View details
+                              <button onClick={() => { setSelectedApplicant(app); setOpenDropdownId(null); }}>
+                                <Eye size={13} /> View application
                               </button>
                               {app.status !== 'Approved' && (
                                 <button onClick={() => handleUpdateStatus(app.id, 'Approved')}>
-                                  <CheckCircle size={13} /> Approve
+                                  <CheckCircle size={13} /> Approve grant
                                 </button>
                               )}
                               {app.status !== 'Rejected' && (
-                                <button onClick={() => handleUpdateStatus(app.id, 'Rejected')}>
+                                <button 
+                                  className="dropdown-delete-item"
+                                  onClick={() => handleUpdateStatus(app.id, 'Rejected')}
+                                >
                                   <XCircle size={13} /> Reject
                                 </button>
                               )}
-                              <button 
-                                className="dropdown-delete-item"
-                                onClick={() => handleDelete(app.id, app.name)}
-                              >
-                                <Trash2 size={13} /> Remove
-                              </button>
                             </div>
                           )}
                         </div>
@@ -357,16 +370,16 @@ const AdminApplications = () => {
         </div>
       </div>
 
-      {/* Application Detail Modal */}
-      {selectedApplication && (
-        <div className="modal-overlay" onClick={() => setSelectedApplication(null)}>
+      {/* Applicant Detail Modal */}
+      {selectedApplicant && (
+        <div className="modal-overlay" onClick={() => setSelectedApplicant(null)}>
           <div className="modal-content program-modal-box" onClick={e => e.stopPropagation()}>
             <div className="program-modal-header">
               <div>
-                <h3 className="modal-program-title">{selectedApplication.name}</h3>
-                <p className="modal-program-sector">Application for {selectedApplication.scholarship}</p>
+                <h3 className="modal-program-title">{selectedApplicant.name}</h3>
+                <p className="modal-program-sector">{selectedApplicant.course} • {selectedApplicant.school}</p>
               </div>
-              <button className="modal-close-btn" onClick={() => setSelectedApplication(null)}>
+              <button className="modal-close-btn" onClick={() => setSelectedApplicant(null)}>
                 <X size={20} />
               </button>
             </div>
@@ -374,33 +387,33 @@ const AdminApplications = () => {
             <div className="modal-body" style={{ padding: 0 }}>
               <div className="modal-stats-grid">
                 <div className="modal-stat-card">
-                  <span className="modal-stat-label">APPLICATION ID</span>
-                  <span className="modal-stat-val">{selectedApplication.id}</span>
+                  <span className="modal-stat-label">APPLIED SCHOLARSHIP</span>
+                  <span className="modal-stat-val" style={{ fontSize: '0.95rem' }}>{selectedApplicant.scholarship}</span>
                 </div>
                 <div className="modal-stat-card">
                   <span className="modal-stat-label">ACADEMIC GWA</span>
-                  <span className="modal-stat-val">{selectedApplication.gwa}</span>
+                  <span className="modal-stat-val">{selectedApplicant.gwa}</span>
                 </div>
                 <div className="modal-stat-card">
-                  <span className="modal-stat-label">FAMILY INCOME</span>
-                  <span className="modal-stat-val">{selectedApplication.income}</span>
+                  <span className="modal-stat-label">ANNUAL HOUSEHOLD INCOME</span>
+                  <span className="modal-stat-val">{selectedApplicant.income}</span>
                 </div>
                 <div className="modal-stat-card">
-                  <span className="modal-stat-label">DATE APPLIED</span>
-                  <span className="modal-stat-val">{selectedApplication.date}</span>
+                  <span className="modal-stat-label">DATE SUBMITTED</span>
+                  <span className="modal-stat-val">{selectedApplicant.date}</span>
                 </div>
               </div>
 
-              {/* Submitted Documents Section */}
+              {/* Submitted Requirements Checklist */}
               <div className="modal-section-box">
                 <h4>Submitted Requirements Checklist</h4>
                 <div className="modal-criteria-list">
-                  {selectedApplication.documents.map((doc, idx) => (
+                  {selectedApplicant.documents.map((doc, idx) => (
                     <div key={idx} className="criteria-row" style={{ alignItems: 'center' }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                         <FileText size={15} color="#082894" /> {doc}
                       </span>
-                      <span style={{ fontSize: '0.78rem', color: '#15803d', fontWeight: 700 }}>Attached</span>
+                      <span style={{ fontSize: '0.78rem', color: '#15803d', fontWeight: 700 }}>Verified & Attached</span>
                     </div>
                   ))}
                 </div>
@@ -408,22 +421,22 @@ const AdminApplications = () => {
             </div>
 
             <div className="modal-footer-actions">
-              <button className="btn-modal-close" onClick={() => setSelectedApplication(null)}>
+              <button className="btn-modal-close" onClick={() => setSelectedApplicant(null)}>
                 Close
               </button>
-              {selectedApplication.status !== 'Rejected' && (
+              {selectedApplicant.status !== 'Rejected' && (
                 <button 
                   className="btn-modal-close" 
                   style={{ background: '#fef2f2', color: '#dc2626', borderColor: '#fca5a5' }}
-                  onClick={() => handleUpdateStatus(selectedApplication.id, 'Rejected')}
+                  onClick={() => handleUpdateStatus(selectedApplicant.id, 'Rejected')}
                 >
                   <XCircle size={15} /> Reject
                 </button>
               )}
-              {selectedApplication.status !== 'Approved' && (
+              {selectedApplicant.status !== 'Approved' && (
                 <button 
                   className="btn-modal-edit"
-                  onClick={() => handleUpdateStatus(selectedApplication.id, 'Approved')}
+                  onClick={() => handleUpdateStatus(selectedApplicant.id, 'Approved')}
                 >
                   <Check size={15} /> Approve Grant
                 </button>
@@ -436,4 +449,4 @@ const AdminApplications = () => {
   );
 };
 
-export default AdminApplications;
+export default ProviderApplicantPipeline;

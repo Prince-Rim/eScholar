@@ -1,417 +1,410 @@
 import React, { useState } from 'react';
 import { 
   Search, 
-  ChevronLeft, 
-  ChevronRight, 
+  Download, 
+  MoreVertical, 
+  Eye, 
   CheckCircle, 
   XCircle, 
-  Eye, 
   FileText, 
-  Clock, 
-  AlertCircle, 
   X, 
-  Download,
-  ExternalLink,
+  ChevronRight,
   Check
 } from 'lucide-react';
+import './ProviderPrograms.css';
+
+export const MOCK_COMPLIANCES = [
+  { 
+    id: 'CMP-23423', 
+    name: 'Jeremiah Madronio', 
+    email: 'jeremiah.m@example.com',
+    scholarship: 'DOST-SEI Merit', 
+    requirement: '1st Sem Grades', 
+    academicYear: 'AY 2025-2026',
+    status: 'Pending Review', 
+    date: 'Oct 24, 2025',
+    fileName: '1st_Sem_Grades_Madronio.pdf',
+    fileSize: '1.4 MB',
+    remarks: 'GWA: 1.45 - Awaiting official registrar validation stamp.'
+  },
+  { 
+    id: 'CMP-23424', 
+    name: 'Samantha Reyes', 
+    email: 'samantha.r@example.com',
+    scholarship: 'CHED Half-Merit', 
+    requirement: 'Registration Form (COR)', 
+    academicYear: 'AY 2025-2026',
+    status: 'Approved', 
+    date: 'Oct 23, 2025',
+    fileName: 'COR_2ndSem_Reyes.pdf',
+    fileSize: '890 KB',
+    remarks: 'Validated with University Registrar database.'
+  },
+  { 
+    id: 'CMP-23425', 
+    name: 'Miguel Santos', 
+    email: 'miguel.s@example.com',
+    scholarship: 'LGU Assist', 
+    requirement: '1st Sem Grades', 
+    academicYear: 'AY 2025-2026',
+    status: 'Pending Review', 
+    date: 'Oct 22, 2025',
+    fileName: 'Santos_Grades_2025.pdf',
+    fileSize: '2.1 MB',
+    remarks: 'Submitted via scholar portal. Needs GWA verification.'
+  },
+  {
+    id: 'CMP-23426',
+    name: 'Chloe Lim',
+    email: 'chloe.l@example.com',
+    scholarship: 'DOST-SEI Merit',
+    requirement: 'Certificate of Good Moral',
+    academicYear: 'AY 2025-2026',
+    status: 'Approved',
+    date: 'Oct 20, 2025',
+    fileName: 'Good_Moral_Lim.pdf',
+    fileSize: '650 KB',
+    remarks: 'Issued by Office of Student Affairs.'
+  },
+  {
+    id: 'CMP-23427',
+    name: 'Alexander Cruz',
+    email: 'alex.cruz@example.com',
+    scholarship: 'OWWA Scholarship',
+    requirement: '2nd Sem Reg. Form',
+    academicYear: 'AY 2025-2026',
+    status: 'Rejected',
+    date: 'Oct 18, 2025',
+    fileName: 'Unclear_Scan_COR.pdf',
+    fileSize: '410 KB',
+    remarks: 'Document scan is blurry and unreadable. Scholar notified.'
+  }
+];
 
 const AdminCompliance = () => {
-  const [compliances, setCompliances] = useState([
-    { 
-      id: 'CMP-23423', 
-      name: 'Jeremiah Madronio', 
-      email: 'jeremiah.m@example.com',
-      scholarship: 'DOST-SEI Merit', 
-      requirement: '1st Sem Grades', 
-      status: 'Pending Review', 
-      date: 'Oct 24, 2025',
-      fileName: '1st_Sem_Grades_Madronio.pdf',
-      fileSize: '1.4 MB',
-      remarks: 'GWA: 1.45 - Awaiting official seal verification'
-    },
-    { 
-      id: 'CMP-23424', 
-      name: 'Samantha Reyes', 
-      email: 'samantha.r@example.com',
-      scholarship: 'CHED Half-Merit', 
-      requirement: 'Reg. Form', 
-      status: 'Approved', 
-      date: 'Oct 23, 2025',
-      fileName: 'COR_2ndSem_Reyes.pdf',
-      fileSize: '890 KB',
-      remarks: 'Validated with Registrar database'
-    },
-    { 
-      id: 'CMP-23425', 
-      name: 'Miguel Santos', 
-      email: 'miguel.s@example.com',
-      scholarship: 'LGU Assist', 
-      requirement: '1st Sem Grades', 
-      status: 'Pending Review', 
-      date: 'Oct 22, 2025',
-      fileName: 'Santos_Grades_2025.pdf',
-      fileSize: '2.1 MB',
-      remarks: 'Submitted via scholar portal'
-    },
-    {
-      id: 'CMP-23426',
-      name: 'Chloe Lim',
-      email: 'chloe.l@example.com',
-      scholarship: 'DOST-SEI Merit',
-      requirement: 'Certificate of Good Moral',
-      status: 'Approved',
-      date: 'Oct 20, 2025',
-      fileName: 'Good_Moral_Lim.pdf',
-      fileSize: '650 KB',
-      remarks: 'Issued by Dean of Student Affairs'
-    },
-    {
-      id: 'CMP-23427',
-      name: 'Alexander Cruz',
-      email: 'alex.cruz@example.com',
-      scholarship: 'OWWA Scholarship',
-      requirement: '2nd Sem Reg. Form',
-      status: 'Rejected',
-      date: 'Oct 18, 2025',
-      fileName: 'Unclear_Scan_COR.pdf',
-      fileSize: '410 KB',
-      remarks: 'Document scan is blurry. Scholar notified to re-upload.'
-    }
-  ]);
-
-  const [searchTerm, setSearchTerm] = useState('');
+  const [compliances, setCompliances] = useState(MOCK_COMPLIANCES);
   const [activeTab, setActiveTab] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedScholarship, setSelectedScholarship] = useState('All scholarships');
+  const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedCompliance, setSelectedCompliance] = useState(null);
+  const [toastMessage, setToastMessage] = useState('');
 
-  // Status Handlers
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 3000);
+  };
+
   const handleUpdateStatus = (id, newStatus) => {
-    setCompliances(prev => 
-      prev.map(item => item.id === id ? { ...item, status: newStatus } : item)
-    );
+    setCompliances(prev => prev.map(c => c.id === id ? { ...c, status: newStatus } : c));
     if (selectedCompliance && selectedCompliance.id === id) {
       setSelectedCompliance(prev => prev ? { ...prev, status: newStatus } : null);
     }
+    setOpenDropdownId(null);
+    showToast(`Submission updated to ${newStatus}`);
   };
 
-  // Filter Logic
-  const filteredCompliances = compliances.filter(item => {
-    const matchesSearch = 
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.scholarship.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.requirement.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.id.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredCompliances = compliances.filter(c => {
+    if (activeTab === 'Pending Review' && c.status !== 'Pending Review') return false;
+    if (activeTab === 'Approved' && c.status !== 'Approved') return false;
+    if (activeTab === 'Rejected' && c.status !== 'Rejected') return false;
     
-    if (activeTab === 'All') return matchesSearch;
-    return matchesSearch && item.status === activeTab;
+    if (selectedScholarship !== 'All scholarships' && c.scholarship !== selectedScholarship) return false;
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      return (
+        c.name.toLowerCase().includes(q) ||
+        c.scholarship.toLowerCase().includes(q) ||
+        c.requirement.toLowerCase().includes(q) ||
+        c.id.toLowerCase().includes(q)
+      );
+    }
+    return true;
   });
 
-  // Summary Metrics
-  const totalCount = compliances.length;
-  const pendingCount = compliances.filter(c => c.status === 'Pending Review').length;
-  const approvedCount = compliances.filter(c => c.status === 'Approved').length;
-  const rejectedCount = compliances.filter(c => c.status === 'Rejected').length;
+  const tabCounts = {
+    All: compliances.length,
+    Pending: compliances.filter(c => c.status === 'Pending Review').length,
+    Approved: compliances.filter(c => c.status === 'Approved').length,
+    Rejected: compliances.filter(c => c.status === 'Rejected').length
+  };
 
   return (
-    <div className="admin-compliance-container">
+    <div className="provider-programs-container">
+      {toastMessage && (
+        <div className="toast-notification-banner">
+          <CheckCircle size={16} /> {toastMessage}
+        </div>
+      )}
+
       {/* Page Header */}
-      <div className="compliance-header">
-        <h2>Compliance Tracking</h2>
-        <p>Review and verify ongoing academic and enrollment requirements submitted by active scholars.</p>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="compliance-stats-grid">
-        <div className="compliance-stat-card">
-          <div className="stat-icon-box blue">
-            <FileText size={24} />
-          </div>
-          <div className="stat-info">
-            <h3>{totalCount}</h3>
-            <p>Total Requirements</p>
-          </div>
-        </div>
-
-        <div className="compliance-stat-card">
-          <div className="stat-icon-box yellow">
-            <Clock size={24} />
-          </div>
-          <div className="stat-info">
-            <h3>{pendingCount}</h3>
-            <p>Pending Review</p>
-          </div>
-        </div>
-
-        <div className="compliance-stat-card">
-          <div className="stat-icon-box green">
-            <CheckCircle size={24} />
-          </div>
-          <div className="stat-info">
-            <h3>{approvedCount}</h3>
-            <p>Approved Submissions</p>
-          </div>
-        </div>
-
-        <div className="compliance-stat-card">
-          <div className="stat-icon-box red">
-            <AlertCircle size={24} />
-          </div>
-          <div className="stat-info">
-            <h3>{rejectedCount}</h3>
-            <p>Rejected / Resubmit</p>
-          </div>
+      <div className="programs-header-row">
+        <div>
+          <h2 className="programs-header-title">Compliance Tracking</h2>
+          <p className="programs-header-subtitle">Review, verify, and track ongoing scholar requirement submissions.</p>
         </div>
       </div>
 
-      {/* Search & Top Action Bar */}
-      <div className="applicants-top-bar">
-        <div className="search-input-wrapper">
-          <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search by scholar name, requirement, or scholarship..." 
-            className="applicants-search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      {/* KPI Cards */}
+      <div className="summary-kpi-grid">
+        <div className="kpi-card">
+          <span className="kpi-label">Total Submissions</span>
+          <span className="kpi-number">{tabCounts.All}</span>
+          <span className="kpi-subtext">Across all active programs</span>
+        </div>
+        <div className="kpi-card">
+          <span className="kpi-label">Pending Review</span>
+          <span className="kpi-number" style={{ color: '#d97706' }}>{tabCounts.Pending}</span>
+          <span className="kpi-subtext">Awaiting verification</span>
+        </div>
+        <div className="kpi-card">
+          <span className="kpi-label">Approved Documents</span>
+          <span className="kpi-number" style={{ color: '#15803d' }}>{tabCounts.Approved}</span>
+          <span className="kpi-subtext">Verified & cleared</span>
+        </div>
+        <div className="kpi-card">
+          <span className="kpi-label">Rejected / Resubmit</span>
+          <span className="kpi-number" style={{ color: '#dc2626' }}>{tabCounts.Rejected}</span>
+          <span className="kpi-subtext">Scholar action required</span>
         </div>
       </div>
 
-      {/* Status Filter Tabs */}
-      <div className="applicants-tabs">
-        <button 
-          className={`applicants-tab ${activeTab === 'All' ? 'active' : ''}`}
-          onClick={() => setActiveTab('All')}
-        >
-          All Submissions ({totalCount})
-        </button>
-        <button 
-          className={`applicants-tab ${activeTab === 'Pending Review' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Pending Review')}
-        >
-          Pending Review ({pendingCount})
-        </button>
-        <button 
-          className={`applicants-tab ${activeTab === 'Approved' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Approved')}
-        >
-          Approved ({approvedCount})
-        </button>
-        <button 
-          className={`applicants-tab ${activeTab === 'Rejected' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Rejected')}
-        >
-          Rejected ({rejectedCount})
-        </button>
-      </div>
+      {/* Main Table Card (Matches Provider Programs Design) */}
+      <div className="programs-table-card">
+        <div className="programs-toolbar">
+          {/* Status Tabs */}
+          <div className="status-tabs-group">
+            {[
+              { label: `All (${tabCounts.All})`, val: 'All' },
+              { label: `Pending (${tabCounts.Pending})`, val: 'Pending Review' },
+              { label: `Approved (${tabCounts.Approved})`, val: 'Approved' },
+              { label: `Rejected (${tabCounts.Rejected})`, val: 'Rejected' }
+            ].map(tab => (
+              <button
+                key={tab.val}
+                className={`tab-btn ${activeTab === tab.val ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.val)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
 
-      {/* Main Data Table Card */}
-      <div className="applicants-table-card">
-        <div style={{ overflowX: 'auto' }}>
-          <table className="applicants-table">
+          {/* Right Controls */}
+          <div className="toolbar-controls-right">
+            <div className="table-search-input-box">
+              <Search size={15} className="search-icon-muted" />
+              <input
+                type="text"
+                placeholder="Search scholar or requirement"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <select
+              className="table-select-cycle"
+              value={selectedScholarship}
+              onChange={e => setSelectedScholarship(e.target.value)}
+            >
+              <option value="All scholarships">All scholarships</option>
+              <option value="DOST-SEI Merit">DOST-SEI Merit</option>
+              <option value="CHED Half-Merit">CHED Half-Merit</option>
+              <option value="LGU Assist">LGU Assist</option>
+              <option value="OWWA Scholarship">OWWA Scholarship</option>
+            </select>
+            <button className="btn-table-export" onClick={() => showToast('Exporting compliance records...')}>
+              <Download size={14} /> Export
+            </button>
+          </div>
+        </div>
+
+        {/* Data Table */}
+        <div className="table-responsive-wrapper">
+          <table className="programs-data-table">
             <thead>
               <tr>
-                <th style={{ width: '130px' }}>Submission ID</th>
-                <th>Scholar Name</th>
-                <th>Scholarship</th>
+                <th style={{ width: '30%' }}>Scholar & Submission</th>
                 <th>Requirement</th>
-                <th style={{ width: '130px' }}>Date Submitted</th>
-                <th style={{ width: '150px' }}>Status</th>
-                <th style={{ textAlign: 'right', paddingRight: '2rem', width: '160px' }}>Actions</th>
+                <th>Date Submitted</th>
+                <th>Status</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredCompliances.length > 0 ? (
-                filteredCompliances.map((item) => (
-                  <tr key={item.id}>
-                    <td style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{item.id}</td>
+              {filteredCompliances.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="empty-table-cell">
+                    No submissions found matching your filters.
+                  </td>
+                </tr>
+              ) : (
+                filteredCompliances.map(item => (
+                  <tr 
+                    key={item.id} 
+                    className="program-table-row"
+                    onClick={() => setSelectedCompliance(item)}
+                  >
+                    {/* Scholar */}
                     <td>
-                      <div>
-                        <strong style={{ display: 'block', color: 'var(--text-main)' }}>{item.name}</strong>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{item.email}</span>
+                      <div className="program-title-cell">
+                        <span className="program-main-title">{item.name}</span>
+                        <span className="program-code-sub">{item.id} · {item.scholarship}</span>
                       </div>
                     </td>
-                    <td>{item.scholarship}</td>
-                    <td>{item.requirement}</td>
-                    <td>{item.date}</td>
+
+                    {/* Requirement */}
                     <td>
-                      <span className={`status-badge ${
+                      <div className="program-title-cell">
+                        <span className="table-text-bold">{item.requirement}</span>
+                        <span className="program-code-sub">{item.academicYear}</span>
+                      </div>
+                    </td>
+
+                    {/* Date Submitted */}
+                    <td>
+                      <span className="table-date-text">{item.date}</span>
+                    </td>
+
+                    {/* Status */}
+                    <td onClick={e => e.stopPropagation()}>
+                      <span className={`status-badge-pill ${
                         item.status === 'Approved' 
-                          ? 'status-approved' 
+                          ? 'status-published' 
                           : item.status === 'Rejected' 
-                          ? 'status-rejected' 
-                          : 'status-pending'
-                      }`}>
-                        {item.status === 'Approved' && <CheckCircle size={14} />}
-                        {item.status === 'Pending Review' && <Clock size={14} />}
-                        {item.status === 'Rejected' && <AlertCircle size={14} />}
+                          ? 'status-paused' 
+                          : 'status-draft'
+                      }`} style={{
+                        background: item.status === 'Approved' ? '#dcfce7' : item.status === 'Rejected' ? '#fee2e2' : '#fef3c7',
+                        color: item.status === 'Approved' ? '#15803d' : item.status === 'Rejected' ? '#b91c1c' : '#d97706',
+                        borderColor: item.status === 'Approved' ? '#bbf7d0' : item.status === 'Rejected' ? '#fca5a5' : '#fde68a'
+                      }}>
                         {item.status}
                       </span>
                     </td>
-                    <td style={{ textAlign: 'right', paddingRight: '1.5rem' }}>
-                      <div className="action-buttons-group">
-                        <button 
-                          className="btn-action-outline"
-                          title="View Details & Document"
+
+                    {/* Actions */}
+                    <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
+                      <div className="table-actions-cell">
+                        <button
+                          className="btn-row-view"
                           onClick={() => setSelectedCompliance(item)}
+                          title="View details"
                         >
-                          <Eye size={15} />
+                          View <ChevronRight size={13} />
                         </button>
-                        {item.status === 'Pending Review' && (
-                          <>
-                            <button 
-                              className="btn-action-outline text-green"
-                              title="Approve Submission"
-                              onClick={() => handleUpdateStatus(item.id, 'Approved')}
-                            >
-                              <CheckCircle size={15} />
-                            </button>
-                            <button 
-                              className="btn-action-outline text-red"
-                              title="Reject Submission"
-                              onClick={() => handleUpdateStatus(item.id, 'Rejected')}
-                            >
-                              <XCircle size={15} />
-                            </button>
-                          </>
-                        )}
+
+                        <div className="dropdown-action-wrapper">
+                          <button
+                            className="btn-dots-menu"
+                            onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
+                          >
+                            <MoreVertical size={16} />
+                          </button>
+
+                          {openDropdownId === item.id && (
+                            <div className="action-dropdown-menu">
+                              <button onClick={() => { setSelectedCompliance(item); setOpenDropdownId(null); }}>
+                                <Eye size={13} /> View details
+                              </button>
+                              {item.status !== 'Approved' && (
+                                <button onClick={() => handleUpdateStatus(item.id, 'Approved')}>
+                                  <CheckCircle size={13} /> Approve
+                                </button>
+                              )}
+                              {item.status !== 'Rejected' && (
+                                <button 
+                                  className="dropdown-delete-item"
+                                  onClick={() => handleUpdateStatus(item.id, 'Rejected')}
+                                >
+                                  <XCircle size={13} /> Reject
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </td>
                   </tr>
                 ))
-              ) : (
-                <tr>
-                  <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
-                    No requirements found matching your criteria.
-                  </td>
-                </tr>
               )}
             </tbody>
           </table>
-        </div>
-
-        {/* Pagination Controls */}
-        <div className="table-pagination">
-          <span className="pagination-info">
-            Showing {filteredCompliances.length > 0 ? 1 : 0} to {filteredCompliances.length} of {compliances.length} entries
-          </span>
-          <div className="pagination-controls">
-            <button className="page-btn"><ChevronLeft size={16} /></button>
-            <button className="page-btn active">1</button>
-            <button className="page-btn"><ChevronRight size={16} /></button>
-          </div>
         </div>
       </div>
 
       {/* Document Verification Modal */}
       {selectedCompliance && (
         <div className="modal-overlay" onClick={() => setSelectedCompliance(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Verify Submitted Requirement</h3>
+          <div className="modal-content program-modal-box" onClick={e => e.stopPropagation()}>
+            <div className="program-modal-header">
+              <div>
+                <h3 className="modal-program-title">{selectedCompliance.requirement}</h3>
+                <p className="modal-program-sector">Submitted by {selectedCompliance.name} • {selectedCompliance.scholarship}</p>
+              </div>
               <button className="modal-close-btn" onClick={() => setSelectedCompliance(null)}>
                 <X size={20} />
               </button>
             </div>
 
-            <div className="modal-body">
-              <div className="detail-grid">
-                <div className="detail-item">
-                  <label>Submission ID</label>
-                  <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{selectedCompliance.id}</span>
+            <div className="modal-body" style={{ padding: 0 }}>
+              <div className="modal-stats-grid">
+                <div className="modal-stat-card">
+                  <span className="modal-stat-label">SUBMISSION ID</span>
+                  <span className="modal-stat-val">{selectedCompliance.id}</span>
                 </div>
-                <div className="detail-item">
-                  <label>Date Submitted</label>
-                  <span>{selectedCompliance.date}</span>
-                </div>
-                <div className="detail-item">
-                  <label>Scholar Name</label>
-                  <span>{selectedCompliance.name}</span>
-                </div>
-                <div className="detail-item">
-                  <label>Scholarship Program</label>
-                  <span>{selectedCompliance.scholarship}</span>
-                </div>
-                <div className="detail-item">
-                  <label>Requirement</label>
-                  <span>{selectedCompliance.requirement}</span>
-                </div>
-                <div className="detail-item">
-                  <label>Status</label>
-                  <div>
-                    <span className={`status-badge ${
-                      selectedCompliance.status === 'Approved' 
-                        ? 'status-approved' 
-                        : selectedCompliance.status === 'Rejected' 
-                        ? 'status-rejected' 
-                        : 'status-pending'
-                    }`}>
-                      {selectedCompliance.status}
-                    </span>
-                  </div>
+                <div className="modal-stat-card">
+                  <span className="modal-stat-label">DATE SUBMITTED</span>
+                  <span className="modal-stat-val">{selectedCompliance.date}</span>
                 </div>
               </div>
 
-              {/* Document File Preview Card */}
+              {/* Document File Preview */}
               <div className="document-preview-card">
                 <div className="doc-info">
                   <div className="doc-icon-wrapper">
-                    <FileText size={24} />
+                    <FileText size={22} />
                   </div>
                   <div className="doc-text">
-                    <h5>{selectedCompliance.fileName}</h5>
-                    <p>Size: {selectedCompliance.fileSize} • Uploaded by scholar</p>
+                    <h5 style={{ margin: 0, fontWeight: 700 }}>{selectedCompliance.fileName}</h5>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Size: {selectedCompliance.fileSize}</p>
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button className="btn-action-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                    <Download size={14} /> Download
-                  </button>
-                  <button className="btn-action-outline" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                    <ExternalLink size={14} /> Preview
+                  <button className="btn-table-export">
+                    <Download size={13} /> Download
                   </button>
                 </div>
               </div>
 
-              {/* Remarks Box */}
-              <div className="detail-item" style={{ marginTop: '1rem' }}>
-                <label>Verification Notes / Remarks</label>
-                <div style={{ 
-                  backgroundColor: '#f8fafc', 
-                  border: '1px solid var(--border-color)', 
-                  padding: '0.75rem 1rem', 
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '0.9rem',
-                  color: 'var(--text-main)'
-                }}>
+              {/* Remarks */}
+              <div className="modal-section-box">
+                <h4>Verification Notes</h4>
+                <p style={{ margin: 0, fontSize: '0.875rem', color: '#475569' }}>
                   {selectedCompliance.remarks}
-                </div>
+                </p>
               </div>
             </div>
 
-            <div className="modal-footer">
-              <button className="btn-modal-cancel" onClick={() => setSelectedCompliance(null)}>
+            <div className="modal-footer-actions">
+              <button className="btn-modal-close" onClick={() => setSelectedCompliance(null)}>
                 Close
               </button>
               {selectedCompliance.status !== 'Rejected' && (
                 <button 
-                  className="btn-modal-reject"
-                  onClick={() => {
-                    handleUpdateStatus(selectedCompliance.id, 'Rejected');
-                    setSelectedCompliance(null);
-                  }}
+                  className="btn-modal-close" 
+                  style={{ background: '#fef2f2', color: '#dc2626', borderColor: '#fca5a5' }}
+                  onClick={() => handleUpdateStatus(selectedCompliance.id, 'Rejected')}
                 >
-                  <XCircle size={16} /> Reject
+                  <XCircle size={15} /> Reject
                 </button>
               )}
               {selectedCompliance.status !== 'Approved' && (
                 <button 
-                  className="btn-modal-approve"
-                  onClick={() => {
-                    handleUpdateStatus(selectedCompliance.id, 'Approved');
-                    setSelectedCompliance(null);
-                  }}
+                  className="btn-modal-edit"
+                  onClick={() => handleUpdateStatus(selectedCompliance.id, 'Approved')}
                 >
-                  <Check size={16} /> Approve Requirement
+                  <Check size={15} /> Approve Requirement
                 </button>
               )}
             </div>

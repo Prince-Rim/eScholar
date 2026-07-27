@@ -17,30 +17,9 @@
 .sidebar-brand-header {
   padding: 1.25rem 1.5rem 0.85rem;
   border-bottom: 1px solid #e2e8f0;
-}
-
-.brand-logo-row {
   display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-
-.brand-icon-box {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #082894 0%, #1e40af 100%);
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(8, 40, 148, 0.2);
-}
-
-.brand-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #082894;
-  letter-spacing: -0.5px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .brand-subtitle {
@@ -48,7 +27,8 @@
   font-size: 0.75rem;
   color: #64748b;
   font-weight: 600;
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
+  letter-spacing: 0.01em;
 }
 
 /* Role Switcher Banner */

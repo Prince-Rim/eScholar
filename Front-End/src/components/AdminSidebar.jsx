@@ -1,79 +1,111 @@
 import React from 'react';
-import { LayoutDashboard, Users, FileText, Settings, LogOut, ClipboardCheck, PlusCircle, BarChart3 } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  Users, 
+  FileText, 
+  Settings, 
+  LogOut, 
+  ClipboardCheck, 
+  PlusCircle, 
+  BarChart3 
+} from 'lucide-react';
 import Logo from './Logo';
+import './ProviderSidebar.css';
 
 const AdminSidebar = ({ activeView, setActiveView }) => {
   return (
-    <aside className="sidebar admin-sidebar">
-      <div style={{ padding: '1.5rem', marginBottom: '1rem' }}>
-        <Logo color="#1e3a8a" size="normal" />
+    <aside className="white-provider-sidebar">
+      {/* Brand Header */}
+      <div className="sidebar-brand-header">
+        <Logo size="normal" onClick={() => setActiveView && setActiveView('dashboard')} style={{ cursor: 'pointer', marginLeft: '-3px' }} />
+        <span className="brand-subtitle">Admin Portal</span>
       </div>
-      <nav className="nav-menu">
+
+      {/* Navigation Menu */}
+      <nav className="provider-nav-menu">
+        <div className="nav-section-label">MAIN NAVIGATION</div>
+
         <button 
-          className={`nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'dashboard' ? 'active' : ''}`}
           onClick={() => setActiveView('dashboard')}
         >
-          <LayoutDashboard size={20} />
-          Dashboard
+          <LayoutDashboard size={18} />
+          <span>Dashboard</span>
         </button>
 
         <button 
-          className={`nav-item ${activeView === 'applicants' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'applicants' ? 'active' : ''}`}
           onClick={() => setActiveView('applicants')}
         >
-          <Users size={20} />
-          Applicants
+          <Users size={18} />
+          <span>Applicants</span>
         </button>
 
         <button 
-          className={`nav-item ${activeView === 'applications' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'applications' ? 'active' : ''}`}
           onClick={() => setActiveView('applications')}
         >
-          <FileText size={20} />
-          Applications
+          <FileText size={18} />
+          <span>Applications</span>
         </button>
+
         <button 
-          className={`nav-item ${activeView === 'compliance' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'compliance' ? 'active' : ''}`}
           onClick={() => setActiveView('compliance')}
         >
-          <ClipboardCheck size={20} />
-          Compliance
+          <ClipboardCheck size={18} />
+          <span>Compliance</span>
         </button>
+
+        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>PROGRAMS & SYSTEM</div>
+
         <button 
-          className={`nav-item ${activeView === 'create-program' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'create-program' ? 'active' : ''}`}
           onClick={() => setActiveView('create-program')}
         >
-          <PlusCircle size={20} />
-          Create Program
+          <PlusCircle size={18} />
+          <span>Create Program</span>
         </button>
+
         <button 
-          className={`nav-item ${activeView === 'reports' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'reports' ? 'active' : ''}`}
           onClick={() => setActiveView('reports')}
         >
-          <BarChart3 size={20} />
-          Reports
+          <BarChart3 size={18} />
+          <span>Reports</span>
         </button>
+
         <button 
-          className={`nav-item ${activeView === 'settings' ? 'active' : ''}`}
+          className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveView('settings')}
         >
-          <Settings size={20} />
-          Settings
-        </button>
-        
-        <button 
-          className="nav-item"
-          onClick={() => {
-             localStorage.removeItem('escholar_2fa_session');
-             localStorage.removeItem('escholar_user_role');
-             setActiveView('login');
-          }}
-          style={{ marginTop: 'auto', color: '#ef4444' }}
-        >
-          <LogOut size={20} />
-          Log Out
+          <Settings size={18} />
+          <span>Settings</span>
         </button>
       </nav>
+
+      {/* User Profile Footer */}
+      <div className="provider-sidebar-footer">
+        <div className="user-profile-row">
+          <div className="user-avatar-circle">FA</div>
+          <div className="user-details">
+            <span className="user-name">Fransee Azucena</span>
+            <span className="user-agency">System Administrator</span>
+          </div>
+        </div>
+
+        <button 
+          className="logout-nav-item"
+          onClick={() => {
+            localStorage.removeItem('escholar_2fa_session');
+            localStorage.removeItem('escholar_user_role');
+            setActiveView('login');
+          }}
+        >
+          <LogOut size={16} />
+          <span>Log Out</span>
+        </button>
+      </div>
     </aside>
   );
 };

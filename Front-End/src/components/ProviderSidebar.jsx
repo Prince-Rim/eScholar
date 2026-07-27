@@ -6,9 +6,9 @@ import {
   PlusCircle, 
   ShieldCheck, 
   LogOut,
-  GraduationCap,
   BookOpen
 } from 'lucide-react';
+import Logo from './Logo';
 import './ProviderSidebar.css';
 
 const ProviderSidebar = ({ activeView, setActiveView }) => {
@@ -16,12 +16,7 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
     <aside className="white-provider-sidebar">
       {/* Brand Header */}
       <div className="sidebar-brand-header">
-        <div className="brand-logo-row">
-          <div className="brand-icon-box">
-            <GraduationCap size={22} color="#ffffff" />
-          </div>
-          <span className="brand-title">eScholar</span>
-        </div>
+        <Logo size="normal" onClick={() => setActiveView && setActiveView('my-programs')} style={{ cursor: 'pointer', marginLeft: '-3px' }} />
         <span className="brand-subtitle">Provider Portal</span>
       </div>
 
@@ -64,11 +59,11 @@ const ProviderSidebar = ({ activeView, setActiveView }) => {
         </button>
 
         <button 
-          className={`provider-nav-item ${activeView === 'renewals' ? 'active' : ''}`}
-          onClick={() => setActiveView('renewals')}
+          className={`provider-nav-item ${activeView === 'renewals' || activeView === 'active-scholars' ? 'active' : ''}`}
+          onClick={() => setActiveView('active-scholars')}
         >
           <RefreshCw size={18} />
-          <span>Grant Renewals</span>
+          <span>Active Scholars</span>
         </button>
 
         <button 

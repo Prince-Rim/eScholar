@@ -20,6 +20,8 @@ import ProviderSidebar from './components/ProviderSidebar';
 import ProviderCreateProgram from './components/ProviderCreateProgram';
 import ProviderPrograms from './components/ProviderPrograms';
 import ProviderProgramDetail from './components/ProviderProgramDetail';
+import ProviderApplicantPipeline from './components/ProviderApplicantPipeline';
+import ProviderActiveScholars from './components/ProviderActiveScholars';
 
 function App() {
   const [currentView, setCurrentView] = useState('landing');
@@ -62,6 +64,10 @@ function App() {
               program={selectedProgram}
               setActiveView={setCurrentView}
             />
+          ) : currentView === 'applicants' ? (
+            <ProviderApplicantPipeline />
+          ) : currentView === 'renewals' || currentView === 'active-scholars' ? (
+            <ProviderActiveScholars />
           ) : (
             <ProviderPrograms
               setActiveView={setCurrentView}
