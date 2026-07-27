@@ -11,24 +11,24 @@ const Compliance = () => {
         <p>Upload and manage the documents needed to maintain your active scholarships.</p>
       </div>
 
-      <div className="stats-row">
+      <section className="stats-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
         <div className="stat-card">
-          <div className="stat-number">1</div>
-          <div className="stat-label">Active Scholarships</div>
-          <p className="stat-desc">Maintaining requirements</p>
+          <h3>01</h3>
+          <p>Active Scholarships</p>
+          <span>Maintaining requirements</span>
         </div>
         <div className="stat-card">
-          <div className="stat-number" style={{ color: '#eab308' }}>2</div>
-          <div className="stat-label">Pending Uploads</div>
-          <p className="stat-desc">Due in 14 days</p>
+          <h3 style={{ color: '#eab308' }}>02</h3>
+          <p>Pending Uploads</p>
+          <span>Due in 14 days</span>
         </div>
-      </div>
+      </section>
 
-      <div className="charts-row" style={{ gridTemplateColumns: '1fr', marginTop: '2rem' }}>
-        <div className="chart-card">
-          <div className="card-header">
-            <h3>DOST-SEI Merit Scholarship</h3>
-            <span className="badge" style={{ backgroundColor: '#dcfce7', color: '#166534', padding: '4px 10px', borderRadius: '12px', fontSize: '12px' }}>Active Scholar</span>
+      <div className="main-layout" style={{ marginTop: '2rem' }}>
+        <div className="recommendation-card" style={{ padding: '1.5rem 2rem' }}>
+          <div className="card-top-row" style={{ alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '1rem', marginBottom: '1rem' }}>
+            <h3 className="card-title" style={{ margin: 0, fontSize: '1.25rem', fontWeight: 600 }}>DOST-SEI Merit Scholarship</h3>
+            <span className="app-status-badge" style={{ backgroundColor: '#dcfce7', color: '#166534', borderColor: '#bbf7d0', padding: '0.4rem 1rem' }}>Active Scholar</span>
           </div>
           
           <div className="compliance-list" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>

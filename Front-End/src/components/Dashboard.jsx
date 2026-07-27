@@ -43,16 +43,16 @@ const Dashboard = () => {
              <RecommendationCard 
               tag="DOST"
               title="DOST Merit Program"
-              description="Lorem Ipsum blah blah"
-              details="40,000/yr tuition - 3,000 stipend  40 slots  30days"
+              description="Awarded to students with high aptitude in science and mathematics who wish to pursue careers in science and technology fields."
+              details="40,000/yr tuition - 3,000 stipend | 40 slots | 30 days left"
               match="95"
             />
             <RecommendationCard 
-              tag="DOST"
-              title="DOST Merit Program"
-              description="Lorem Ipsum blah blah"
-              details="40,000/yr tuition - 3,000 stipend  40 slots  30days"
-              match="95"
+              tag="CHED"
+              title="CHED Scholarship Program (CSP)"
+              description="Financial assistance for highly qualified, underprivileged, and deserving students seeking to pursue a college degree."
+              details="30,000/yr tuition - 2,500 stipend | 20 slots | 15 days left"
+              match="88"
             />
           </div>
         </div>
@@ -62,15 +62,15 @@ const Dashboard = () => {
           <div className="recommendations-list">
             <ApplicationCard 
               title="DOST Merit Program"
-              description="Lorem Ipsum blah blah"
-              date="Applied: july 10, 2025"
+              description="Application for the Department of Science and Technology Undergraduate Scholarship."
+              date="Applied: July 10, 2025"
               status="Under Review"
             />
             <ApplicationCard 
-              title="DOST Merit Program"
-              description="Lorem Ipsum blah blah"
-              date="Applied: july 10, 2025"
-              status="Under Review"
+              title="CHED Scholarship Program"
+              description="Application for the CHED Student Financial Assistance Program."
+              date="Applied: July 12, 2025"
+              status="Pending Documents"
             />
           </div>
         </div>
