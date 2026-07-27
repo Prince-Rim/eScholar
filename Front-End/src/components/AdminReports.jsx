@@ -1,5 +1,6 @@
 import React from 'react';
 import { Download, Users, CheckCircle, TrendingUp } from 'lucide-react';
+import './ProviderPrograms.css';
 
 const AdminReports = () => {
   return (
@@ -9,8 +10,8 @@ const AdminReports = () => {
           <h2>Analytics & Reports</h2>
           <p>Overview of your scholarship programs' performance and applicant metrics.</p>
         </div>
-        <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Download size={16} />
+        <button className="btn-table-export" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', flex: '0 0 auto' }}>
+          <Download size={15} />
           Export CSV
         </button>
       </div>

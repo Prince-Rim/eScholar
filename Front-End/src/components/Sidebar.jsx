@@ -55,7 +55,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
           <span>Compliance</span>
         </button>
 
-        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>ACCOUNT</div>
+        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>SYSTEM</div>
 
         <button 
           className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
