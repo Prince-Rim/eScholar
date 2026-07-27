@@ -1,0 +1,12 @@
+{
+  "name": "escholar-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm --prefix Front-End install",
+    "dev": "npm --prefix Front-End run dev",
+    "build": "npm --prefix Front-End run build",
+    "preview": "npm --prefix Front-End run preview",
+    "lint": "npm --prefix Front-End run lint"
+  }
+}

@@ -1,0 +1,471 @@
+/* ================================================================
+   ProviderDashboard — simple clean white + #082894 blue theme
+   Same fonts and borders as My Scholarships / Create Scholarship
+   ================================================================ */
+
+.pd-page {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 2rem 2.5rem 4rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #0f172a;
+}
+
+/* ── Header ── */
+.pd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.pd-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.2rem;
+  letter-spacing: -0.4px;
+}
+
+.pd-subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+.pd-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.35rem;
+  background: linear-gradient(135deg, #082894 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(8,40,148,0.25);
+  transition: opacity 0.15s;
+}
+.pd-primary-btn:hover { opacity: 0.88; }
+
+.pd-verif-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border: 1.5px solid #fde68a;
+  border-radius: 8px;
+  background: #fef9c3;
+  color: #92400e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pd-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  background: #dcfce7;
+  color: #15803d;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* ── KPI Grid ── */
+.pd-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pd-kpi-card {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.pd-kpi-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #082894;
+  flex-shrink: 0;
+}
+
+.pd-kpi-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.1rem;
+}
+
+.pd-kpi-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin: 0 0 0.15rem;
+}
+
+.pd-kpi-sub {
+  font-size: 0.73rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Charts Row ── */
+.pd-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.6fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Card ── */
+.pd-card {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.pd-card-title {
+  font-size: 0.925rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.2rem;
+  letter-spacing: -0.2px;
+}
+
+.pd-card-sub {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0 0 1rem;
+  font-weight: 500;
+}
+
+/* ── Donut Layout ── */
+.pd-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.pd-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pd-donut-val {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.pd-donut-lbl {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Legend */
+.pd-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pd-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pd-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pd-legend-label {
+  flex: 1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.pd-legend-val {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* ── Bottom Row ── */
+.pd-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+/* ── Slot Utilization ── */
+.pd-slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.25rem;
+}
+
+.pd-slot-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  cursor: pointer;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  transition: opacity 0.15s;
+}
+
+.pd-slot-row:last-child { border-bottom: none; }
+.pd-slot-row:hover { opacity: 0.75; }
+
+.pd-slot-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pd-slot-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 78%;
+}
+
+.pd-slot-pct {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #082894;
+}
+
+.pd-slot-track {
+  width: 100%;
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.pd-slot-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #082894, #2563eb);
+  border-radius: 3px;
+}
+
+.pd-slot-frac {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* ── Quick Actions ── */
+.pd-action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.pd-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.12s;
+  width: 100%;
+  font-family: inherit;
+}
+
+.pd-action-row:hover {
+  border-color: #082894;
+  background: #f8faff;
+}
+
+.pd-action-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #082894;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pd-action-label {
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.05rem;
+  text-align: left;
+}
+
+.pd-action-sub {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+  text-align: left;
+}
+
+/* ── Needs Attention ── */
+.pd-attn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pd-attn-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.7rem 0.85rem;
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.pd-attn-row:hover { opacity: 0.8; }
+
+.pd-attn-prog {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.1rem;
+}
+
+.pd-attn-note {
+  font-size: 0.73rem;
+  color: #92400e;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Deadlines ── */
+.pd-deadline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.pd-deadline-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pd-deadline-row:last-child { border-bottom: none; }
+.pd-deadline-row:hover { opacity: 0.75; }
+
+.pd-deadline-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #082894;
+  flex-shrink: 0;
+}
+
+.pd-deadline-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pd-deadline-date {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+  margin: 0;
+}
+
+.pd-deadline-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #082894;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 5px;
+  padding: 0.15rem 0.45rem;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .pd-charts-row  { grid-template-columns: 1fr 1fr; }
+  .pd-card-wide   { grid-column: 1 / -1; }
+  .pd-bottom-row  { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 700px) {
+  .pd-page        { padding: 1.25rem 1.25rem 3rem; }
+  .pd-kpi-grid    { grid-template-columns: 1fr 1fr; }
+  .pd-charts-row  { grid-template-columns: 1fr; }
+  .pd-bottom-row  { grid-template-columns: 1fr; }
+}
