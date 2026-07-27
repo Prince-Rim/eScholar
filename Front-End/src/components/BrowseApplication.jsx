@@ -256,7 +256,7 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
       )}
 
       {/* Header */}
-      <div className="programs-header-row">
+      <div className="programs-header-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
         <div>
           <h2 className="programs-header-title">
             {isSavedOnlyMode ? 'Saved Scholarships' : 'Browse Scholarships'}
@@ -267,6 +267,49 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
               : 'Explore and apply for active government and private scholarship grants.'}
           </p>
         </div>
+
+        {!isSavedOnlyMode && (
+          <div>
+            <input 
+              type="file" 
+              id="top-header-ai-extractor-input"
+              accept=".pdf,.png,.jpg,.jpeg"
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  if (publishedPrograms.length > 0) {
+                    setSelectedProgram(publishedPrograms[0]);
+                    setIsApplying(true);
+                    handleAutoExtract(file);
+                  }
+                }
+                e.target.value = null;
+              }}
+            />
+            <label 
+              htmlFor="top-header-ai-extractor-input"
+              className="pd-primary-btn"
+              style={{ 
+                cursor: 'pointer', 
+                background: '#082894', 
+                padding: '0.65rem 1.25rem', 
+                borderRadius: '8px', 
+                fontSize: '0.85rem', 
+                fontWeight: 700, 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.55rem',
+                color: '#ffffff',
+                boxShadow: '0 4px 14px rgba(8, 40, 148, 0.25)',
+                margin: 0
+              }}
+            >
+              <Sparkles size={16} />
+              <span>Auto-Extract & Upload Document</span>
+            </label>
+          </div>
+        )}
       </div>
 
       {/* Filters Toolbar */}
