@@ -49,16 +49,6 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
           <BarChart3 size={18} />
           <span>Reports</span>
         </button>
-
-        <div className="nav-section-label" style={{ marginTop: '1.25rem' }}>SYSTEM</div>
-
-        <button 
-          className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
-          onClick={() => setActiveView('settings')}
-        >
-          <Settings size={18} />
-          <span>Settings</span>
-        </button>
       </nav>
 
       {/* User Profile Footer */}
@@ -70,6 +60,16 @@ const AdminSidebar = ({ activeView, setActiveView }) => {
             <span className="user-agency">System Administrator</span>
           </div>
         </div>
+
+        {/* Settings — bottom, above logout */}
+        <button
+          className={`provider-nav-item ${activeView === 'settings' ? 'active' : ''}`}
+          style={{ width: '100%', marginBottom: '0.25rem' }}
+          onClick={() => setActiveView('settings')}
+        >
+          <Settings size={16} />
+          <span>Account Settings</span>
+        </button>
 
         <button 
           className="logout-nav-item"
