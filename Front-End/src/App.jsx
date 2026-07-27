@@ -16,6 +16,8 @@ import AdminCompliance from './components/AdminCompliance';
 import AdminCreateProgram from './components/AdminCreateProgram';
 import AdminReports from './components/AdminReports';
 import LandingPage from './components/LandingPage';
+import ProviderSidebar from './components/ProviderSidebar';
+import ProviderCreateProgram from './components/ProviderCreateProgram';
 
 function App() {
   const [currentView, setCurrentView] = useState('landing');
@@ -40,23 +42,30 @@ function App() {
     <div className="app-container">
       {userRole === 'admin' ? (
         <AdminSidebar activeView={currentView} setActiveView={setCurrentView} />
+      ) : userRole === 'provider' ? (
+        <ProviderSidebar activeView={currentView} setActiveView={setCurrentView} />
       ) : (
         <Sidebar activeView={currentView} setActiveView={setCurrentView} />
       )}
       <div className="main-wrapper">
-        <Topbar />
-        {currentView === 'compliance' && userRole === 'student' && <Compliance />}
-        
-        {/* Admin Views */}
-        {currentView === 'dashboard' && userRole === 'admin' && <AdminDashboard setActiveView={setCurrentView} />}
-        {currentView === 'applicants' && userRole === 'admin' && <AdminApplicants />}
-        {currentView === 'applications' && userRole === 'admin' && <AdminApplications />}
-        {currentView === 'compliance' && userRole === 'admin' && <AdminCompliance />}
-        {currentView === 'create-program' && userRole === 'admin' && <AdminCreateProgram />}
-        {currentView === 'reports' && userRole === 'admin' && <AdminReports />}
-        {currentView === 'dashboard' && userRole === 'student' && <Dashboard />}
-        {currentView === 'browse' && <BrowseApplication />}
-        {currentView === 'applications' && <MyApplications />}
+        {userRole !== 'provider' && <Topbar />}
+
+        {/* Provider Views */}
+        {userRole === 'provider' && (
+          <ProviderCreateProgram setActiveView={setCurrentView} />
+        )}
+
+        {/* Student & Admin Views */}
+        {userRole === 'student' && currentView === 'compliance' && <Compliance />}
+        {userRole === 'admin' && currentView === 'dashboard' && <AdminDashboard setActiveView={setCurrentView} />}
+        {userRole === 'admin' && currentView === 'applicants' && <AdminApplicants />}
+        {userRole === 'admin' && currentView === 'applications' && <AdminApplications />}
+        {userRole === 'admin' && currentView === 'compliance' && <AdminCompliance />}
+        {userRole === 'admin' && currentView === 'create-program' && <ProviderCreateProgram setActiveView={setCurrentView} />}
+        {userRole === 'admin' && currentView === 'reports' && <AdminReports />}
+        {userRole === 'student' && currentView === 'dashboard' && <Dashboard />}
+        {userRole === 'student' && currentView === 'browse' && <BrowseApplication />}
+        {userRole === 'student' && currentView === 'applications' && <MyApplications />}
       </div>
     </div>
   );

@@ -35,6 +35,10 @@ const Login = ({ setActiveView, setUserRole }) => {
       setError('');
       setRoleToSet('admin');
       setStep(2);
+    } else if ((email === 'provider@example.com' || email === 'provider123') && (password === 'provider123' || password === 'admin123')) {
+      setError('');
+      setRoleToSet('provider');
+      setStep(2);
     } else {
       setError('Invalid email or password.');
     }
