@@ -73,6 +73,14 @@ const MOCK_SESSIONS = [
   { id: 3, device: 'Chrome on macOS',      location: 'Manila, PH',               lastActive: '2 days ago',   current: false, icon: 'desktop' },
 ];
 
+const ACTIVITY_LOG = [
+  { action: 'Logged in',                        time: 'Today, 12:42 AM', location: 'Calamba City, PH' },
+  { action: 'Changed notification settings',    time: 'Today, 12:30 AM', location: 'Calamba City, PH' },
+  { action: 'Updated account profile',          time: 'Jul 27, 11:18 PM', location: 'Calamba City, PH' },
+  { action: 'Published CHED Merit Scholarship', time: 'Jul 25, 10:05 AM', location: 'Calamba City, PH' },
+  { action: 'Logged in',                        time: 'Jul 25, 9:58 AM',  location: 'Calamba City, PH' },
+];
+
 /* ── Toggle Switch ── */
 const Toggle = ({ checked, onChange, id }) => (
   <label className="ps-toggle" htmlFor={id}>
@@ -141,6 +149,29 @@ const ProviderSettings = ({ setActiveView, userRole = 'provider' }) => {
       setActiveView && setActiveView('provider-dashboard');
     }
   };
+
+  const setN = (field, val) => setNotif(n => ({ ...n, [field]: val }));
+
+  const saveNotif = () => {
+    localStorage.setItem(`escholar_${userRole}_notif`, JSON.stringify(notif));
+    showToast('Notification preferences saved.');
+  };
+
+  const changePw = () => {
+    if (!pw.current) { setPwErr('Enter your current password.'); return; }
+    if (pw.newPw.length < 8) { setPwErr('New password must be at least 8 characters.'); return; }
+    if (pw.newPw !== pw.confirm) { setPwErr('Passwords do not match.'); return; }
+    setPwErr('');
+    setPw({ current: '', newPw: '', confirm: '' });
+    showToast('Password changed successfully.');
+  };
+
+  const revokeSession = (id) => {
+    setSessions(s => s.filter(x => x.id !== id));
+    showToast('Session revoked.');
+  };
+
+  const [confirmDeact, setConfirmDeact] = useState('');
 
   const TABS = [
     { key: 'profile',       label: 'Profile',        icon: <User size={16} /> },
@@ -396,13 +427,12 @@ const ProviderSettings = ({ setActiveView, userRole = 'provider' }) => {
           {/* Email Notifications */}
           <p className="ps-section-label"><Mail size={13} /> Email Notifications</p>
           {[
-            { key: 'newApplicant',      label: 'New Applicant Submitted',         desc: 'Notify when a student submits an application to your program.' },
-            { key: 'applicationStatus', label: 'Application Status Changed',       desc: 'Notify when an applicant\'s review status is updated.' },
-            { key: 'slotAlert',         label: 'Slot Utilization Alerts',          desc: 'Alert when a program slot utilization reaches 80% or 100%.' },
-            { key: 'deadlineReminder',  label: 'Application Deadline Reminder',    desc: 'Remind 7 days and 1 day before a program deadline closes.' },
-            { key: 'verificationUpdate',label: 'Verification Status Updates',      desc: 'Notify when the admin reviews or decides on your verification.' },
-            { key: 'systemUpdates',     label: 'eScholar System Updates',          desc: 'Receive platform update announcements and maintenance notices.' },
-            { key: 'emailWeeklyDigest', label: 'Weekly Activity Digest',           desc: 'Receive a weekly summary of all activity across your programs.' },
+            { key: 'newApplicant',      label: 'New Applicant Submitted',       desc: 'Notify when a student submits an application to your program.' },
+            { key: 'applicationStatus', label: 'Application Status Changed',     desc: 'Notify when an applicant\'s review status is updated.' },
+            { key: 'slotAlert',         label: 'Slot Utilization Alerts',        desc: 'Alert when a program slot utilization reaches 80% or 100%.' },
+            { key: 'deadlineReminder',  label: 'Application Deadline Reminder',  desc: 'Remind 7 days and 1 day before a program deadline closes.' },
+            { key: 'systemUpdates',     label: 'eScholar System Updates',        desc: 'Receive platform update announcements and maintenance notices.' },
+            { key: 'emailWeeklyDigest', label: 'Weekly Activity Digest',         desc: 'Receive a weekly summary of all activity across your programs.' },
           ].map(({ key, label, desc }) => (
             <div key={key} className="toggle-card" style={{ marginBottom: '0.75rem' }}>
               <div className="toggle-info">

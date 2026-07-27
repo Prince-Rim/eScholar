@@ -1,33 +1,22 @@
 import React, { useState } from 'react';
-import { 
-  Search, 
-  Download, 
-  MoreVertical, 
-  Eye, 
-  CheckCircle, 
-  FileText, 
-  X, 
-  ChevronRight,
-  ChevronLeft,
-  AlertCircle,
-  Check,
-  Award,
-  Building2,
-  GraduationCap
+import {
+  Search, Download, MoreVertical, Eye, CheckCircle,
+  FileText, X, ChevronRight, ChevronLeft,
+  AlertCircle, Check, Award
 } from 'lucide-react';
 import './ProviderPrograms.css';
 
 export const MOCK_ACTIVE_SCHOLARS = [
-  { 
-    id: 'SCH-2026-101', 
-    name: 'Samantha Reyes', 
+  {
+    id: 'SCH-2026-101',
+    name: 'Samantha Reyes',
     email: 'samantha.r@example.com',
-    school: 'Polytechnic University of the Philippines',
+    school: 'Polytechnic Univ. of the Philippines',
     course: 'BS Industrial Engineering (1st Year)',
     scholarship: 'CHED Merit Scholarship for STEM',
     scholarshipCode: 'CHED-STEM-26',
-    stipend: '₱60,000 / year (₱5,000 / month)',
-    cycle: 'AY 2026-2027 (2nd Semester)',
+    monthlyStipend: '₱5,000 / mo',
+    cycle: 'AY 2026-2027',
     requirementSubmitted: '1st Sem Transcript & COR',
     currentGwa: '1.25',
     date: 'Jan 24, 2026',
@@ -36,52 +25,52 @@ export const MOCK_ACTIVE_SCHOLARS = [
     fileSize: '1.2 MB',
     remarks: 'GWA exceeds merit threshold. Cleared for 2nd Semester stipend disbursement.'
   },
-  { 
-    id: 'SCH-2026-102', 
-    name: 'Jeremiah Madronio', 
+  {
+    id: 'SCH-2026-102',
+    name: 'Jeremiah Madronio',
     email: 'jeremiah.m@example.com',
-    school: 'Cavite State University - Main Campus',
+    school: 'Cavite State University',
     course: 'BS Computer Science (2nd Year)',
     scholarship: 'CHED Merit Scholarship for STEM',
     scholarshipCode: 'CHED-STEM-26',
-    stipend: '₱60,000 / year (₱5,000 / month)',
-    cycle: 'AY 2026-2027 (2nd Semester)',
+    monthlyStipend: '₱5,000 / mo',
+    cycle: 'AY 2026-2027',
     requirementSubmitted: '1st Sem Transcript & Registration Form',
     currentGwa: '1.45',
     date: 'Jan 22, 2026',
-    status: 'Pending Review',
+    status: 'Docs Pending',
     fileName: 'Madronio_Sem1_Grades.pdf',
     fileSize: '1.8 MB',
     remarks: 'Awaiting verified seal from University Registrar.'
   },
-  { 
-    id: 'SCH-2026-103', 
-    name: 'Miguel Santos', 
+  {
+    id: 'SCH-2026-103',
+    name: 'Miguel Santos',
     email: 'miguel.s@example.com',
     school: 'De La Salle University - Dasmariñas',
     course: 'BS Information Technology (3rd Year)',
     scholarship: 'Foundation Digital Skills Fellowship',
     scholarshipCode: 'FDN-DIGI-26',
-    stipend: '₱40,000 / year (₱4,000 / month)',
-    cycle: 'AY 2026-2027 (2nd Semester)',
+    monthlyStipend: '₱4,000 / mo',
+    cycle: 'AY 2026-2027',
     requirementSubmitted: '1st Sem Grades & Project Report',
     currentGwa: '1.75',
     date: 'Jan 20, 2026',
-    status: 'Pending Review',
+    status: 'Docs Pending',
     fileName: 'Santos_Academic_Summary.pdf',
     fileSize: '950 KB',
     remarks: 'Submitted via portal. Reviewing project repository link.'
   },
-  { 
-    id: 'SCH-2026-104', 
-    name: 'Chloe Lim', 
+  {
+    id: 'SCH-2026-104',
+    name: 'Chloe Lim',
     email: 'chloe.l@example.com',
     school: 'University of the Philippines - Los Baños',
     course: 'BS Agricultural Chemistry (1st Year)',
     scholarship: 'CHED Merit Scholarship for STEM',
     scholarshipCode: 'CHED-STEM-26',
-    stipend: '₱60,000 / year (₱5,000 / month)',
-    cycle: 'AY 2026-2027 (2nd Semester)',
+    monthlyStipend: '₱5,000 / mo',
+    cycle: 'AY 2026-2027',
     requirementSubmitted: '1st Sem Grades & COR',
     currentGwa: '1.30',
     date: 'Jan 19, 2026',
@@ -90,16 +79,16 @@ export const MOCK_ACTIVE_SCHOLARS = [
     fileSize: '780 KB',
     remarks: 'Grades verified cleanly. Renewal granted.'
   },
-  { 
-    id: 'SCH-2026-105', 
-    name: 'Alexander Cruz', 
+  {
+    id: 'SCH-2026-105',
+    name: 'Alexander Cruz',
     email: 'alex.cruz@example.com',
     school: 'Emilio Aguinaldo College - Cavite',
     course: 'BS Nursing (2nd Year)',
     scholarship: 'LGU Cavite Tulong Dunong Grant',
     scholarshipCode: 'LGU-CAV-TD',
-    stipend: '₱25,000 / year (₱2,000 / month)',
-    cycle: 'AY 2026-2027 (2nd Semester)',
+    monthlyStipend: '₱2,500 / mo',
+    cycle: 'AY 2026-2027',
     requirementSubmitted: '1st Sem Report Card',
     currentGwa: '2.85',
     date: 'Jan 15, 2026',
@@ -108,16 +97,16 @@ export const MOCK_ACTIVE_SCHOLARS = [
     fileSize: '410 KB',
     remarks: 'GWA is below maintenance requirement. Scholar requested appeal.'
   },
-  { 
-    id: 'SCH-2026-106', 
-    name: 'Isabella Garcia', 
+  {
+    id: 'SCH-2026-106',
+    name: 'Isabella Garcia',
     email: 'isabella.g@example.com',
     school: 'Batangas State University',
     course: 'BS Mechanical Engineering (1st Year)',
     scholarship: 'CHED Merit Scholarship for STEM',
     scholarshipCode: 'CHED-STEM-26',
-    stipend: '₱60,000 / year (₱5,000 / month)',
-    cycle: 'AY 2026-2027 (2nd Semester)',
+    monthlyStipend: '₱5,000 / mo',
+    cycle: 'AY 2026-2027',
     requirementSubmitted: '1st Sem Grades & Registration',
     currentGwa: '1.50',
     date: 'Jan 10, 2026',
@@ -128,108 +117,83 @@ export const MOCK_ACTIVE_SCHOLARS = [
   }
 ];
 
+/* Status → badge colors */
+const STATUS_STYLE = {
+  'Compliant':    { bg: '#dcfce7', color: '#15803d', border: '#bbf7d0' },
+  'Docs Pending': { bg: '#fef3c7', color: '#d97706', border: '#fde68a' },
+  'Flagged':      { bg: '#fee2e2', color: '#b91c1c', border: '#fca5a5' },
+};
+
 const ProviderActiveScholars = () => {
-  const [scholars, setScholars] = useState(MOCK_ACTIVE_SCHOLARS);
-  const [activeTab, setActiveTab] = useState('All');
+  const [scholars, setScholars]     = useState(MOCK_ACTIVE_SCHOLARS);
+  const [activeTab, setActiveTab]   = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedScholarship, setSelectedScholarship] = useState('All scholarships');
-  const [selectedCycle, setSelectedCycle] = useState('All cycles');
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedScholar, setSelectedScholar] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 8;
 
-  const showToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 3000);
-  };
+  const showToast = (msg) => { setToastMessage(msg); setTimeout(() => setToastMessage(''), 3000); };
 
   const handleUpdateStatus = (id, newStatus) => {
     setScholars(prev => prev.map(s => s.id === id ? { ...s, status: newStatus } : s));
-    if (selectedScholar && selectedScholar.id === id) {
-      setSelectedScholar(prev => prev ? { ...prev, status: newStatus } : null);
-    }
+    if (selectedScholar?.id === id) setSelectedScholar(prev => prev ? { ...prev, status: newStatus } : null);
     setOpenDropdownId(null);
-    showToast(`Scholar status updated to ${newStatus}`);
+    showToast(`Scholar status updated to "${newStatus}"`);
   };
 
-  // Distinct list of scholarships for filter dropdown
   const scholarshipOptions = Array.from(new Set(scholars.map(s => s.scholarship)));
 
-  const filteredScholars = scholars.filter(s => {
-    if (activeTab === 'Pending Review' && s.status !== 'Pending Review') return false;
-    if (activeTab === 'Compliant' && s.status !== 'Compliant') return false;
-    if (activeTab === 'Flagged' && s.status !== 'Flagged') return false;
-
+  const filtered = scholars.filter(s => {
+    if (activeTab !== 'All' && s.status !== activeTab) return false;
     if (selectedScholarship !== 'All scholarships' && s.scholarship !== selectedScholarship) return false;
-    if (selectedCycle !== 'All cycles' && !s.cycle.includes(selectedCycle)) return false;
-
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      return (
-        s.name.toLowerCase().includes(q) ||
-        s.scholarship.toLowerCase().includes(q) ||
-        s.scholarshipCode.toLowerCase().includes(q) ||
-        s.id.toLowerCase().includes(q) ||
-        s.school.toLowerCase().includes(q) ||
-        s.course.toLowerCase().includes(q)
-      );
+      return s.name.toLowerCase().includes(q) || s.school.toLowerCase().includes(q) || s.id.toLowerCase().includes(q);
     }
     return true;
   });
 
-  const tabCounts = {
-    All: scholars.length,
-    Pending: scholars.filter(s => s.status === 'Pending Review').length,
-    Compliant: scholars.filter(s => s.status === 'Compliant').length,
-    Flagged: scholars.filter(s => s.status === 'Flagged').length
+  const counts = {
+    All:           scholars.length,
+    'Docs Pending': scholars.filter(s => s.status === 'Docs Pending').length,
+    Compliant:     scholars.filter(s => s.status === 'Compliant').length,
+    Flagged:       scholars.filter(s => s.status === 'Flagged').length,
   };
 
-  const totalItems = filteredScholars.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentScholars = filteredScholars.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+  const paginated  = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="provider-programs-container">
       {toastMessage && (
-        <div className="toast-notification-banner">
-          <CheckCircle size={16} /> {toastMessage}
-        </div>
+        <div className="toast-notification-banner"><CheckCircle size={16} /> {toastMessage}</div>
       )}
 
       {/* Header */}
       <div className="programs-header-row">
         <div>
           <h2 className="programs-header-title">Active Scholars</h2>
-          <p className="programs-header-subtitle">Accepted student beneficiaries enrolled in your active scholarship programs.</p>
+          <p className="programs-header-subtitle">Accepted beneficiaries enrolled in your scholarship programs this cycle.</p>
         </div>
       </div>
 
       {/* KPI Cards */}
       <div className="summary-kpi-grid">
-        <div className="kpi-card">
-          <span className="kpi-label">Active Scholars</span>
-          <span className="kpi-number">{tabCounts.All}</span>
-          <span className="kpi-subtext">Accepted grant beneficiaries</span>
-        </div>
-        <div className="kpi-card">
-          <span className="kpi-label">Pending Review</span>
-          <span className="kpi-number" style={{ color: '#d97706' }}>{tabCounts.Pending}</span>
-          <span className="kpi-subtext">Awaiting semester verification</span>
-        </div>
-        <div className="kpi-card">
-          <span className="kpi-label">Compliant & Cleared</span>
-          <span className="kpi-number" style={{ color: '#15803d' }}>{tabCounts.Compliant}</span>
-          <span className="kpi-subtext">Cleared for disbursement</span>
-        </div>
-        <div className="kpi-card">
-          <span className="kpi-label">Flagged / Action Needed</span>
-          <span className="kpi-number" style={{ color: '#dc2626' }}>{tabCounts.Flagged}</span>
-          <span className="kpi-subtext">GWA or document issues</span>
-        </div>
+        {[
+          { label: 'Total Scholars',  value: counts.All,             color: '#082894', sub: 'Active grantees this cycle' },
+          { label: 'Docs Pending',    value: counts['Docs Pending'],  color: '#d97706', sub: 'Awaiting semester documents' },
+          { label: 'Compliant',       value: counts.Compliant,        color: '#15803d', sub: 'Cleared for disbursement' },
+          { label: 'Flagged',         value: counts.Flagged,          color: '#dc2626', sub: 'GWA or document issue' },
+        ].map(({ label, value, color, sub }) => (
+          <div key={label} className="kpi-card">
+            <span className="kpi-label">{label}</span>
+            <span className="kpi-number" style={{ color }}>{value}</span>
+            <span className="kpi-subtext">{sub}</span>
+          </div>
+        ))}
       </div>
 
       {/* Table Card */}
@@ -238,18 +202,16 @@ const ProviderActiveScholars = () => {
           {/* Status Tabs */}
           <div className="status-tabs-group">
             {[
-              { label: `All Active (${tabCounts.All})`, val: 'All' },
-              { label: `Pending Review (${tabCounts.Pending})`, val: 'Pending Review' },
-              { label: `Compliant (${tabCounts.Compliant})`, val: 'Compliant' },
-              { label: `Flagged (${tabCounts.Flagged})`, val: 'Flagged' }
-            ].map(tab => (
+              { label: `All (${counts.All})`,                    val: 'All' },
+              { label: `Docs Pending (${counts['Docs Pending']})`, val: 'Docs Pending' },
+              { label: `Compliant (${counts.Compliant})`,         val: 'Compliant' },
+              { label: `Flagged (${counts.Flagged})`,             val: 'Flagged' },
+            ].map(t => (
               <button
-                key={tab.val}
-                className={`tab-btn ${activeTab === tab.val ? 'active' : ''}`}
-                onClick={() => { setActiveTab(tab.val); setCurrentPage(1); }}
-              >
-                {tab.label}
-              </button>
+                key={t.val}
+                className={`tab-btn ${activeTab === t.val ? 'active' : ''}`}
+                onClick={() => { setActiveTab(t.val); setCurrentPage(1); }}
+              >{t.label}</button>
             ))}
           </div>
 
@@ -259,210 +221,138 @@ const ProviderActiveScholars = () => {
               <Search size={15} className="search-icon-muted" />
               <input
                 type="text"
-                placeholder="Search scholar (e.g. Samantha)..."
+                placeholder="Search scholar name or ID"
                 value={searchQuery}
                 onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               />
             </div>
-
-            {/* Filter by Scholarship Program */}
             <select
               className="table-select-cycle"
               value={selectedScholarship}
               onChange={e => { setSelectedScholarship(e.target.value); setCurrentPage(1); }}
-              style={{ fontWeight: 600 }}
             >
-              <option value="All scholarships">Filter by Scholarship Program</option>
+              <option value="All scholarships">All Scholarships</option>
               {scholarshipOptions.map(sch => (
                 <option key={sch} value={sch}>{sch}</option>
               ))}
             </select>
-
-            <select
-              className="table-select-cycle"
-              value={selectedCycle}
-              onChange={e => { setSelectedCycle(e.target.value); setCurrentPage(1); }}
-            >
-              <option value="All cycles">All Cycles</option>
-              <option value="AY 2026-2027">AY 2026-2027</option>
-              <option value="AY 2025-2026">AY 2025-2026</option>
-            </select>
-
-            <button className="btn-table-export" onClick={() => showToast('Exporting active scholars list to CSV...')}>
+            <button className="btn-table-export" onClick={() => showToast('Exporting to CSV...')}>
               <Download size={14} /> Export
             </button>
           </div>
         </div>
 
-        {/* Data Table */}
+        {/* Table */}
         <div className="table-responsive-wrapper">
           <table className="programs-data-table">
             <thead>
               <tr>
-                <th style={{ width: '28%' }}>Accepted Scholar</th>
-                <th style={{ width: '32%' }}>Enrolled Scholarship Program</th>
-                <th>Semester GWA</th>
-                <th>Submitted Date</th>
+                <th style={{ width: '28%' }}>Scholar</th>
+                <th>Scholarship Program</th>
+                <th>Monthly Stipend</th>
+                <th>GWA</th>
+                <th>Enrolled Since</th>
                 <th>Status</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {currentScholars.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="empty-table-cell">
-                    No active scholars found matching your filters.
-                  </td>
-                </tr>
+              {paginated.length === 0 ? (
+                <tr><td colSpan="7" className="empty-table-cell">No scholars found.</td></tr>
               ) : (
-                currentScholars.map(item => (
-                  <tr 
-                    key={item.id} 
-                    className="program-table-row"
-                    onClick={() => setSelectedScholar(item)}
-                  >
-                    {/* Scholar */}
-                    <td>
-                      <div className="program-title-cell">
-                        <span className="program-main-title">{item.name}</span>
-                        <span className="program-code-sub">{item.id} · {item.school}</span>
-                        <span className="program-code-sub" style={{ color: '#475569' }}>{item.course}</span>
-                      </div>
-                    </td>
-
-                    {/* Scholarship & Code */}
-                    <td>
-                      <div className="program-title-cell">
-                        <span className="table-text-bold" style={{ color: '#082894', fontSize: '0.925rem' }}>
-                          {item.scholarship}
-                        </span>
-                        <span className="program-code-sub" style={{ fontWeight: 600, color: '#3b82f6' }}>
-                          Code: {item.scholarshipCode} • {item.stipend}
-                        </span>
-                        <span className="program-code-sub">{item.cycle}</span>
-                      </div>
-                    </td>
-
-                    {/* Academic Status */}
-                    <td>
-                      <div className="program-title-cell">
-                        <span className="table-text-bold" style={{ color: '#0f172a' }}>{item.currentGwa}</span>
-                        <span className="program-code-sub">{item.requirementSubmitted}</span>
-                      </div>
-                    </td>
-
-                    {/* Date Submitted */}
-                    <td>
-                      <span className="table-date-text">{item.date}</span>
-                    </td>
-
-                    {/* Status */}
-                    <td onClick={e => e.stopPropagation()}>
-                      <span className={`status-badge-pill ${
-                        item.status === 'Compliant' 
-                          ? 'status-published' 
-                          : item.status === 'Flagged' 
-                          ? 'status-paused' 
-                          : 'status-draft'
-                      }`} style={{
-                        background: item.status === 'Compliant' ? '#dcfce7' : item.status === 'Flagged' ? '#fee2e2' : '#fef3c7',
-                        color: item.status === 'Compliant' ? '#15803d' : item.status === 'Flagged' ? '#b91c1c' : '#d97706',
-                        borderColor: item.status === 'Compliant' ? '#bbf7d0' : item.status === 'Flagged' ? '#fca5a5' : '#fde68a'
-                      }}>
-                        {item.status}
-                      </span>
-                    </td>
-
-                    {/* Actions */}
-                    <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
-                      <div className="table-actions-cell">
-                        <div className="dropdown-action-wrapper">
-                          <button
-                            className="btn-dots-menu"
-                            onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
-                          >
-                            <MoreVertical size={16} />
-                          </button>
-
-                          {openDropdownId === item.id && (
-                            <div className="action-dropdown-menu">
-                              <button onClick={() => { setSelectedScholar(item); setOpenDropdownId(null); }}>
-                                <Eye size={13} /> View scholar details
-                              </button>
-                              {item.status !== 'Compliant' && (
-                                <button onClick={() => handleUpdateStatus(item.id, 'Compliant')}>
-                                  <CheckCircle size={13} /> Approve & Clear
-                                </button>
-                              )}
-                              {item.status !== 'Flagged' && (
-                                <button 
-                                  className="dropdown-delete-item"
-                                  onClick={() => handleUpdateStatus(item.id, 'Flagged')}
-                                >
-                                  <AlertCircle size={13} /> Flag issue
-                                </button>
-                              )}
-                            </div>
-                          )}
+                paginated.map(item => {
+                  const s = STATUS_STYLE[item.status] || STATUS_STYLE['Docs Pending'];
+                  return (
+                    <tr key={item.id} className="program-table-row" onClick={() => setSelectedScholar(item)}>
+                      <td>
+                        <div className="program-title-cell">
+                          <span className="program-main-title">{item.name}</span>
+                          <span className="program-code-sub">{item.id} · {item.school}</span>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td>
+                        <div className="program-title-cell">
+                          <span className="table-text-bold" style={{ fontSize: '0.82rem' }}>{item.scholarship}</span>
+                          <span className="program-code-sub">{item.cycle}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="table-text-bold" style={{ color: '#082894' }}>{item.monthlyStipend}</span>
+                      </td>
+                      <td>
+                        <span className="table-text-bold">{item.currentGwa}</span>
+                      </td>
+                      <td>
+                        <span className="table-date-text">{item.date}</span>
+                      </td>
+                      <td onClick={e => e.stopPropagation()}>
+                        <span className="status-badge-pill" style={{ background: s.bg, color: s.color, borderColor: s.border }}>
+                          {item.status}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
+                        <div className="table-actions-cell">
+                          <div className="dropdown-action-wrapper">
+                            <button className="btn-dots-menu" onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}>
+                              <MoreVertical size={16} />
+                            </button>
+                            {openDropdownId === item.id && (
+                              <div className="action-dropdown-menu">
+                                <button onClick={() => { setSelectedScholar(item); setOpenDropdownId(null); }}>
+                                  <Eye size={13} /> View details
+                                </button>
+                                {item.status !== 'Compliant' && (
+                                  <button onClick={() => handleUpdateStatus(item.id, 'Compliant')}>
+                                    <CheckCircle size={13} /> Mark Compliant
+                                  </button>
+                                )}
+                                {item.status !== 'Flagged' && (
+                                  <button className="dropdown-delete-item" onClick={() => handleUpdateStatus(item.id, 'Flagged')}>
+                                    <AlertCircle size={13} /> Flag Issue
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
         </div>
 
-        {/* Table Pagination */}
+        {/* Pagination */}
         <div className="table-pagination">
           <span className="pagination-info">
-            Showing {totalItems === 0 ? 0 : indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} entries
+            Showing {filtered.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}–{Math.min(currentPage * itemsPerPage, filtered.length)} of {filtered.length}
           </span>
           <div className="pagination-controls">
-            <button 
-              className="page-btn"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            >
-              <ChevronLeft size={16} />
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-              <button 
-                key={page} 
-                className={`page-btn ${currentPage === page ? 'active' : ''}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
+            <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}><ChevronLeft size={16} /></button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+              <button key={p} className={`page-btn ${currentPage === p ? 'active' : ''}`} onClick={() => setCurrentPage(p)}>{p}</button>
             ))}
-            <button 
-              className="page-btn"
-              disabled={currentPage === totalPages || totalPages === 0}
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            >
-              <ChevronRight size={16} />
-            </button>
+            <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}><ChevronRight size={16} /></button>
           </div>
         </div>
       </div>
 
-      {/* Scholar Detail Modal */}
+      {/* Detail Modal */}
       {selectedScholar && (
         <div className="modal-overlay" onClick={() => setSelectedScholar(null)}>
           <div className="modal-content program-modal-box" onClick={e => e.stopPropagation()}>
             <div className="program-modal-header">
               <div>
                 <h3 className="modal-program-title">{selectedScholar.name}</h3>
-                <p className="modal-program-sector">{selectedScholar.course} • {selectedScholar.school}</p>
+                <p className="modal-program-sector">{selectedScholar.course} · {selectedScholar.school}</p>
               </div>
-              <button className="modal-close-btn" onClick={() => setSelectedScholar(null)}>
-                <X size={20} />
-              </button>
+              <button className="modal-close-btn" onClick={() => setSelectedScholar(null)}><X size={20} /></button>
             </div>
 
             <div className="modal-body" style={{ padding: 0 }}>
-              {/* Attached Scholarship Card inside Modal */}
+              {/* Scholarship header */}
               <div className="modal-section-box" style={{ background: '#eff6ff', borderColor: '#bfdbfe', marginBottom: '1.25rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.35rem' }}>
                   <Award size={20} color="#082894" />
@@ -471,10 +361,10 @@ const ProviderActiveScholars = () => {
                   </h4>
                 </div>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: '#1e40af', fontWeight: 600 }}>
-                  Program Code: {selectedScholar.scholarshipCode} • Grant Stipend: {selectedScholar.stipend}
+                  Code: {selectedScholar.scholarshipCode} · Monthly Stipend: {selectedScholar.monthlyStipend}
                 </p>
                 <span className="status-badge-pill status-published" style={{ marginTop: '0.6rem', fontSize: '0.75rem' }}>
-                  Active Beneficiary • {selectedScholar.cycle}
+                  Active · {selectedScholar.cycle}
                 </span>
               </div>
 
@@ -484,18 +374,16 @@ const ProviderActiveScholars = () => {
                   <span className="modal-stat-val">{selectedScholar.id}</span>
                 </div>
                 <div className="modal-stat-card">
-                  <span className="modal-stat-label">SUBMITTED GWA</span>
+                  <span className="modal-stat-label">CURRENT GWA</span>
                   <span className="modal-stat-val">{selectedScholar.currentGwa}</span>
                 </div>
                 <div className="modal-stat-card">
-                  <span className="modal-stat-label">SUBMISSION DATE</span>
+                  <span className="modal-stat-label">ENROLLED SINCE</span>
                   <span className="modal-stat-val">{selectedScholar.date}</span>
                 </div>
                 <div className="modal-stat-card">
-                  <span className="modal-stat-label">STATUS</span>
-                  <span className="modal-stat-val" style={{ 
-                    color: selectedScholar.status === 'Compliant' ? '#15803d' : selectedScholar.status === 'Flagged' ? '#b91c1c' : '#d97706' 
-                  }}>
+                  <span className="modal-stat-label">COMPLIANCE STATUS</span>
+                  <span className="modal-stat-val" style={{ color: STATUS_STYLE[selectedScholar.status]?.color }}>
                     {selectedScholar.status}
                   </span>
                 </div>
@@ -504,37 +392,29 @@ const ProviderActiveScholars = () => {
               {/* Submitted Document */}
               <div className="document-preview-card">
                 <div className="doc-info">
-                  <div className="doc-icon-wrapper">
-                    <FileText size={22} />
-                  </div>
+                  <div className="doc-icon-wrapper"><FileText size={22} /></div>
                   <div className="doc-text">
                     <h5 style={{ margin: 0, fontWeight: 700 }}>{selectedScholar.fileName}</h5>
-                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>Size: {selectedScholar.fileSize} • {selectedScholar.requirementSubmitted}</p>
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: '#64748b' }}>
+                      {selectedScholar.fileSize} · {selectedScholar.requirementSubmitted}
+                    </p>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button className="btn-table-export">
-                    <Download size={13} /> Download
-                  </button>
-                </div>
+                <button className="btn-table-export"><Download size={13} /> Download</button>
               </div>
 
-              {/* Audit Remarks */}
+              {/* Compliance notes */}
               <div className="modal-section-box">
-                <h4>Scholar Compliance Notes</h4>
-                <p style={{ margin: 0, fontSize: '0.875rem', color: '#475569' }}>
-                  {selectedScholar.remarks}
-                </p>
+                <h4>Compliance Notes</h4>
+                <p style={{ margin: 0, fontSize: '0.875rem', color: '#475569' }}>{selectedScholar.remarks}</p>
               </div>
             </div>
 
             <div className="modal-footer-actions">
-              <button className="btn-modal-close" onClick={() => setSelectedScholar(null)}>
-                Close
-              </button>
+              <button className="btn-modal-close" onClick={() => setSelectedScholar(null)}>Close</button>
               {selectedScholar.status !== 'Flagged' && (
-                <button 
-                  className="btn-modal-close" 
+                <button
+                  className="btn-modal-close"
                   style={{ background: '#fef2f2', color: '#dc2626', borderColor: '#fca5a5' }}
                   onClick={() => handleUpdateStatus(selectedScholar.id, 'Flagged')}
                 >
@@ -542,11 +422,8 @@ const ProviderActiveScholars = () => {
                 </button>
               )}
               {selectedScholar.status !== 'Compliant' && (
-                <button 
-                  className="btn-modal-edit"
-                  onClick={() => handleUpdateStatus(selectedScholar.id, 'Compliant')}
-                >
-                  <Check size={15} /> Approve & Clear
+                <button className="btn-modal-edit" onClick={() => handleUpdateStatus(selectedScholar.id, 'Compliant')}>
+                  <Check size={15} /> Mark Compliant
                 </button>
               )}
             </div>
