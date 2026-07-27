@@ -129,6 +129,8 @@ function MainApp() {
   const renderMainContent = () => {
     if (userRole === 'provider') {
       switch (currentView) {
+        case 'provider-dashboard':
+          return <ProviderDashboard setActiveView={setCurrentView} />;
         case 'create-program':
         case 'provider-create':
           return <ProviderCreateProgram setActiveView={setCurrentView} />;
@@ -141,6 +143,11 @@ function MainApp() {
           return <ProviderActiveScholars />;
         case 'analytics':
           return <AdminReports />;
+        case 'settings':
+          return <ProviderSettings setActiveView={setCurrentView} />;
+        case 'my-programs':
+        case 'programs':
+          return <ProviderPrograms setActiveView={setCurrentView} setSelectedProgram={setSelectedProgram} />;
         default:
           return <ProviderPrograms setActiveView={setCurrentView} setSelectedProgram={setSelectedProgram} />;
       }

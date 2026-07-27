@@ -151,14 +151,6 @@ const ProviderDashboard = ({ setActiveView }) => {
           <p className="pd-subtitle">Welcome back, <strong>Divina Ramos</strong> · CHED Region IV-A</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          {!verifApp || verifApp.status !== 'Approved' ? (
-            <button className="pd-verif-btn" onClick={() => setActiveView('verification')}>
-              <AlertCircle size={14} />
-              {verifApp ? `Verification: ${verifApp.status}` : 'Complete Verification'}
-            </button>
-          ) : (
-            <span className="pd-verified-badge"><ShieldCheck size={14} /> Verified</span>
-          )}
           <button className="pd-primary-btn" onClick={() => setActiveView('create-program')}>
             <PlusCircle size={15} /> New Scholarship
           </button>
@@ -281,7 +273,6 @@ const ProviderDashboard = ({ setActiveView }) => {
               { label: 'My Scholarships',      sub: 'Manage your programs',        view: 'my-programs',      icon: <BookOpen size={16} /> },
               { label: 'Applicant Pipeline',   sub: 'Review submitted applicants', view: 'applicants',       icon: <Users size={16} /> },
               { label: 'Active Scholars',      sub: 'Track grant recipients',      view: 'active-scholars',  icon: <GraduationCap size={16} /> },
-              { label: 'Provider Verification',sub: 'Accreditation status',        view: 'verification',     icon: <ShieldCheck size={16} /> },
             ].map(({ label, sub, view, icon }) => (
               <button key={view} className="pd-action-row" onClick={() => setActiveView(view)}>
                 <div className="pd-action-icon">{icon}</div>
