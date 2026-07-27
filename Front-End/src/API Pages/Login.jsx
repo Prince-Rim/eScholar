@@ -99,6 +99,16 @@ const Login = ({ setActiveView, setUserRole }) => {
     }
   };
 
+  const handleBypass = (e) => {
+    e.preventDefault();
+    const expiry = new Date().getTime() + (7 * 24 * 60 * 60 * 1000); 
+    localStorage.setItem('escholar_2fa_session', expiry.toString());
+    localStorage.setItem('escholar_user_role', roleToSet);
+    if (setUserRole) setUserRole(roleToSet);
+    
+    setActiveView('dashboard');
+  };
+
   return (
     <div className="auth-wrapper" style={{ position: 'relative' }}>
       <nav className="landing-navbar" style={{ position: 'absolute', top: 0, left: 0, width: '100%', boxSizing: 'border-box' }}>
@@ -171,6 +181,9 @@ const Login = ({ setActiveView, setUserRole }) => {
             </button>
             <button type="button" className="btn-secondary btn-full-width" style={{ marginTop: '0.5rem' }} onClick={() => setStep(1)}>
               Back
+            </button>
+            <button type="button" className="btn-secondary btn-full-width" style={{ marginTop: '1rem', backgroundColor: '#f1f5f9', border: '1px dashed #cbd5e1', color: '#64748b' }} onClick={handleBypass}>
+                          Proceed without 2FA (for testing purposes)
             </button>
           </form>
         )}
