@@ -98,8 +98,13 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
       const studentGwaVal = parseFloat(aiExtractedFilter.gwa || '1.68');
       const cutoff = parseNumericGwaCutoff(p.gwa);
       
-      // Philippine GWA: Student GWA (e.g. 1.68) must be <= program cutoff (e.g. 1.75, 2.00, 2.25)
-      return studentGwaVal <= cutoff;
+      // Philippine GWA: Student GWA must be <= program cutoff
+      const passesGwa = studentGwaVal <= cutoff;
+
+      // Exclude unmatched or unsupported programs
+      const isSupportedProgram = p.sector === 'IT' || p.sector === 'STEM' || p.sector === 'Indigent';
+
+      return passesGwa && isSupportedProgram;
     }
 
     return true;
@@ -172,7 +177,6 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
 
     setExtractState('extracting');
     setExtractError(null);
-    showToast('Extracting document credentials with eGov AI...');
 
     try {
       const formData = new FormData();
@@ -312,7 +316,8 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
               htmlFor="top-header-ai-extractor-input"
               className="pd-primary-btn"
               style={{ 
-                cursor: 'pointer', 
+                cursor: extractState === 'extracting' ? 'not-allowed' : 'pointer', 
+                opacity: extractState === 'extracting' ? 0.7 : 1,
                 background: '#082894', 
                 padding: '0.65rem 1.25rem', 
                 borderRadius: '8px', 
@@ -326,12 +331,59 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
                 margin: 0
               }}
             >
-              <Sparkles size={16} />
-              <span>Auto-Extract & Upload Document</span>
+              {extractState === 'extracting' ? (
+                <>
+                  <span className="spinner" style={{
+                    width: '14px',
+                    height: '14px',
+                    border: '2px solid #ffffff',
+                    borderBottomColor: 'transparent',
+                    borderRadius: '50%',
+                    display: 'inline-block',
+                    animation: 'rotation 1s linear infinite'
+                  }}></span>
+                  <span>Extracting Credentials...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles size={16} />
+                  <span>Auto-Extract & Upload Document</span>
+                </>
+              )}
             </label>
           </div>
         )}
       </div>
+
+      {/* Persistent Extraction Loading Banner */}
+      {extractState === 'extracting' && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          padding: '0.9rem 1.25rem',
+          background: '#eff6ff',
+          border: '1.5px solid #bfdbfe',
+          borderRadius: '12px',
+          marginBottom: '1.5rem',
+          color: '#1e40af',
+          fontSize: '0.88rem',
+          fontWeight: 700,
+          boxShadow: '0 4px 14px rgba(8, 40, 148, 0.08)'
+        }}>
+          <span className="spinner" style={{
+            width: '18px',
+            height: '18px',
+            border: '2.5px solid #082894',
+            borderBottomColor: 'transparent',
+            borderRadius: '50%',
+            display: 'inline-block',
+            animation: 'rotation 1s linear infinite',
+            flexShrink: 0
+          }}></span>
+          <span>Scanning & Extracting document credentials with eGov AI Core... Please wait.</span>
+        </div>
+      )}
 
       {/* Active AI Filter Indicator Banner */}
       {aiExtractedFilter && (
