@@ -98,13 +98,8 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
       const studentGwaVal = parseFloat(aiExtractedFilter.gwa || '1.68');
       const cutoff = parseNumericGwaCutoff(p.gwa);
       
-      // Philippine GWA: Student GWA must be <= program cutoff
-      const passesGwa = studentGwaVal <= cutoff;
-
-      // Exclude unmatched or unsupported programs
-      const isSupportedProgram = p.sector === 'IT' || p.sector === 'STEM' || p.sector === 'Indigent';
-
-      return passesGwa && isSupportedProgram;
+      // Philippine GWA: Student GWA (e.g. 1.68) must be <= program cutoff (e.g. 1.75, 2.00, 2.25)
+      return studentGwaVal <= cutoff;
     }
 
     return true;
