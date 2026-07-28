@@ -21,6 +21,18 @@ const sanitizeHtml = (str) => {
     .replace(/'/g, '&#039;');
 };
 
+const parseNumericGwaCutoff = (gwaString) => {
+  if (!gwaString) return 2.25;
+  const match = String(gwaString).match(/GWA\s*([0-4]\.\d{1,2})/i) || String(gwaString).match(/([0-4]\.\d{1,2})/);
+  if (match) return parseFloat(match[1]);
+  if (gwaString.includes('90%')) return 1.50;
+  if (gwaString.includes('88%')) return 1.75;
+  if (gwaString.includes('85%')) return 2.00;
+  if (gwaString.includes('82%')) return 2.00;
+  if (gwaString.includes('80%')) return 2.25;
+  return 2.25;
+};
+
 const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
   const isSavedOnlyMode = initialView === 'saved';
 
@@ -1031,76 +1043,98 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
                 </div>
               ) : null}
 
-              <h4 style={{ margin: '0 0 1rem', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <Sparkles size={17} color="#082894" /> Top Matched Scholarship Programs ({publishedPrograms.length})
-              </h4>
+              {(() => {
+                const studentGwaVal = extractData ? parseFloat(extractData.gwa) : 1.68;
+                const eligiblePrograms = publishedPrograms.filter(program => {
+                  const cutoff = parseNumericGwaCutoff(program.gwa);
+                  return studentGwaVal <= cutoff;
+                });
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {publishedPrograms.map((program, idx) => {
-                  const matchPercentage = idx === 0 ? 98 : idx === 1 ? 94 : idx === 2 ? 90 : 85;
-                  const slotsRemaining = (program.totalSlots || 500) - (program.slotsFilled || 342);
+                return (
+                  <>
+                    <h4 style={{ margin: '0 0 1rem', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                      <Sparkles size={17} color="#082894" /> Top Eligible Scholarship Programs ({eligiblePrograms.length})
+                    </h4>
 
-                  return (
-                    <div 
-                      key={program.id}
-                      style={{ 
-                        padding: '1.15rem 1.35rem', 
-                        border: '1.5px solid #e2e8f0', 
-                        borderRadius: '12px', 
-                        background: '#ffffff',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.85rem',
-                        transition: 'all 0.2s',
-                        boxShadow: '0 4px 14px rgba(0,0,0,0.03)'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                            <span style={{ padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' }}>
-                              {matchPercentage}% MATCH
-                            </span>
-                            <span className="pd-badge pd-badge-sector">{program.sector}</span>
-                          </div>
-                          <h4 style={{ margin: 0, fontSize: '1.08rem', color: '#0f172a', fontWeight: 800 }}>{program.title}</h4>
-                          <p style={{ margin: '0.25rem 0 0', fontSize: '0.82rem', color: '#475569', lineHeight: 1.45 }}>{program.description}</p>
-                        </div>
+                    {eligiblePrograms.length === 0 ? (
+                      <div style={{ padding: '2.5rem 1.5rem', textAlign: 'center', background: '#ffffff', borderRadius: '12px', border: '1.5px dashed #cbd5e1' }}>
+                        <AlertCircle size={32} color="#dc2626" style={{ marginBottom: '0.5rem' }} />
+                        <h4 style={{ margin: '0 0 0.25rem', fontSize: '1.05rem', color: '#0f172a' }}>No Programs Match Your GWA Cutoff</h4>
+                        <p style={{ margin: 0, fontSize: '0.85rem', color: '#64748b' }}>
+                          Your extracted GWA of <strong>{studentGwaVal.toFixed(2)}</strong> exceeds the required cutoff criteria for active published scholarships.
+                        </p>
                       </div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {eligiblePrograms.map((program, idx) => {
+                          const matchPercentage = idx === 0 ? 98 : idx === 1 ? 94 : idx === 2 ? 90 : 85;
+                          const slotsRemaining = (program.totalSlots || 500) - (program.slotsFilled || 342);
 
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', background: '#f8fafc', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.82rem', gap: '0.5rem' }}>
-                        <div>
-                          <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>Stipend</span>
-                          <strong style={{ color: '#082894', fontSize: '0.95rem' }}>₱{program.monthlyAllowance.toLocaleString()} / mo</strong>
-                        </div>
-                        <div>
-                          <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>GWA Cutoff</span>
-                          <strong style={{ color: '#0f172a', fontSize: '0.95rem' }}>{program.gwa || 'GWA 2.00'}</strong>
-                        </div>
-                        <div>
-                          <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>Slots Left</span>
-                          <strong style={{ color: '#15803d', fontSize: '0.95rem' }}>{slotsRemaining} of {program.totalSlots}</strong>
-                        </div>
-                      </div>
+                          return (
+                            <div 
+                              key={program.id}
+                              style={{ 
+                                padding: '1.15rem 1.35rem', 
+                                border: '1.5px solid #e2e8f0', 
+                                borderRadius: '12px', 
+                                background: '#ffffff',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '0.85rem',
+                                transition: 'all 0.2s',
+                                boxShadow: '0 4px 14px rgba(0,0,0,0.03)'
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
+                                <div>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                                    <span style={{ padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' }}>
+                                      {matchPercentage}% MATCH
+                                    </span>
+                                    <span className="pd-badge pd-badge-sector">{program.sector}</span>
+                                  </div>
+                                  <h4 style={{ margin: 0, fontSize: '1.08rem', color: '#0f172a', fontWeight: 800 }}>{program.title}</h4>
+                                  <p style={{ margin: '0.25rem 0 0', fontSize: '0.82rem', color: '#475569', lineHeight: 1.45 }}>{program.description}</p>
+                                </div>
+                              </div>
 
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '0.25rem' }}>
-                        <button
-                          type="button"
-                          className="pd-primary-btn"
-                          style={{ background: '#082894', padding: '0.6rem 1.25rem', fontSize: '0.85rem', fontWeight: 700, borderRadius: '8px' }}
-                          onClick={() => {
-                            setSelectedProgram(program);
-                            setAiMatcherOpen(false);
-                            setIsApplying(true);
-                          }}
-                        >
-                          Apply Now with Extracted Grades <ChevronRight size={15} />
-                        </button>
+                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', background: '#f8fafc', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.82rem', gap: '0.5rem' }}>
+                                <div>
+                                  <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>Stipend</span>
+                                  <strong style={{ color: '#082894', fontSize: '0.95rem' }}>₱{program.monthlyAllowance.toLocaleString()} / mo</strong>
+                                </div>
+                                <div>
+                                  <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>GWA Cutoff</span>
+                                  <strong style={{ color: '#0f172a', fontSize: '0.95rem' }}>{program.gwa || 'GWA 2.00'}</strong>
+                                </div>
+                                <div>
+                                  <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>Slots Left</span>
+                                  <strong style={{ color: '#15803d', fontSize: '0.95rem' }}>{slotsRemaining} of {program.totalSlots}</strong>
+                                </div>
+                              </div>
+
+                              <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '0.25rem' }}>
+                                <button
+                                  type="button"
+                                  className="pd-primary-btn"
+                                  style={{ background: '#082894', padding: '0.6rem 1.25rem', fontSize: '0.85rem', fontWeight: 700, borderRadius: '8px' }}
+                                  onClick={() => {
+                                    setSelectedProgram(program);
+                                    setAiMatcherOpen(false);
+                                    setIsApplying(true);
+                                  }}
+                                >
+                                  Apply Now with Extracted Grades <ChevronRight size={15} />
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>
