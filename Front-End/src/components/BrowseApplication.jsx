@@ -995,8 +995,6 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
           </div>
         </div>
       )}
-
-      )}
     </div>
   );
 };
