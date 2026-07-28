@@ -926,125 +926,175 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
 
       {/* AI Scholarship Eligibility Matcher Modal */}
       {aiMatcherOpen && (
-        <div className="modal-backdrop" onClick={() => setAiMatcherOpen(false)}>
-          <div className="modal-card" onClick={e => e.stopPropagation()} style={{ maxWidth: '780px', maxHeight: '90vh', overflowY: 'auto' }}>
-            <div className="modal-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
-                <Sparkles size={20} color="#082894" />
+        <div className="modal-backdrop" onClick={() => setAiMatcherOpen(false)} style={{ zIndex: 1100 }}>
+          <div 
+            className="modal-card" 
+            onClick={e => e.stopPropagation()} 
+            style={{ 
+              maxWidth: '820px', 
+              width: '90%',
+              maxHeight: '90vh', 
+              overflowY: 'auto',
+              background: '#ffffff',
+              borderRadius: '16px',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)',
+              padding: 0,
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            {/* Modal Header */}
+            <div 
+              style={{ 
+                padding: '1.25rem 1.5rem', 
+                borderBottom: '1px solid #e2e8f0', 
+                background: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justify: 'space-between',
+                position: 'sticky',
+                top: 0,
+                zIndex: 10
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <div style={{ padding: '0.5rem', background: '#eff6ff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Sparkles size={22} color="#082894" />
+                </div>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a', fontWeight: 800 }}>
+                  <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#0f172a', fontWeight: 800 }}>
                     AI Scholarship Matcher & Eligibility Analysis
                   </h3>
-                  <p style={{ margin: '0.1rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>
+                  <p style={{ margin: '0.15rem 0 0', fontSize: '0.82rem', color: '#475569' }}>
                     Ranked scholarship recommendations calculated from your extracted academic credentials.
                   </p>
                 </div>
               </div>
-              <button className="btn-icon-close" onClick={() => setAiMatcherOpen(false)}>
+              <button 
+                type="button" 
+                onClick={() => setAiMatcherOpen(false)}
+                style={{
+                  background: '#f1f5f9',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justify: 'center',
+                  cursor: 'pointer',
+                  color: '#64748b'
+                }}
+              >
                 <X size={18} />
               </button>
             </div>
 
-            <div className="modal-body" style={{ padding: '1.25rem 1.5rem' }}>
+            {/* Modal Body */}
+            <div className="modal-body" style={{ padding: '1.5rem', background: '#f8fafc' }}>
               {/* Extracted Student Summary Card */}
               {extractData ? (
-                <div style={{ background: '#f0fdf4', border: '1.5px solid #86efac', borderRadius: '12px', padding: '1rem 1.15rem', marginBottom: '1.5rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                      <FileCheck size={17} color="#15803d" />
-                      <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#0f172a' }}>
-                        {extractData.studentName} ({extractData.studentNo})
+                <div style={{ background: '#f0fdf4', border: '1.5px solid #86efac', borderRadius: '12px', padding: '1.15rem 1.25rem', marginBottom: '1.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <FileCheck size={19} color="#15803d" />
+                      <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#0f172a' }}>
+                        {extractData.schoolName || 'STI College Novaliches'}
                       </span>
                     </div>
-                    <span style={{ padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.72rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' }}>
+                    <span style={{ padding: '0.25rem 0.75rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' }}>
                       ✓ COMPLIANCE PASSED
                     </span>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.6rem', background: '#ffffff', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid #bbf7d0', fontSize: '0.8rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', background: '#ffffff', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid #bbf7d0', fontSize: '0.82rem' }}>
                     <div>
-                      <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem', fontWeight: 600 }}>EXTRACTED GWA</span>
-                      <span style={{ fontWeight: 800, color: '#15803d', fontSize: '1rem' }}>{extractData.gwa}</span>
+                      <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase' }}>EXTRACTED GWA</span>
+                      <span style={{ fontWeight: 800, color: '#15803d', fontSize: '1.1rem' }}>{extractData.gwa}</span>
                     </div>
                     <div>
-                      <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem', fontWeight: 600 }}>CUMULATIVE GWA</span>
-                      <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '1rem' }}>{extractData.cumulativeGwa}</span>
+                      <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase' }}>CUMULATIVE GWA</span>
+                      <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '1.1rem' }}>{extractData.cumulativeGwa}</span>
                     </div>
                     <div>
-                      <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem', fontWeight: 600 }}>INSTITUTION</span>
-                      <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.85rem' }}>{extractData.schoolName}</span>
+                      <span style={{ display: 'block', color: '#64748b', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase' }}>STUDENT APPLICANT</span>
+                      <span style={{ fontWeight: 800, color: '#0f172a', fontSize: '0.88rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
+                        {extractData.studentName}
+                      </span>
                     </div>
                   </div>
                 </div>
               ) : extractState === 'extracting' ? (
-                <div style={{ textAlign: 'center', padding: '2.5rem', background: '#f8fafc', borderRadius: '12px', marginBottom: '1.5rem' }}>
+                <div style={{ textAlign: 'center', padding: '2.5rem', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '12px', marginBottom: '1.5rem' }}>
                   <span className="spinner" style={{ width: '28px', height: '28px', border: '3px solid #082894', borderBottomColor: 'transparent', borderRadius: '50%', display: 'inline-block', animation: 'rotation 1s linear infinite', marginBottom: '0.75rem' }}></span>
                   <p style={{ fontWeight: 700, color: '#082894', margin: 0 }}>Scanning & Analyzing Credentials with eGov AI Core...</p>
                 </div>
               ) : null}
 
-              <h4 style={{ margin: '0 0 1rem', fontSize: '1rem', color: '#0f172a', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <Sparkles size={16} color="#082894" /> Top Matched Scholarship Programs ({publishedPrograms.length})
+              <h4 style={{ margin: '0 0 1rem', fontSize: '1.05rem', color: '#0f172a', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                <Sparkles size={17} color="#082894" /> Top Matched Scholarship Programs ({publishedPrograms.length})
               </h4>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {publishedPrograms.map((program, idx) => {
                   const matchPercentage = idx === 0 ? 98 : idx === 1 ? 94 : idx === 2 ? 90 : 85;
+                  const slotsRemaining = (program.totalSlots || 500) - (program.slotsFilled || 342);
 
                   return (
                     <div 
                       key={program.id}
                       style={{ 
-                        padding: '1.1rem 1.25rem', 
+                        padding: '1.15rem 1.35rem', 
                         border: '1.5px solid #e2e8f0', 
                         borderRadius: '12px', 
                         background: '#ffffff',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.75rem',
+                        gap: '0.85rem',
                         transition: 'all 0.2s',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.03)'
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
                         <div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
-                            <span style={{ padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.72rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' }}>
+                            <span style={{ padding: '0.2rem 0.65rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' }}>
                               {matchPercentage}% MATCH
                             </span>
                             <span className="pd-badge pd-badge-sector">{program.sector}</span>
                           </div>
-                          <h4 style={{ margin: 0, fontSize: '1.05rem', color: '#0f172a', fontWeight: 800 }}>{program.title}</h4>
-                          <p style={{ margin: '0.2rem 0 0', fontSize: '0.8rem', color: '#64748b' }}>{program.description}</p>
+                          <h4 style={{ margin: 0, fontSize: '1.08rem', color: '#0f172a', fontWeight: 800 }}>{program.title}</h4>
+                          <p style={{ margin: '0.25rem 0 0', fontSize: '0.82rem', color: '#475569', lineHeight: 1.45 }}>{program.description}</p>
                         </div>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f8fafc', padding: '0.65rem 0.85rem', borderRadius: '8px', fontSize: '0.8rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', background: '#f8fafc', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', fontSize: '0.82rem', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ color: '#64748b' }}>Stipend: </span>
-                          <strong style={{ color: '#082894' }}>₱{program.monthlyAllowance.toLocaleString()} / mo</strong>
+                          <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>Stipend</span>
+                          <strong style={{ color: '#082894', fontSize: '0.95rem' }}>₱{program.monthlyAllowance.toLocaleString()} / mo</strong>
                         </div>
                         <div>
-                          <span style={{ color: '#64748b' }}>GWA Cutoff: </span>
-                          <strong style={{ color: '#0f172a' }}>{program.gwaCutoff}</strong>
+                          <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>GWA Cutoff</span>
+                          <strong style={{ color: '#0f172a', fontSize: '0.95rem' }}>{program.gwa || 'GWA 2.00'}</strong>
                         </div>
                         <div>
-                          <span style={{ color: '#64748b' }}>Slots Left: </span>
-                          <strong style={{ color: '#15803d' }}>{program.slotsAvailable}</strong>
+                          <span style={{ color: '#64748b', display: 'block', fontSize: '0.72rem' }}>Slots Left</span>
+                          <strong style={{ color: '#15803d', fontSize: '0.95rem' }}>{slotsRemaining} of {program.totalSlots}</strong>
                         </div>
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '0.25rem' }}>
                         <button
+                          type="button"
                           className="pd-primary-btn"
-                          style={{ background: '#082894', padding: '0.55rem 1.15rem', fontSize: '0.82rem' }}
+                          style={{ background: '#082894', padding: '0.6rem 1.25rem', fontSize: '0.85rem', fontWeight: 700, borderRadius: '8px' }}
                           onClick={() => {
                             setSelectedProgram(program);
                             setAiMatcherOpen(false);
                             setIsApplying(true);
                           }}
                         >
-                          Apply Now with Extracted Grades <ChevronRight size={14} />
+                          Apply Now with Extracted Grades <ChevronRight size={15} />
                         </button>
                       </div>
                     </div>
