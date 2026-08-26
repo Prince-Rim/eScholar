@@ -187,7 +187,8 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${AI_API_TOKEN}`
+          'Authorization': `Bearer ${AI_API_TOKEN}`,
+          'Accept': 'application/json'
         },
         body: formData
       });
