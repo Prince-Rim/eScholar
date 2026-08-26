@@ -229,9 +229,3 @@ For rapid testing and evaluation, pre-configured test accounts are available on 
 * `/admin` — Direct shortcut to Admin Portal
 
 ---
-
-## 👥 Contributors & Acknowledgements
-
-* **Development Team:** [Prince-Rim](https://github.com/Prince-Rim) and contributors.
-* **GovTech Partners:** Department of Information and Communications Technology (DICT) / eGov PH for NIDAS eVerify and eMessage APIs.
-* **National Programs:** Commendations to DOST-SEI, CHED, and partner foundations for continuous scholarship program data alignment.
