@@ -83,8 +83,8 @@
 | **Deployment / Routing** | [Vercel](https://vercel.com/) | Standard | Single-Page Application (SPA) rewrite and hosting configuration |
 
 ### External SDKs & Services
-* **eGov Face Liveness Web SDK:** 
-* **eGov SMS Gateway API:** 
+* **eGov Face Liveness:** 
+* **eGov SMS API:** 
 * **eGov Document Extractor AI API:**
 
 ---
