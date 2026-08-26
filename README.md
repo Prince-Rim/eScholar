@@ -59,12 +59,8 @@
 * **Provider Onboarding & Verification:** Review legal credentials, SEC/DTI registrations, and verify provider organizations.
 * **User & Role Governance:** Audit student and provider accounts, manage account states (Active, Suspended, Disabled), and trigger security actions.
 * **Comprehensive Audit Trail:** Immutable system logs capturing authentication events, identity verifications, status modifications, and grant disbursements.
-* **Platform Health & Metrics:** Aggregate reports on registered users, active programs, and total financial aid facilitated.
+* **Platform Metrics:** Aggregate reports on registered users, active programs, and total financial aid facilitated.
 
-### 4. 🇵🇭 Integrated GovTech & AI Ecosystem
-* **NIDAS eVerify Face Liveness SDK (eKYC):** Biometric identity verification during student registration to prevent fraudulent and duplicate claims.
-* **eGov PH eMessage SMS Gateway:** Multi-factor authentication (MFA / 2FA) with one-time password (OTP) verification sent directly to Philippine mobile numbers (`+639...`).
-* **eGov AI Document Extractor Engine:** High-precision document parser for academic transcripts and enrollment certificates.
 
 ---
 
