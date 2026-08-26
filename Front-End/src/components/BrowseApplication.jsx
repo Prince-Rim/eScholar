@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   Search, X, FileText, CheckCircle, Sparkles, 
   ChevronRight, Bookmark, BookmarkCheck, Upload, FileCheck,
-  Building2, GraduationCap, DollarSign, Calendar, AlertCircle,
-  Bug, Terminal, Copy, Check, RefreshCw, AlertTriangle, Code, HelpCircle
+  Building2, GraduationCap, DollarSign, Calendar, AlertCircle
 } from 'lucide-react';
 import { MOCK_PROGRAMS } from './ProviderPrograms';
 import './ProviderCreateProgram.css';
@@ -51,12 +50,6 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
   const [extractError, setExtractError] = useState(null);
   const [showRawAiOutput, setShowRawAiOutput] = useState(false);
   const [aiExtractedFilter, setAiExtractedFilter] = useState(null);
-
-  // AI API Debugger & Trace State
-  const [debugInfo, setDebugInfo] = useState(null);
-  const [showDebugModal, setShowDebugModal] = useState(false);
-  const [copiedDebug, setCopiedDebug] = useState(false);
-  const lastFileRef = useRef(null);
 
   // Track uploaded documents per document name
   const [uploadedDocs, setUploadedDocs] = useState({});
@@ -172,50 +165,30 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
     };
   };
 
-  const handleAutoExtract = async (file, isRetry = false) => {
+  const handleAutoExtract = async (file) => {
     if (!file) return;
-    lastFileRef.current = file;
 
     if (file.size > 5 * 1024 * 1024) {
-      const errMessage = 'File size exceeds 5MB limit. Please upload a smaller PDF or image file.';
       setExtractState('error');
-      setExtractError(errMessage);
-      setDebugInfo({
-        timestamp: new Date().toISOString(),
-        endpoint: 'Client-Side Validation',
-        method: 'LOCAL_VALIDATION',
-        fileName: file.name,
-        fileSize: `${(file.size / 1024 / 1024).toFixed(2)} MB (Max: 5MB)`,
-        fileType: file.type || 'unknown',
-        status: 'VALIDATION_FAILED',
-        error: errMessage,
-        hint: 'Compress the PDF or reduce image dimensions below 5MB before uploading.'
-      });
+      setExtractError('File size exceeds 5MB limit. Please upload a smaller PDF or image file.');
       showToast('File size limit exceeded (Max 5MB).');
       return;
     }
 
     setExtractState('extracting');
     setExtractError(null);
-    const startTime = performance.now();
+
     const rawBaseUrl = (AI_BASE_URL || 'https://platforms-api.e.gov.ph').trim().replace(/\/$/, '');
     const endpoint = rawBaseUrl.includes('/egov-ai')
       ? `${rawBaseUrl}/api/v1/egov/integration/document_extractor/generate`
       : `${rawBaseUrl}/egov-ai/api/v1/egov/integration/document_extractor/generate`;
 
     const cleanToken = (AI_API_TOKEN || '').trim();
-    const tokenConfigured = cleanToken !== '';
     const authHeader = cleanToken.toLowerCase().startsWith('bearer ') ? cleanToken : `Bearer ${cleanToken}`;
 
-    console.groupCollapsed(`%c🤖 [eGov AI Extractor Request] ${new Date().toLocaleTimeString()} — ${file.name}`, 'color: #2563eb; font-weight: bold; font-size: 11px;');
-    console.log('📌 Request Endpoint:', endpoint);
-    console.log('📄 File Metadata:', { name: file.name, size: `${(file.size / 1024).toFixed(1)} KB`, type: file.type });
-    console.log('🔑 Auth Token Present:', tokenConfigured ? 'Yes (Bearer ***)' : 'Missing / Undefined');
-    console.groupEnd();
-
     try {
-      if (!tokenConfigured) {
-        throw new Error('Unauthorized / Missing Token: VITE_AI_API_TOKEN is not set in environment variables.');
+      if (!cleanToken) {
+        throw new Error('VITE_AI_API_TOKEN is not configured in environment variables.');
       }
 
       const formData = new FormData();
@@ -229,42 +202,23 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
         body: formData
       });
 
-      const durationMs = Math.round(performance.now() - startTime);
-
       if (response.status === 401 || response.status === 403) {
-        const errText = await response.text().catch(() => '');
-        throw new Error(`Unauthorized API token (${response.status}). Check VITE_AI_API_TOKEN in .env.`);
+        throw new Error('Unauthorized API token (401/403). Check VITE_AI_API_TOKEN configuration.');
       }
 
       if (!response.ok) {
         const errTxt = await response.text().catch(() => '');
-        throw new Error(`AI Extractor API failed (${response.status}): ${errTxt || response.statusText || 'Server error'}`);
+        throw new Error(`AI Extractor API failed (${response.status}): ${errTxt || 'Server error'}`);
       }
 
       const resData = await response.json();
-      console.group(`%c✅ [eGov AI Extractor Success] ${durationMs}ms`, 'color: #16a34a; font-weight: bold;');
-      console.log('Response Payload:', resData);
-      console.groupEnd();
+      console.log('Live eGov AI Extractor Response:', resData);
 
       const parsed = parseExtractedPayload(resData, file.name);
 
       setExtractData(parsed);
       setExtractState('success');
       setAiExtractedFilter(parsed);
-      setDebugInfo({
-        timestamp: new Date().toISOString(),
-        endpoint,
-        method: 'POST',
-        fileName: file.name,
-        fileSize: `${(file.size / 1024).toFixed(1)} KB`,
-        fileType: file.type || 'unknown',
-        status: `${response.status} ${response.statusText || 'OK'}`,
-        durationMs,
-        tokenConfigured: true,
-        responsePayload: resData,
-        parsedData: parsed
-      });
-
       showToast(`Credentials extracted for ${parsed.studentName}! Browse list filtered automatically.`);
 
       if (selectedProgram && selectedProgram.documents && selectedProgram.documents.length > 0) {
@@ -281,78 +235,11 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
         }));
       }
     } catch (err) {
-      const durationMs = Math.round(performance.now() - startTime);
-      let hint = 'Check network connectivity and ensure the eGov AI API server is reachable.';
-      if (err.message.includes('401') || err.message.includes('403') || err.message.includes('VITE_AI_API_TOKEN')) {
-        hint = 'Configure a valid VITE_AI_API_TOKEN in your .env file or hosting environment variables.';
-      } else if (err.message.includes('Failed to fetch') || err.name === 'TypeError') {
-        hint = 'Cross-Origin Resource Sharing (CORS) blocked or server offline. Check VITE_AI_BASE_URL.';
-      }
-
-      console.group(`%c❌ [eGov AI Extractor Error] ${err.message}`, 'color: #dc2626; font-weight: bold;');
-      console.error('Error Object:', err);
-      console.table({
-        Endpoint: endpoint,
-        Duration: `${durationMs}ms`,
-        File: file.name,
-        Hint: hint
-      });
-      console.groupEnd();
-
+      console.error('Auto-Extraction API error:', err);
       setExtractState('error');
       setExtractError(err.message || 'AI document extraction failed. Please check network connection.');
-      setDebugInfo({
-        timestamp: new Date().toISOString(),
-        endpoint,
-        method: 'POST',
-        fileName: file.name,
-        fileSize: `${(file.size / 1024).toFixed(1)} KB`,
-        fileType: file.type || 'unknown',
-        status: 'FETCH_ERROR / CLIENT_EXCEPTION',
-        durationMs,
-        tokenConfigured,
-        errorMessage: err.message,
-        errorStack: err.stack,
-        hint
-      });
       showToast(err.message || 'AI extraction failed.');
     }
-  };
-
-  const handleSimulateExtraction = () => {
-    const mockFile = lastFileRef.current?.name || 'STI_College_Transcript_Sample.pdf';
-    const mockData = {
-      rawAiOutput: 'STI College Novaliches\nStudent No: 02000368927\nName: AZUCENA, JUSTIN ALLEN TAMPOY\nGeneral Weighted Average: 1.45\nCumulative GWA: 1.40\nStatus: PASSED / COMPLIANT\nTerm: AY 2025-2026 2nd Semester',
-      studentName: 'AZUCENA, JUSTIN ALLEN TAMPOY',
-      studentNo: '02000368927',
-      schoolName: 'STI College Novaliches',
-      docType: 'Copy of Grades / Official Transcript',
-      termPeriod: '2025-2026 / 2nd Term',
-      gwa: '1.45',
-      cumulativeGwa: '1.40',
-      summaryText: 'STI College Official Transcript for AZUCENA, JUSTIN ALLEN TAMPOY with GWA 1.45. Meets academic excellence standards.',
-      fileName: mockFile,
-      isCompliant: true,
-      isGwaPassing: true,
-      failedCoursesCount: 0
-    };
-
-    setExtractData(mockData);
-    setExtractState('success');
-    setExtractError(null);
-    setAiExtractedFilter(mockData);
-    setDebugInfo({
-      timestamp: new Date().toISOString(),
-      endpoint: 'SIMULATED_MOCK_ENGINE',
-      method: 'MOCK_FALLBACK',
-      fileName: mockFile,
-      fileSize: '142.8 KB',
-      status: '200 (Simulated Demo)',
-      durationMs: 38,
-      parsedData: mockData,
-      hint: 'Simulated demo extraction succeeded. Useful for presentation and evaluation without active live tokens.'
-    });
-    showToast('Simulated demo extraction applied successfully!');
   };
 
   const handleDocFileChange = (docName, file) => {
@@ -508,119 +395,7 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
         </div>
       )}
 
-      {/* Error Banner with AI Debugger Toggle */}
-      {extractState === 'error' && (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '0.75rem',
-          padding: '0.9rem 1.25rem',
-          background: '#fef2f2',
-          border: '1.5px solid #fca5a5',
-          borderRadius: '12px',
-          marginBottom: '1.5rem',
-          boxShadow: '0 4px 14px rgba(220, 38, 38, 0.08)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: '260px' }}>
-            <div style={{ background: '#fee2e2', padding: '0.45rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <AlertTriangle size={18} color="#dc2626" />
-            </div>
-            <div>
-              <span style={{ fontSize: '0.88rem', color: '#991b1b', fontWeight: 800, display: 'block' }}>
-                AI Document Extraction Failed
-              </span>
-              <span style={{ fontSize: '0.78rem', color: '#b91c1c', fontWeight: 500 }}>
-                {extractError || 'An error occurred while connecting to the eGov AI service.'}
-              </span>
-            </div>
-          </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              onClick={() => setShowDebugModal(true)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.78rem',
-                padding: '0.45rem 0.85rem',
-                background: '#ffffff',
-                border: '1px solid #dc2626',
-                color: '#dc2626',
-                borderRadius: '8px',
-                fontWeight: 700,
-                cursor: 'pointer'
-              }}
-            >
-              <Bug size={14} />
-              <span>AI API Debugger</span>
-            </button>
-
-            {lastFileRef.current && (
-              <button
-                type="button"
-                onClick={() => handleAutoExtract(lastFileRef.current, true)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  fontSize: '0.78rem',
-                  padding: '0.45rem 0.85rem',
-                  background: '#ffffff',
-                  border: '1px solid #cbd5e1',
-                  color: '#334155',
-                  borderRadius: '8px',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                <RefreshCw size={14} />
-                <span>Retry</span>
-              </button>
-            )}
-
-            <button
-              type="button"
-              onClick={handleSimulateExtraction}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.78rem',
-                padding: '0.45rem 0.85rem',
-                background: '#082894',
-                border: 'none',
-                color: '#ffffff',
-                borderRadius: '8px',
-                fontWeight: 700,
-                cursor: 'pointer'
-              }}
-            >
-              <Sparkles size={14} />
-              <span>Simulate Demo</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setExtractState('idle')}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#64748b',
-                cursor: 'pointer',
-                padding: '0.3rem',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <X size={18} />
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Active AI Filter Indicator Banner */}
       {aiExtractedFilter && (
@@ -1045,225 +820,6 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
                 </div>
               </form>
             )}
-          </div>
-        </div>
-      )}
-      {/* AI API Debugger Modal */}
-      {showDebugModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'rgba(15, 23, 42, 0.7)',
-          backdropFilter: 'blur(4px)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 9999,
-          padding: '1rem'
-        }}>
-          <div style={{
-            background: '#0f172a',
-            color: '#e2e8f0',
-            borderRadius: '16px',
-            width: '100%',
-            maxWidth: '740px',
-            maxHeight: '85vh',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-            border: '1px solid #334155',
-            fontFamily: 'Inter, monospace'
-          }}>
-            {/* Modal Header */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '1.2rem 1.5rem',
-              borderBottom: '1px solid #1e293b'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                <div style={{ background: '#1e293b', padding: '0.45rem', borderRadius: '8px' }}>
-                  <Terminal size={18} color="#38bdf8" />
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 800, margin: 0, color: '#f8fafc' }}>
-                    eGov AI Extractor — API Console & Debugger
-                  </h3>
-                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-                    Live Request Diagnostics & Performance Trace
-                  </span>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowDebugModal(false)}
-                style={{
-                  background: '#1e293b',
-                  border: 'none',
-                  color: '#94a3b8',
-                  borderRadius: '6px',
-                  padding: '0.4rem',
-                  cursor: 'pointer'
-                }}
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div style={{ padding: '1.5rem', overflowY: 'auto', flex: 1, fontSize: '0.82rem' }}>
-              {debugInfo ? (
-                <>
-                  {/* Status Badges */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '0.75rem', marginBottom: '1.25rem' }}>
-                    <div style={{ background: '#1e293b', padding: '0.75rem', borderRadius: '8px' }}>
-                      <span style={{ color: '#94a3b8', fontSize: '0.7rem', display: 'block' }}>HTTP Status</span>
-                      <span style={{ fontWeight: 700, color: debugInfo.status && (String(debugInfo.status).includes('200') || String(debugInfo.status).includes('OK')) ? '#4ade80' : '#f87171' }}>
-                        {debugInfo.status || 'N/A'}
-                      </span>
-                    </div>
-                    <div style={{ background: '#1e293b', padding: '0.75rem', borderRadius: '8px' }}>
-                      <span style={{ color: '#94a3b8', fontSize: '0.7rem', display: 'block' }}>Endpoint</span>
-                      <span style={{ fontWeight: 600, color: '#38bdf8', wordBreak: 'break-all', fontSize: '0.75rem' }}>
-                        {debugInfo.endpoint}
-                      </span>
-                    </div>
-                    <div style={{ background: '#1e293b', padding: '0.75rem', borderRadius: '8px' }}>
-                      <span style={{ color: '#94a3b8', fontSize: '0.7rem', display: 'block' }}>File / Latency</span>
-                      <span style={{ fontWeight: 600, color: '#f8fafc' }}>
-                        {debugInfo.fileName} ({debugInfo.durationMs ? `${debugInfo.durationMs}ms` : 'Local'})
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Diagnostic Hint */}
-                  {debugInfo.hint && (
-                    <div style={{
-                      background: '#1e1b4b',
-                      border: '1px solid #4338ca',
-                      borderRadius: '8px',
-                      padding: '0.85rem 1rem',
-                      marginBottom: '1.25rem',
-                      color: '#c7d2fe'
-                    }}>
-                      <strong style={{ display: 'block', color: '#a5b4fc', marginBottom: '0.25rem' }}>💡 Diagnostic Hint:</strong>
-                      {debugInfo.hint}
-                    </div>
-                  )}
-
-                  {/* Raw Debug JSON */}
-                  <div style={{ position: 'relative' }}>
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      background: '#090d16',
-                      padding: '0.5rem 0.85rem',
-                      borderTopLeftRadius: '8px',
-                      borderTopRightRadius: '8px',
-                      border: '1px solid #1e293b',
-                      borderBottom: 'none'
-                    }}>
-                      <span style={{ color: '#64748b', fontSize: '0.72rem', fontWeight: 600 }}>RAW DEBUG PAYLOAD</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2));
-                          setCopiedDebug(true);
-                          setTimeout(() => setCopiedDebug(false), 2000);
-                        }}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.3rem',
-                          background: '#1e293b',
-                          border: 'none',
-                          color: copiedDebug ? '#4ade80' : '#94a3b8',
-                          padding: '0.25rem 0.6rem',
-                          borderRadius: '4px',
-                          fontSize: '0.72rem',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {copiedDebug ? <Check size={12} /> : <Copy size={12} />}
-                        <span>{copiedDebug ? 'Copied!' : 'Copy JSON'}</span>
-                      </button>
-                    </div>
-                    <pre style={{
-                      background: '#090d16',
-                      color: '#38bdf8',
-                      padding: '1rem',
-                      borderBottomLeftRadius: '8px',
-                      borderBottomRightRadius: '8px',
-                      border: '1px solid #1e293b',
-                      margin: 0,
-                      overflowX: 'auto',
-                      maxHeight: '260px',
-                      fontSize: '0.75rem',
-                      lineHeight: 1.45
-                    }}>
-                      {JSON.stringify(debugInfo, null, 2)}
-                    </pre>
-                  </div>
-                </>
-              ) : (
-                <p style={{ color: '#64748b', textAlign: 'center', padding: '2rem 0' }}>
-                  No active extraction debug trace recorded yet. Try uploading a document to trigger the debugger.
-                </p>
-              )}
-            </div>
-
-            {/* Modal Footer */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '0.75rem',
-              padding: '1rem 1.5rem',
-              borderTop: '1px solid #1e293b',
-              background: '#090d16',
-              borderBottomLeftRadius: '16px',
-              borderBottomRightRadius: '16px'
-            }}>
-              <button
-                type="button"
-                onClick={() => {
-                  handleSimulateExtraction();
-                  setShowDebugModal(false);
-                }}
-                style={{
-                  padding: '0.5rem 1rem',
-                  background: '#1e293b',
-                  border: '1px solid #334155',
-                  color: '#e2e8f0',
-                  borderRadius: '8px',
-                  fontWeight: 600,
-                  fontSize: '0.8rem',
-                  cursor: 'pointer'
-                }}
-              >
-                Simulate Mock Result
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowDebugModal(false)}
-                style={{
-                  padding: '0.5rem 1.25rem',
-                  background: '#2563eb',
-                  border: 'none',
-                  color: '#ffffff',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  fontSize: '0.8rem',
-                  cursor: 'pointer'
-                }}
-              >
-                Close Debugger
-              </button>
-            </div>
           </div>
         </div>
       )}
