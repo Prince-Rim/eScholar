@@ -83,9 +83,9 @@
 | **Deployment / Routing** | [Vercel](https://vercel.com/) | Standard | Single-Page Application (SPA) rewrite and hosting configuration |
 
 ### External SDKs & Services
-* **eGov Face Liveness Web SDK:** `https://hackathon-everify-face-liveness.e.gov.ph/js/everify-liveness-sdk.min.js`
-* **eGov SMS Gateway API:** `https://platforms-api.e.gov.ph/emessage/messaging/v1/sms/push`
-* **eGov Document Extractor AI API:** `https://platforms-api.e.gov.ph/api/v1/egov/integration/document_extractor/generate`
+* **eGov Face Liveness Web SDK:** 
+* **eGov SMS Gateway API:** 
+* **eGov Document Extractor AI API:**
 
 ---
 
