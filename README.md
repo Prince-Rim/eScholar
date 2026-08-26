@@ -13,7 +13,7 @@
 ## 📌 Repository & Source Code
 
 * **Official Repository Link:** [https://github.com/Prince-Rim/eScholar](https://github.com/Prince-Rim/eScholar)
-* **Author / Organization:** [Prince-Rim](https://github.com/Prince-Rim)
+* **Team:** [FakeBitz]
 * **Project Name:** `eScholar`
 
 ---
