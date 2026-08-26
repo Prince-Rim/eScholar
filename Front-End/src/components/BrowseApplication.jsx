@@ -8,8 +8,8 @@ import { MOCK_PROGRAMS } from './ProviderPrograms';
 import './ProviderCreateProgram.css';
 import './ProviderPrograms.css';
 
-const AI_BASE_URL = import.meta.env.VITE_AI_BASE_URL || 'https://egov-ai-core-ws.oueg.info';
-const AI_API_TOKEN = import.meta.env.VITE_AI_API_TOKEN || '12dae412-38d1-4f9d-9cb8-048690e401ba';
+const AI_BASE_URL = import.meta.env.VITE_AI_BASE_URL;
+const AI_API_TOKEN = import.meta.env.VITE_AI_API_TOKEN;
 
 const sanitizeHtml = (str) => {
   if (!str) return '';
