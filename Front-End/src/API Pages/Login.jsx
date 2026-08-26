@@ -59,9 +59,10 @@ const Login = ({ setActiveView, setUserRole }) => {
     setGeneratedCode(code);
 
     try {
-      const response = await fetch('https://ws-message.e.gov.ph/messaging/v1/sms/push', {
+      const response = await fetch('https://platforms-api.e.gov.ph/emessage/messaging/v1/sms/push', {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_EMESSAGE_AUTH}`,
           'X-EMESSAGE-Auth': import.meta.env.VITE_EMESSAGE_AUTH,
           'Content-Type': 'application/json'
         },
