@@ -180,15 +180,14 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', file, file.name);
 
       const endpoint = `${AI_BASE_URL.replace(/\/$/, '')}/api/v1/egov/integration/document_extractor/generate`;
       
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${AI_API_TOKEN}`,
-          'Accept': 'application/json'
+          'Authorization': `Bearer ${AI_API_TOKEN}`
         },
         body: formData
       });
