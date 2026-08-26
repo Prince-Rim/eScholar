@@ -1,16 +1,61 @@
-# React + Vite
+# 🎓 eScholar Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+> **React 19 + Vite Application for eScholar**
 
-Currently, two official plugins are available:
+This directory contains the client-side Single-Page Application (SPA) for **eScholar**. For full project documentation, architectural overviews, and GovTech integration details, please refer to the [Root README.md](../README.md).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📌 Repository Link
+* **GitHub Repository:** [https://github.com/Prince-Rim/eScholar](https://github.com/Prince-Rim/eScholar)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 📦 Dependencies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```json
+{
+  "dependencies": {
+    "lucide-react": "^1.25.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "oxlint": "^1.71.0",
+    "vite": "^8.1.1"
+  }
+}
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in this directory based on `.env.example`:
+
+```env
+# NIDAS eVerify Face Liveness SDK
+VITE_NIDAS_BASE_URL=https://hackathon-everify-face-liveness.e.gov.ph
+VITE_NIDAS_CLIENT_ID=your_nidas_client_id_here
+VITE_NIDAS_CLIENT_SECRET=your_nidas_client_secret_here
+VITE_NIDAS_PUB_KEY=your_nidas_public_key_here
+
+# eGov PH eMessage SMS 2FA
+VITE_EMESSAGE_AUTH=your_egov_emessage_auth_token_here
+
+# AI Document Extractor
+VITE_AI_BASE_URL=https://platforms-api.e.gov.ph
+VITE_AI_API_TOKEN=your_ai_extractor_api_token_here
+```
+
+---
+
+## 🚀 Available Scripts
+
+* **`npm run dev`** — Starts the local Vite development server with HMR.
+* **`npm run build`** — Compiles and bundles production assets into `dist/`.
+* **`npm run preview`** — Serves the production build locally for verification.
+* **`npm run lint`** — Runs Oxlint for code quality and syntax checks.
