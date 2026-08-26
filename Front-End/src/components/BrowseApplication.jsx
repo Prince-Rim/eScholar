@@ -198,10 +198,14 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
     setExtractState('extracting');
     setExtractError(null);
     const startTime = performance.now();
-    const rawBaseUrl = AI_BASE_URL || 'https://platforms-api.e.gov.ph';
-    const cleanBaseUrl = rawBaseUrl.replace(/\/$/, '');
-    const endpoint = `${cleanBaseUrl}/api/v1/egov/integration/document_extractor/generate`;
-    const tokenConfigured = Boolean(AI_API_TOKEN && AI_API_TOKEN.trim() !== '');
+    const rawBaseUrl = (AI_BASE_URL || 'https://platforms-api.e.gov.ph').trim().replace(/\/$/, '');
+    const endpoint = rawBaseUrl.includes('/egov-ai')
+      ? `${rawBaseUrl}/api/v1/egov/integration/document_extractor/generate`
+      : `${rawBaseUrl}/egov-ai/api/v1/egov/integration/document_extractor/generate`;
+
+    const cleanToken = (AI_API_TOKEN || '').trim();
+    const tokenConfigured = cleanToken !== '';
+    const authHeader = cleanToken.toLowerCase().startsWith('bearer ') ? cleanToken : `Bearer ${cleanToken}`;
 
     console.groupCollapsed(`%c🤖 [eGov AI Extractor Request] ${new Date().toLocaleTimeString()} — ${file.name}`, 'color: #2563eb; font-weight: bold; font-size: 11px;');
     console.log('📌 Request Endpoint:', endpoint);
@@ -220,7 +224,7 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${AI_API_TOKEN}`
+          'Authorization': authHeader
         },
         body: formData
       });
