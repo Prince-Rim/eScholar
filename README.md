@@ -13,7 +13,7 @@
 ## 📌 Repository & Source Code
 
 * **Official Repository Link:** [https://github.com/Prince-Rim/eScholar](https://github.com/Prince-Rim/eScholar)
-* **Author / Organization:** [Prince-Rim](https://github.com/Prince-Rim)
+* **Team:** [FakeBitz]
 * **Project Name:** `eScholar`
 
 ---
@@ -59,12 +59,8 @@
 * **Provider Onboarding & Verification:** Review legal credentials, SEC/DTI registrations, and verify provider organizations.
 * **User & Role Governance:** Audit student and provider accounts, manage account states (Active, Suspended, Disabled), and trigger security actions.
 * **Comprehensive Audit Trail:** Immutable system logs capturing authentication events, identity verifications, status modifications, and grant disbursements.
-* **Platform Health & Metrics:** Aggregate reports on registered users, active programs, and total financial aid facilitated.
+* **Platform Metrics:** Aggregate reports on registered users, active programs, and total financial aid facilitated.
 
-### 4. 🇵🇭 Integrated GovTech & AI Ecosystem
-* **NIDAS eVerify Face Liveness SDK (eKYC):** Biometric identity verification during student registration to prevent fraudulent and duplicate claims.
-* **eGov PH eMessage SMS Gateway:** Multi-factor authentication (MFA / 2FA) with one-time password (OTP) verification sent directly to Philippine mobile numbers (`+639...`).
-* **eGov AI Document Extractor Engine:** High-precision document parser for academic transcripts and enrollment certificates.
 
 ---
 
@@ -83,15 +79,14 @@
 | **Deployment / Routing** | [Vercel](https://vercel.com/) | Standard | Single-Page Application (SPA) rewrite and hosting configuration |
 
 ### External SDKs & Services
-* **eGov Face Liveness Web SDK:** `https://hackathon-everify-face-liveness.e.gov.ph/js/everify-liveness-sdk.min.js`
-* **eGov SMS Gateway API:** `https://platforms-api.e.gov.ph/emessage/messaging/v1/sms/push`
-* **eGov Document Extractor AI API:** `https://platforms-api.e.gov.ph/api/v1/egov/integration/document_extractor/generate`
+* **eGov Face Liveness:** 
+* **eGov SMS API:** 
+* **eGov Document Extractor AI API:**
 
 ---
 
 ## ⚙️ Environment Configurations
 
-The application requires specific environment variables for biometric eKYC, SMS 2FA, and AI extraction features.
 
 ### Environment Variable Reference
 
@@ -225,7 +220,6 @@ For rapid testing and evaluation, pre-configured test accounts are available on 
 | **🏢 Provider** | `provider@example.com` *(or `provider123`)* | `provider123` *(or `admin123`)* | Provider Programs (`/my-programs`) |
 | **🛡️ Admin** | `admin@example.com` *(or `admin123`)* | `admin123` | Admin Dashboard (`/admin`) |
 
-> **2FA Note in Demo Mode:** During login, you can input any standard 10-11 digit Philippine mobile number (e.g., `+639123456789`) to receive or simulate OTP delivery.
 
 ### Quick URL Routes
 * `/` or `/landing` — Landing Page with public scholarship catalog
@@ -235,100 +229,3 @@ For rapid testing and evaluation, pre-configured test accounts are available on 
 * `/admin` — Direct shortcut to Admin Portal
 
 ---
-
-## 📂 Project Directory Structure
-
-```text
-eScholar/
-├── .env.example                  # Root environment variable template
-├── .gitignore                    # Git ignore file (node_modules, dist, .env)
-├── index.html                    # Root HTML entry template
-├── package.json                  # Root workspace runner scripts
-├── vercel.json                   # Vercel deployment & SPA rewrites configuration
-├── README.md                     # Comprehensive project documentation
-└── Front-End/                    # React 19 + Vite Frontend Application
-    ├── .env.example              # Front-End environment variable template
-    ├── index.html                # Vite HTML entry with NIDAS SDK script
-    ├── package.json              # Front-End dependencies and scripts
-    ├── public/                   # Static public assets (icons, favicon)
-    │   ├── favicon.svg
-    │   └── icons.svg
-    └── src/
-        ├── App.css               # Global theme & typography styles
-        ├── App.jsx               # Application root, error boundary & routing
-        ├── index.css             # Base reset styles
-        ├── main.jsx              # React 19 application entry point
-        ├── API Pages/            # Authentication & eKYC screens
-        │   ├── Login.jsx         # Login form + eGov SMS 2FA OTP flow
-        │   └── Register.jsx      # Student registration + NIDAS Face Liveness check
-        ├── assets/               # Brand logos, hero banners, and imagery
-        │   ├── escholar_logo.png
-        │   ├── hero_students.png
-        │   ├── scholar_juan.png
-        │   └── scholar_maria.png
-        └── components/           # Modular portal UI components
-            ├── AdminAuditTrail.jsx       # Administrative event logging & audit
-            ├── AdminDashboard.jsx        # Admin KPI summary & onboarding overview
-            ├── AdminProviders.jsx        # Provider verification & approval hub
-            ├── AdminSidebar.jsx          # Admin navigation sidebar
-            ├── AdminUserAccounts.jsx     # User management & account control
-            ├── BrowseApplication.jsx     # Scholarship finder & AI OCR extractor
-            ├── BrowseScholarshipCard.jsx # Scholarship catalog card component
-            ├── Compliance.jsx            # Student grant compliance submission hub
-            ├── Dashboard.jsx             # Student dashboard with recommendations
-            ├── LandingPage.jsx           # Public landing page with scholarship filter
-            ├── Logo.jsx                  # Reusable eScholar SVG/Brand logo
-            ├── MyApplications.jsx        # Student application lifecycle tracker
-            ├── ProviderActiveScholars.jsx# Active scholar disbursement tracker
-            ├── ProviderApplicantPipeline.jsx # Provider candidate evaluation pipeline
-            ├── ProviderCreateProgram.jsx # Multi-step scholarship creation wizard
-            ├── ProviderDashboard.jsx     # Provider metrics & program performance
-            ├── ProviderPrograms.jsx      # Provider active programs catalogue
-            ├── ProviderProgramDetail.jsx # Detailed view of specific provider program
-            ├── ProviderSettings.jsx      # Provider organization & user profile settings
-            ├── ProviderSidebar.jsx       # Provider navigation sidebar
-            └── Sidebar.jsx               # Student navigation sidebar
-```
-
----
-
-## 🌐 Deployment
-
-### Deploying to Vercel
-The repository includes a ready-to-use `vercel.json` with SPA rewrites:
-
-```json
-{
-  "outputDirectory": "Front-End/dist",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
-```
-
-1. Push your repository to GitHub.
-2. Log in to [Vercel](https://vercel.com) and click **"New Project"**.
-3. Import the `Prince-Rim/eScholar` repository.
-4. Set the Build and Output settings:
-   - **Framework Preset:** Vite
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `Front-End/dist`
-5. Add the environment variables from your `.env` file in the Vercel Dashboard under **Project Settings > Environment Variables**.
-6. Click **Deploy**.
-
----
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-## 👥 Contributors & Acknowledgements
-
-* **Development Team:** [Prince-Rim](https://github.com/Prince-Rim) and contributors.
-* **GovTech Partners:** Department of Information and Communications Technology (DICT) / eGov PH for NIDAS eVerify and eMessage APIs.
-* **National Programs:** Commendations to DOST-SEI, CHED, and partner foundations for continuous scholarship program data alignment.
