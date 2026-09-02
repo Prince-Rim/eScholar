@@ -58,12 +58,13 @@ const Login = ({ setActiveView, setUserRole }) => {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedCode(code);
 
+    const emessageToken = (import.meta.env.VITE_EMESSAGE_AUTH || '').trim().replace(/^["']+|["']+$/g, '');
     try {
       const response = await fetch('https://platforms-api.e.gov.ph/emessage/messaging/v1/sms/push', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_EMESSAGE_AUTH}`,
-          'X-EMESSAGE-Auth': import.meta.env.VITE_EMESSAGE_AUTH,
+          'Authorization': `Bearer ${emessageToken}`,
+          'X-EMESSAGE-Auth': emessageToken,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

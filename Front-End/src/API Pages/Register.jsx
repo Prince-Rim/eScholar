@@ -3,10 +3,11 @@ import { Search, ChevronDown, Check, X } from 'lucide-react';
 import '../components/LandingPage.css';
 import Logo from '../components/Logo';
 
-const NIDAS_BASE_URL = import.meta.env.VITE_NIDAS_BASE_URL;
-const NIDAS_CLIENT_ID = import.meta.env.VITE_NIDAS_CLIENT_ID;
-const NIDAS_CLIENT_SECRET = import.meta.env.VITE_NIDAS_CLIENT_SECRET;
-const NIDAS_PUB_KEY = import.meta.env.VITE_NIDAS_PUB_KEY;
+const cleanEnv = (val) => (val || '').trim().replace(/^["']+|["']+$/g, '');
+const NIDAS_BASE_URL = cleanEnv(import.meta.env.VITE_NIDAS_BASE_URL);
+const NIDAS_CLIENT_ID = cleanEnv(import.meta.env.VITE_NIDAS_CLIENT_ID);
+const NIDAS_CLIENT_SECRET = cleanEnv(import.meta.env.VITE_NIDAS_CLIENT_SECRET);
+const NIDAS_PUB_KEY = cleanEnv(import.meta.env.VITE_NIDAS_PUB_KEY);
 
 const SCHOOL_OPTIONS = [
   'STI',

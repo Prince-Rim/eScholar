@@ -178,12 +178,23 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
     setExtractState('extracting');
     setExtractError(null);
 
-    const rawBaseUrl = (AI_BASE_URL || 'https://platforms-api.e.gov.ph').trim().replace(/\/$/, '');
-    const endpoint = rawBaseUrl.includes('/egov-ai')
-      ? `${rawBaseUrl}/api/v1/egov/integration/document_extractor/generate`
-      : `${rawBaseUrl}/egov-ai/api/v1/egov/integration/document_extractor/generate`;
+    const rawBaseUrl = (AI_BASE_URL || 'https://platforms-api.e.gov.ph')
+      .trim()
+      .replace(/^["']+|["']+$/g, '')
+      .replace(/\/$/, '');
 
-    const cleanToken = (AI_API_TOKEN || '').trim();
+    let endpoint;
+    if (rawBaseUrl.includes('/document_extractor/generate')) {
+      endpoint = rawBaseUrl;
+    } else if (rawBaseUrl.includes('/egov-ai')) {
+      endpoint = `${rawBaseUrl}/api/v1/egov/integration/document_extractor/generate`;
+    } else {
+      endpoint = `${rawBaseUrl}/egov-ai/api/v1/egov/integration/document_extractor/generate`;
+    }
+
+    const cleanToken = (AI_API_TOKEN || '')
+      .trim()
+      .replace(/^["']+|["']+$/g, '');
     const authHeader = cleanToken.toLowerCase().startsWith('bearer ') ? cleanToken : `Bearer ${cleanToken}`;
 
     try {
@@ -192,22 +203,26 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
       }
 
       const formData = new FormData();
-      formData.append('file', file, file.name);
+      formData.append('file', file, file.name || 'document.pdf');
 
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Authorization': authHeader
+          'Authorization': authHeader,
+          'Accept': 'application/json'
         },
         body: formData
       });
 
       if (response.status === 401 || response.status === 403) {
-        throw new Error('Unauthorized API token (401/403). Check VITE_AI_API_TOKEN configuration.');
+        const errTxt = await response.text().catch(() => '');
+        console.error('Server 401/403 error details:', errTxt);
+        throw new Error(`Unauthorized API token (401/403): ${errTxt || 'Check VITE_AI_API_TOKEN configuration.'}`);
       }
 
       if (!response.ok) {
         const errTxt = await response.text().catch(() => '');
+        console.error('Server error details:', errTxt);
         throw new Error(`AI Extractor API failed (${response.status}): ${errTxt || 'Server error'}`);
       }
 
@@ -314,12 +329,14 @@ const BrowseApplication = ({ initialView = 'all', setActiveView }) => {
               id="top-header-ai-extractor-input"
               accept=".pdf,.png,.jpg,.jpeg"
               style={{ display: 'none' }}
+              onClick={(e) => {
+                e.target.value = '';
+              }}
               onChange={(e) => {
-                const file = e.target.files[0];
+                const file = e.target.files?.[0];
                 if (file) {
                   handleAutoExtract(file);
                 }
-                e.target.value = null;
               }}
             />
             <label 
